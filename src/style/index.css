@@ -12,8 +12,29 @@
     src: url('../fonts/cascadia-code/CascadiaMono.ttf');
 }
 
+html {
+    --color-background0: #171717;
+    --color-background1: #1a1a1a;
+    --color-background2: #212121;
+    --color-background3: #2f2f2f;
+
+    --color-foreground0: #848484;
+    --color-foreground1: #ebebeb;
+    --color-foreground2: #fff;
+
+    --color-accent0: #23a8f2;
+    --color-accent1: #fbc963;
+
+    --color-border0: #121212;
+    --color-border1: #151515;
+    --color-border2: #3d3d3d;
+}
+
 body {
     margin: 0;
+}
+
+*:not(code) {
     font-family: 'CascadiaCode';
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
@@ -21,4 +42,24 @@ body {
 
 code {
     font-family: 'CascadiaCode';
+}
+
+a {
+    color: var(--color-foreground2);
+    text-decoration: none;
+}
+
+a:hover {
+    text-decoration: underline;
+}
+
+#root {
+    width: 100vw;
+    height: 100vh;
+    background-color: var(--color-background1);
+    color: var(--color-foreground1);
+}
+
+* {
+    box-sizing: border-box;
 }

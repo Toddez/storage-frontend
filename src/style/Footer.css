@@ -1,0 +1,44 @@
+.Footer {
+    border-top: 2px solid var(--color-border1);
+    order: 1;
+    min-height: 75px;
+    max-height: 100px;
+    width: 100%;
+    max-width: 95vw;
+    height: 15vh;
+    display: flex;
+    flex-direction: row;
+    justify-content: left;
+    align-items: center;
+    margin: 0 auto;
+}
+
+.Footer > .links {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    width: 100%;
+}
+
+@media only screen and (max-width: 700px) {
+    .Footer > .links {
+        justify-content: space-evenly;
+    }
+}
+
+.Footer > .links > .item {
+    margin-left: 1rem;
+}
+
+.Footer > .icon {
+    margin-right: 1rem;
+}
+
+.Footer > .icon > img {
+    height: 2rem;
+}
+
+.copyright {
+    color: var(--color-foreground0);
+}

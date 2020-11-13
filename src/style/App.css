@@ -1,1 +1,48 @@
+.App {
+    width: 100vw;
+    min-height: 100vh;
+    max-width: 1200px;
+    display: flex;
+    flex-direction: column;
+    margin: 0 auto;
+}
 
+.Route {
+    display: flex;
+    flex: 1;
+    order: 0;
+}
+
+.Route .Login {
+    position: relative;
+    width: 100%;
+}
+
+form {
+    position: absolute;
+    width: 60%;
+    max-width: 450px;
+    min-width: 400px;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
+
+form label {
+    color: var(--color-foreground1)
+}
+
+form input {
+    width: 100%;
+    margin-bottom: 0.5rem;
+    padding: 1rem;
+    background-color: var(--color-background3);
+    color: var(--color-foreground1);
+    border: none;
+}
+
+@media only screen and (max-width: 400px) {
+    form {
+        min-width: 100%;
+    }
+}
