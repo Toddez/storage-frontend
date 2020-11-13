@@ -19,7 +19,7 @@ html {
     --color-background3: #2f2f2f;
 
     --color-foreground0: #848484;
-    --color-foreground1: #ebebeb;
+    --color-foreground1: #eceff1;
     --color-foreground2: #fff;
 
     --color-accent0: #23a8f2;
@@ -28,6 +28,10 @@ html {
     --color-border0: #121212;
     --color-border1: #151515;
     --color-border2: #3d3d3d;
+}
+
+*::selection {
+    background: rgba(255, 255, 255, 0.1);
 }
 
 body {
