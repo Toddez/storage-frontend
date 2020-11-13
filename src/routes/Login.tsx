@@ -36,11 +36,14 @@ class Login extends Form<Props> {
 
     render() : JSX.Element {
         return (
-            <div>
+            <div className='Login'>
                 <form onSubmit={this.handleSubmit} >
+                    <label htmlFor="id">ID</label>
                     <input type="text" name="id" id="id" onChange={this.handleChange} />
-                    <input type="text" name="key" id="key" onChange={this.handleChange} />
-                    <input type="submit" value="Submit!" />
+
+                    <label htmlFor="key">Key</label>
+                    <input type="password" name="key" id="key" onChange={this.handleChange} />
+                    <input type="submit" value="Authorize" />
                 </form>
             </div>
         );
