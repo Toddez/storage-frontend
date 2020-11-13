@@ -4,8 +4,8 @@ type State = {
     data: Record<string, unknown>
 }
 
-abstract class Form extends React.Component {
-    constructor(props: Record<string, unknown>) {
+abstract class Form<P> extends React.Component<P> {
+    constructor(props: P) {
         super(props);
 
         this.handleChange = this.handleChange.bind(this);

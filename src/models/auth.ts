@@ -16,9 +16,6 @@ class Auth {
         if (!Auth.jwt)
             return false;
 
-        if (Object.keys(Auth.data).length === 0)
-            return false;
-
         return true;
     }
 }

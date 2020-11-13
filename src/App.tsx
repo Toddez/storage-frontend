@@ -56,7 +56,7 @@ class App extends React.Component {
                                 <Redirect exact strict from='/' to='/explorer' />
                             </Switch>
                             : <Switch>
-                                <Route path='/' render={() => <Login />} />
+                                <Route path='/' render={() => <Login onLogin={this.handleLogin} />} />
                                 <Redirect strict from='/explorer' to='/' />
                                 <Redirect strict from='/file' to='/' />
                             </Switch>
