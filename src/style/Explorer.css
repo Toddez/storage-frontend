@@ -1,0 +1,118 @@
+.Route > .Explorer {
+    width: 100%;
+}
+
+.Explorer .path-seperator::after {
+    content: '/';
+}
+
+.Explorer .inline-seperator::after {
+    content: '|';
+    margin: 0 0.5rem;
+}
+
+.Explorer .item.active {
+    font-weight: bold;
+}
+
+.Explorer .editor *::selection {
+    background: rgba(255, 255, 255, 0.1);
+}
+
+.Explorer .file-delete *:hover {
+    color: var(--color-danger);
+    fill: var(--color-danger);
+}
+
+.Explorer {
+    display: flex;
+    flex-direction: column;
+}
+
+.Explorer > .tree {
+    margin-top: 1rem;
+    display: flex;
+    flex-direction: column;
+    background-color: var(--color-background4);
+    border: 1px solid var(--color-border1);
+    border-radius: 0.5rem;
+}
+
+.Explorer > .tree > .navigation {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+    padding: 1rem;
+    background-color: var(--color-background3);
+    border-top-left-radius: 0.5rem;
+    border-top-right-radius: 0.5rem;
+}
+
+.Explorer > .tree > .navigation > .path {
+    display: flex;
+    flex-direction: row;
+}
+
+.Explorer > .tree > .navigation > .navigation-actions {
+    display: flex;
+    flex-direction: row;
+}
+
+.Explorer > .tree .navigation > .navigation-actions > * {
+    margin-left: 0.5rem;
+}
+
+.Explorer > .tree > .nodes > .node {
+    padding: 0.5rem 1rem;
+    display: flex;
+    flex-direction: row;
+    border-top: 1px solid var(--color-border1);
+    align-items: center;
+    background-color: var(--color-background3);
+}
+
+.Explorer > .tree > .nodes > .node:hover {
+    background-color: var(--color-background5);
+}
+
+.Explorer > .tree > .nodes > .node.go-up {
+    text-decoration: none;
+}
+
+.Explorer > .file {
+    margin-top: 1rem;
+    display: flex;
+    flex-direction: column;
+}
+
+.Explorer > .file > .header {
+    background-color: var(--color-background3);
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+    padding: 1rem;
+    border-top-left-radius: 0.5rem;
+    border-top-right-radius: 0.5rem;
+}
+
+.Explorer > .file > .header > .file-info {
+    display: flex;
+    flex-direction: row;
+}
+
+.Explorer > .file > .header > .file-actions {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+}
+
+.Explorer > .file > .header > .file-actions > * {
+    margin-left: 0.5rem;
+}
+
+.Explorer > .file > .editor > span {
+    border-bottom-left-radius: 0.5rem !important;
+    border-bottom-right-radius: 0.5rem !important;
+}

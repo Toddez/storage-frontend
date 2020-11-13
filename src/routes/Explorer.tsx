@@ -11,6 +11,8 @@ import FileIcon from '@material-ui/icons/InsertDriveFileOutlined';
 
 import { CodeBlock } from 'react-code-blocks';
 
+import '../style/Explorer.css';
+
 type State = {
     tree: Record<string, unknown>,
     types: Record<string, unknown>,

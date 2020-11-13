@@ -5,6 +5,8 @@ import { api_url } from '../models/config';
 
 import Form from '../components/Form';
 
+import '../style/Login.css';
+
 interface Props {
     onLogin: () => void
 }
