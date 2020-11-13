@@ -3,14 +3,18 @@ import React from 'react';
 import Auth from '../models/auth';
 import { api_url, theme } from '../models/config';
 
-import EditIcon from '@material-ui/icons/EditOutlined';
+import EditIcon from '@material-ui/icons/EditRounded';
 import DeleteIcon from '@material-ui/icons/DeleteOutlined';
+import NewIcon from '@material-ui/icons/AddBoxRounded';
+import UploadIcon from '@material-ui/icons/PublishRounded';
+import FileIcon from '@material-ui/icons/InsertDriveFileOutlined';
 
 import { CodeBlock } from 'react-code-blocks';
 
 type State = {
     tree: Record<string, unknown>,
-    types: Record<string, unknown>
+    types: Record<string, unknown>,
+    position: Array<Record<string, unknown>>
 }
 
 class Explorer extends React.Component {
@@ -39,7 +43,8 @@ class Explorer extends React.Component {
 
     state: State = {
         tree: {},
-        types: {}
+        types: {},
+        position: []
     }
 
     componentWillUnmount() : void {
@@ -49,21 +54,37 @@ class Explorer extends React.Component {
     render() : JSX.Element {
         return (
             <div className='Explorer'>
-                <div className='navigation'>
-                    <div className='path'>root/test/</div>
-                    <div className='add-file'><a>Add file</a></div>
+                <div className='tree'>
+                    <div className='navigation'>
+                        <div className='path'>
+                            <a className='item'>root</a>
+                            <div className='path-seperator'></div>
+                            <a className='item'>test</a>
+                            <div className='path-seperator'></div>
+                            <a className='item active'>index.tsx</a>
+                        </div>
+                        <div className='navigation-actions'>
+                            <div className='add-file'><a><NewIcon /></a></div>
+                            <div className='upload-file'><a><UploadIcon /></a></div>
+                        </div>
+                    </div>
+                    <div className='nodes'>
+                        <a className='node go-up'><div className='name'>..</div></a>
+                        <div className='node'><div className='icon'><FileIcon /></div><a className='name'>index.tsx</a></div>
+                        <div className='node'><div className='icon'><FileIcon /></div><a className='name'>index.css</a></div>
+                    </div>
                 </div>
-                <div className='files'>
+                <div className='file'>
                     <div className='header'>
                         <div className='file-info'>
                             <div className='file-lines'>35 lines</div>
                             <div className='inline-seperator'></div>
                             <div className='file-size'>1.65 KB</div>
                         </div>
-                        <div className='file-action'>
-                            <div className='file-raw'>Raw</div>
-                            <div className='file-edit'><EditIcon /></div>
-                            <div className='file-delete'><DeleteIcon /></div>
+                        <div className='file-actions'>
+                            <a className='file-raw'>Raw</a>
+                            <a className='file-edit'><EditIcon /></a>
+                            <a className='file-delete'><DeleteIcon /></a>
                         </div>
                     </div>
                     <div className='editor'>
