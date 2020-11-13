@@ -10,14 +10,8 @@ class Login extends Form {
         super(props);
     }
 
-    state = {
-        data: {}
-    };
-
-    onSubmit() : void {
-        console.log('LOGIN SUBMIT');
-
-        console.log(this.state.data);
+    onSubmit(data: Record<string, unknown>) : void {
+        console.log(data);
     }
 
     render() : JSX.Element {

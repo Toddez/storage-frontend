@@ -16,7 +16,7 @@ abstract class Form extends React.Component {
         data: {}
     }
 
-    abstract onSubmit(): void;
+    abstract onSubmit(data: Record<string, unknown>): void;
 
     handleChange(event: ChangeEvent<HTMLInputElement>) : void {
         const target = event.target;
@@ -37,7 +37,7 @@ abstract class Form extends React.Component {
     handleSubmit(event: FormEvent<HTMLFormElement>) : void {
         event.preventDefault();
 
-        this.onSubmit();
+        this.onSubmit(this.state.data as Record<string, unknown>);
     }
 
     abstract render() : JSX.Element;
