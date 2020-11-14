@@ -1,9 +1,5 @@
 import React, { ChangeEvent, FormEvent } from 'react';
 
-type State = {
-    data: Record<string, unknown>
-}
-
 abstract class Form<P> extends React.Component<P> {
     constructor(props: P) {
         super(props);
@@ -12,7 +8,7 @@ abstract class Form<P> extends React.Component<P> {
         this.handleSubmit = this.handleSubmit.bind(this);
     }
 
-    state: State = {
+    state: FormState = {
         data: {}
     }
 
