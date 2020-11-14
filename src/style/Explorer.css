@@ -84,6 +84,7 @@
     flex-direction: row;
     border-top: 1px solid var(--color-border1);
     align-items: center;
+    justify-content: space-between;
     background-color: var(--color-background3);
 }
 
@@ -98,6 +99,16 @@
 
 .Explorer > .tree > .nodes > .node > .icon {
     margin-right: 1rem;
+}
+
+.Explorer > .tree > .nodes > .node > .name {
+    width: 100%;
+}
+
+.Explorer > .tree > .nodes > .node > .actions {
+    margin-left: 1rem;
+    display: flex;
+    flex-direction: row;
 }
 
 .Explorer > .tree > .nodes > .node:hover {

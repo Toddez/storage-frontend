@@ -11,6 +11,9 @@ import UploadModal from '../components/UploadModal';
 import NewFileIcon from 'mdi-material-ui/FilePlusOutline';
 import NewFolderIcon from 'mdi-material-ui/FolderPlusOutline';
 import UploadIcon from 'mdi-material-ui/FileUploadOutline';
+import EditIcon from '@material-ui/icons/EditRounded';
+import DeleteIcon from '@material-ui/icons/DeleteOutlined';
+
 
 import '../style/Explorer.css';
 
@@ -155,10 +158,7 @@ class Explorer extends React.Component {
             })
         })
             .then((res) => res.json())
-            .then((res) => {
-                if (res.errors)
-                    return;
-
+            .then(() => {
                 this.fetchTree();
             });
     }
@@ -202,6 +202,14 @@ class Explorer extends React.Component {
                 <a className='name' onClick={this.handleTreeClick}>
                     {isDir ? node.path.split('/').slice(-1)[0] : node.file}
                 </a>
+                <div className='actions'>
+                    <a className='file-edit'>
+                        <EditIcon />
+                    </a>
+                    <a className='file-delete'>
+                        <DeleteIcon />
+                    </a>
+                </div>
             </div>
         );
     }
