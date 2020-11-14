@@ -110,13 +110,14 @@ const pickIcon = (node: Node, types: Record<string, number>) : React.ElementType
 
         let isSpecial = false;
         for (const def of byFolderSpecial)
-            if (def.includes(node.path.split('/').slice(-1)[0].toLowerCase()))
+            if (def === node.path.split('/').slice(-1)[0].toLowerCase())
                 isSpecial = true;
 
         let isDeep = false;
-        for (const child of node.children)
-            if (child.children.length > 0)
-                isDeep = true;
+        if (!isEmpty)
+            for (const child of node.children)
+                if (child.children.length > 0)
+                    isDeep = true;
 
         if (isEmpty) {
             if (isSpecial)
