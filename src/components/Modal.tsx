@@ -4,9 +4,9 @@ import Form from './Form';
 
 import '../style/Modal.css';
 
-abstract class Modal extends Form<ModalProps> {
-    constructor(props: ModalProps) {
-        super(props);
+abstract class Modal<P> extends Form<ModalProps> {
+    constructor(props: P) {
+        super(props as unknown as ModalProps);
 
         this.handleClick = this.handleClick.bind(this);
         this.onSubmit = this.onSubmit.bind(this);

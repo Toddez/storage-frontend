@@ -4,7 +4,7 @@ import Modal from './Modal';
 
 import '../style/Modal.css';
 
-class UploadModal extends Modal {
+class UploadModal extends Modal<ModalProps> {
     constructor(props: ModalProps) {
         super(props);
     }
