@@ -173,9 +173,6 @@ class Explorer extends React.Component {
         const target = event.target;
         const value = target.text;
 
-        console.log(value);
-
-        console.log(this.state.position.slice(0, this.state.position.length - 1).join('/'));
         if (value === '..')
             return this.navigate(this.state.position.slice(0, this.state.position.length - 1).join('/'));
 
