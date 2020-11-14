@@ -96,7 +96,7 @@ class Explorer extends React.Component {
 
         const elements = (
             <div className='path'>
-                <div className='item' key={0}>
+                <div id={`item.${0}`} className='item' key={0}>
                     <a onClick={this.handlePathClick}>~</a>/
                 </div>
                 {this.state.position.map((value, index) => {
@@ -109,7 +109,7 @@ class Explorer extends React.Component {
                     const isDir = node.type & this.state.types.DIR || index + 1 < this.state.position.length;
 
                     return (
-                        <div className='item' key={index}>
+                        <div id={`item.${index + 1}`} className='item' key={index + 1}>
                             <a onClick={this.handlePathClick}>{value}</a>{isDir ? '/' : ''}
                         </div>
                     );
@@ -162,11 +162,12 @@ class Explorer extends React.Component {
     handlePathClick(event: any) : void {
         const target = event.target;
         const value = target.text;
+        const id = parseInt(target.parentElement.id.split('.')[1]);
 
         if (value === '~')
-            this.navigate('');
+            return this.navigate('');
 
-        // TODO: Implement path click
+        this.navigate(this.state.position.slice(0, id).join('/'));
     }
 
     handleTreeClick(event: any) : void {
