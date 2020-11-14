@@ -13,9 +13,7 @@ declare interface PreviewProps {
 
 declare interface ModalProps {
     hide: () => void,
-    submit: (data: Record<string, unknown>) => void,
-    cwd: TreeNode,
-    data: Record<string, any>
+    submit: (data: Record<string, unknown>) => void
 }
 
 declare interface ClickTarget extends EventTarget {
@@ -25,7 +23,7 @@ declare interface ClickTarget extends EventTarget {
 }
 
 declare type FormState = {
-    data: Record<string, string>
+    data: Record<string, string | number | boolean>
 }
 
 declare interface ClickEvent extends React.MouseEvent<HTMLAnchorElement, MouseEvent> {
