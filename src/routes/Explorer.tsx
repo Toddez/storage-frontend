@@ -34,6 +34,7 @@ class Explorer extends React.Component {
         this.generateNode = this.generateNode.bind(this);
         this.handlePathClick = this.handlePathClick.bind(this);
         this.handleTreeClick = this.handleTreeClick.bind(this);
+        this.handleNodeActionClick = this.handleNodeActionClick.bind(this);
         this.displayCreateFileModal = this.displayCreateFileModal.bind(this);
         this.displayCreateFolderModal = this.displayCreateFolderModal.bind(this);
         this.displayUploadModal = this.displayUploadModal.bind(this);
@@ -121,7 +122,7 @@ class Explorer extends React.Component {
 
         const elements = (
             <div className='path'>
-                <div id={`item.${0}`} className='item' key={0}>
+                <div id={`path-item.${0}`} className='item' key={0}>
                     <a onClick={this.handlePathClick}>~</a>/
                 </div>
                 {this.state.position.map((value, index) => {
@@ -134,7 +135,7 @@ class Explorer extends React.Component {
                     const isDir = node.type & this.state.types.DIR || index + 1 < this.state.position.length;
 
                     return (
-                        <div id={`item.${index + 1}`} className='item' key={index + 1}>
+                        <div id={`path-item.${index + 1}`} className='item' key={index + 1}>
                             <a onClick={this.handlePathClick}>{value}</a>{isDir ? '/' : ''}
                         </div>
                     );
@@ -159,6 +160,9 @@ class Explorer extends React.Component {
         })
             .then((res) => res.json())
             .then(() => {
+                if (!this._isMounted)
+                    return;
+
                 this.fetchTree();
             });
     }
@@ -202,14 +206,14 @@ class Explorer extends React.Component {
                 <a className='name' onClick={this.handleTreeClick}>
                     {isDir ? node.path.split('/').slice(-1)[0] : node.file}
                 </a>
-                <div className='actions'>
-                    <a className='file-edit'>
+                <a id={`tree-node-actions.${index}`} className='actions' onClick={this.handleNodeActionClick}>
+                    <a className='file-rename'>
                         <EditIcon />
                     </a>
                     <a className='file-delete'>
                         <DeleteIcon />
                     </a>
-                </div>
+                </a>
             </div>
         );
     }
@@ -283,6 +287,75 @@ class Explorer extends React.Component {
             return this.navigate('');
 
         this.navigate(this.state.position.slice(0, id).join('/'));
+    }
+
+    handleNodeActionClick(event: ClickEvent) : void {
+        let target = event.target as unknown as HTMLElement;
+        let id = -1;
+        let action = '';
+
+        while (target.parentElement) {
+            target = target.parentElement as HTMLElement;
+
+            if (target.id && target.id.includes('tree-node-actions'))
+                id = parseInt(target.id.split('.')[1]);
+
+            const classList = target.classList;
+
+            if (!classList)
+                continue;
+
+            if (classList[0] === 'file-rename')
+                action = 'rename';
+
+            if (classList[0] === 'file-delete')
+                action = 'delete';
+        }
+
+        if (action === '')
+            return;
+
+        if (id === -1)
+            return;
+
+        if (action === 'rename') {
+            console.log('RENAME ACTION NOT IMPLEMENTED');
+            return;
+        }
+
+        let cwd = this.currentNode().path.split('/');
+        if (cwd[0] === 'root')
+            cwd = cwd.slice(1, cwd.length);
+
+        let node = this.state.tree;
+        for (const pos of this.state.position) {
+            const next = this.find(node, pos);
+            if (next === node)
+                break;
+
+            node = next;
+        }
+
+        const child = node.children[id];
+        cwd.push(child.path.split('/').slice(-1)[0]);
+
+        fetch(`${api_url}/storage/${action}/${cwd.join('/')}`, {
+            method: 'POST',
+            headers: {
+                'Content-type': 'application/json',
+                'x-access-token': Auth.getToken()
+            },
+            body: JSON.stringify({
+                path: 'RENAME TO...'
+            })
+        })
+            .then((res) => res.json())
+            .then(() => {
+                if (!this._isMounted)
+                    return;
+
+                this.fetchTree();
+            });
     }
 
     handleTreeClick(event: ClickEvent) : void {
