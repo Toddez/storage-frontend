@@ -5,7 +5,6 @@ import Auth from './models/auth';
 
 import Login from './routes/Login';
 import Explorer from './routes/Explorer';
-import File from './routes/File';
 
 import Footer from './components/Footer';
 
@@ -55,13 +54,11 @@ class App extends React.Component {
                             this.state.authorized
                                 ? <Switch>
                                     <Route path='/explorer' render={() => <Explorer />} />
-                                    <Route path='/file' render={() => <File />} />
                                     <Redirect exact strict from='/' to='/explorer' />
                                 </Switch>
                                 : <Switch>
                                     <Route path='/' render={() => <Login onLogin={this.handleLogin} />} />
                                     <Redirect strict from='/explorer' to='/' />
-                                    <Redirect strict from='/file' to='/' />
                                 </Switch>
                         }
                     </div>
