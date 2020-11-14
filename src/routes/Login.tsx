@@ -13,8 +13,6 @@ interface Props {
 
 class Login extends Form<Props> {
     onSubmit(data: Record<string, unknown>) : void {
-        console.log(data);
-
         fetch(`${api_url}/authorize`, {
             method: 'POST',
             headers: {
