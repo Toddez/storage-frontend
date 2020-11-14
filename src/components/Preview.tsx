@@ -104,7 +104,7 @@ class Preview extends React.Component<PreviewProps> {
             <div className='file-info'>
                 <div className='file-name'>{this.state.data.file}</div>
                 <div className='inline-seperator'></div>
-                <div className='file-lines'>{this.state.data.lines}</div>
+                <div className='file-lines'>{this.state.data.lines} lines</div>
                 <div className='inline-seperator'></div>
                 <div className='file-size'>{this.state.data.size} bytes</div>
             </div>
