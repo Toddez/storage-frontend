@@ -3,24 +3,39 @@ import React from 'react';
 import Auth from '../models/auth';
 import { api_url, theme } from '../models/config';
 
+import { pickIcon } from '../models/icon';
+
 import EditIcon from '@material-ui/icons/EditRounded';
 import DeleteIcon from '@material-ui/icons/DeleteOutlined';
-import NewIcon from '@material-ui/icons/AddBoxRounded';
-import UploadIcon from '@material-ui/icons/PublishRounded';
-import FileIcon from '@material-ui/icons/InsertDriveFileOutlined';
+import NewIcon from 'mdi-material-ui/FilePlusOutline';
+import UploadIcon from 'mdi-material-ui/FileUploadOutline';
 
 import { CodeBlock } from 'react-code-blocks';
 
 import '../style/Explorer.css';
 
+type Node = {
+    children: Array<Node>,
+    type: number,
+    path: string,
+    file: string,
+    extension: string
+}
+
 type State = {
-    tree: Record<string, unknown>,
-    types: Record<string, unknown>,
-    position: Array<Record<string, unknown>>
+    loaded: boolean
+    tree: Node,
+    types: Record<string, number>,
+    position: Array<string>
 }
 
 class Explorer extends React.Component {
     _isMounted = false;
+
+    constructor(props: Record<string, unknown>) {
+        super(props);
+        this.generateNode = this.generateNode.bind(this);
+    }
 
     componentDidMount() : void {
         this._isMounted = true;
@@ -37,20 +52,103 @@ class Explorer extends React.Component {
                 if (res.errors)
                     return;
 
-                console.log(res.tree);
-
-                this.setState({tree: res.tree, types: res.types});
+                this.setState({loaded: true, tree: res.tree, types: res.types});
             });
     }
 
     state: State = {
-        tree: {},
+        loaded: false,
+        tree: {
+            children: [],
+            type: 0,
+            path: '',
+            file: '',
+            extension: ''
+        },
         types: {},
-        position: []
+        position: ['']
     }
 
     componentWillUnmount() : void {
         this._isMounted = false;
+    }
+
+    find(node: Node, name: string) : Node {
+        for (const child of node.children) {
+            let check = '';
+            if (child.type & this.state.types.DIR)
+                check = child.path.split('/').slice(-1)[0];
+            else if(child.type & this.state.types.FILE)
+                check = child.file;
+
+            if (check === name)
+                return child;
+        }
+
+        return node;
+    }
+
+    generatePath() : JSX.Element {
+        let node = this.state.tree;
+
+        const elements = (
+            <div className='path'>
+                <div className='item' key={0}>
+                    <a>~</a>/
+                </div>
+                {this.state.position.map((value, index) => {
+                    const next = this.find(node, value);
+
+                    if (next === node)
+                        return null;
+
+                    node = next;
+                    const isDir = node.type & this.state.types.DIR || index + 1 < this.state.position.length;
+
+                    return (
+                        <div className='item' key={index}>
+                            <a>{value}</a>{isDir ? '/' : ''}
+                        </div>
+                    );
+                })}
+            </div>
+        );
+
+        return elements;
+    }
+
+    generateNode(node: Node, index: number) : JSX.Element {
+        const Icon = pickIcon(node, this.state.types);
+        const isDir = node.type & this.state.types.DIR;
+
+        return (
+            <div className='node' key={index}>
+                <div className='icon'>
+                    <Icon />
+                </div>
+                <a className='name'>
+                    {isDir ? node.path.split('/').slice(-1)[0] : node.file}
+                </a>
+            </div>
+        );
+    }
+
+    generateNodes() : JSX.Element {
+        let node = this.state.tree;
+        for (const pos of this.state.position) {
+            const next = this.find(node, pos);
+            if (next === node)
+                break;
+
+            node = next;
+        }
+
+        return (
+            <div className='nodes'>
+                {node !== this.state.tree ? <a className='node go-up'><div className='name'>..</div></a> : null}
+                {node.children.map(this.generateNode)}
+            </div>
+        );
     }
 
     render() : JSX.Element {
@@ -58,23 +156,17 @@ class Explorer extends React.Component {
             <div className='Explorer'>
                 <div className='tree'>
                     <div className='navigation'>
-                        <div className='path'>
-                            <a className='item'>root</a>
-                            <div className='path-seperator'></div>
-                            <a className='item'>test</a>
-                            <div className='path-seperator'></div>
-                            <a className='item active'>index.tsx</a>
-                        </div>
+                        {
+                            this.generatePath()
+                        }
                         <div className='navigation-actions'>
                             <div className='add-file'><a><NewIcon /></a></div>
                             <div className='upload-file'><a><UploadIcon /></a></div>
                         </div>
                     </div>
-                    <div className='nodes'>
-                        <a className='node go-up'><div className='name'>..</div></a>
-                        <div className='node'><div className='icon'><FileIcon /></div><a className='name'>index.tsx</a></div>
-                        <div className='node'><div className='icon'><FileIcon /></div><a className='name'>index.css</a></div>
-                    </div>
+                    {
+                        this.generateNodes()
+                    }
                 </div>
                 <div className='file'>
                     <div className='header'>
