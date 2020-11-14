@@ -1,0 +1,62 @@
+.Modal {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    cursor: auto;
+}
+
+.Modal > .modal-content {
+    position: absolute;
+    top: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    min-width: 400px;
+    max-width: 600px;
+    width: 50vw;
+    background-color: var(--color-background1);
+    border-bottom-left-radius: 0.5rem;
+    border-bottom-right-radius: 0.5rem;
+}
+
+.Modal > .modal-content {
+    display: flex;
+    flex-direction: column;
+    padding: 0.5rem;
+}
+
+.Modal > .modal-content.create {
+    flex-direction: row;
+}
+
+.Modal > .modal-content > .cwd {
+    background-color: var(--color-background3);
+    padding: 0.5rem;
+    padding-right: 0;
+}
+
+.Modal > .modal-content > #path {
+    background-color: var(--color-background3);
+    color: var(--color-foreground1);
+    width: 100%;
+    border: none;
+    padding: 0.5rem;
+    padding-left: 0;
+    font-size: 1rem;
+}
+
+.Modal > .modal-content > #path::selection {
+    background: rgba(255, 255, 255, 0.1);
+}
+
+.Modal > .modal-content > #path:focus {
+    outline: none;
+}
+
+@media only screen and (max-width: 400px) {
+    .Modal > .modal-content{
+        min-width: 100%;
+        border-radius: 0;
+    }
+}
