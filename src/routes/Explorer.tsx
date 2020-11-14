@@ -1,11 +1,10 @@
 import React from 'react';
 
 import Auth from '../models/auth';
-import { api_url, theme } from '../models/config';
+import { api_url } from '../models/config';
 import { pickIcon } from '../models/icon';
 
 import Preview from '../components/Preview';
-import { CopyBlock } from 'react-code-blocks';
 
 import NewIcon from 'mdi-material-ui/FilePlusOutline';
 import UploadIcon from 'mdi-material-ui/FileUploadOutline';
