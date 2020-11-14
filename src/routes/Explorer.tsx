@@ -5,8 +5,11 @@ import { api_url } from '../models/config';
 import { pickIcon } from '../models/icon';
 
 import Preview from '../components/Preview';
+import CreateModal from '../components/CreateModal';
+import UploadModal from '../components/UploadModal';
 
-import NewIcon from 'mdi-material-ui/FilePlusOutline';
+import NewFileIcon from 'mdi-material-ui/FilePlusOutline';
+import NewFolderIcon from 'mdi-material-ui/FolderPlusOutline';
 import UploadIcon from 'mdi-material-ui/FileUploadOutline';
 
 import '../style/Explorer.css';
@@ -15,16 +18,10 @@ type State = {
     loaded: boolean
     tree: TreeNode,
     types: Record<string, number>,
-    position: Array<string>
-}
-
-interface ClickTarget extends EventTarget {
-    text: string,
-    parentElement: HTMLElement
-}
-
-interface ClickEvent extends React.MouseEvent<HTMLAnchorElement, MouseEvent> {
-    target: ClickTarget,
+    position: Array<string>,
+    displayCreate: boolean,
+    displayUpload: boolean,
+    createType: number
 }
 
 class Explorer extends React.Component {
@@ -34,6 +31,11 @@ class Explorer extends React.Component {
         this.generateNode = this.generateNode.bind(this);
         this.handlePathClick = this.handlePathClick.bind(this);
         this.handleTreeClick = this.handleTreeClick.bind(this);
+        this.displayCreateFileModal = this.displayCreateFileModal.bind(this);
+        this.displayCreateFolderModal = this.displayCreateFolderModal.bind(this);
+        this.displayUploadModal = this.displayUploadModal.bind(this);
+        this.create = this.create.bind(this);
+        this.upload = this.upload.bind(this);
     }
 
     _isMounted = false;
@@ -48,7 +50,22 @@ class Explorer extends React.Component {
             extension: ''
         },
         types: {},
-        position: []
+        position: [],
+        displayCreate: false,
+        displayUpload: false,
+        createType: 0
+    }
+
+    displayCreateFileModal() : void {
+        this.setState({displayCreate: true, createType: this.state.types.FILE});
+    }
+
+    displayCreateFolderModal() : void {
+        this.setState({displayCreate: true, createType: this.state.types.DIR});
+    }
+
+    displayUploadModal() : void {
+        this.setState({displayUpload: true});
     }
 
     componentDidMount() : void {
@@ -119,6 +136,38 @@ class Explorer extends React.Component {
         );
 
         return elements;
+    }
+
+    create(data: Record<string, unknown>) : void {
+        console.log('CREATE!', data, this.currentNode());
+        console.log('TYPE:', this.state.createType);
+    }
+
+    upload(data: Record<string, unknown>) : void {
+        console.log('UPLOAD!', data, this.currentNode());
+    }
+
+    generateCreateModal() : JSX.Element | null {
+        if (!this.state.displayCreate)
+            return null;
+
+        return (
+            <CreateModal
+                data={{ type: this.state.createType, types: this.state.types }}
+                cwd={this.currentNode()}
+                hide={() => this.setState({displayCreate: false})}
+                submit={(data) => this.create(data)}
+            />
+        );
+    }
+
+    generateUploadModal() : JSX.Element | null {
+        if (!this.state.displayUpload)
+            return null;
+
+        return (
+            <UploadModal data={{}} cwd={this.currentNode()} hide={() => this.setState({displayUpload: false})} submit={(data) => this.upload(data)} />
+        );
     }
 
     generateNode(node: TreeNode, index: number) : JSX.Element {
@@ -221,15 +270,26 @@ class Explorer extends React.Component {
     render() : JSX.Element {
         return (
             <div className='Explorer'>
+                {
+                    this.generateCreateModal()
+                }
+                {
+                    this.generateUploadModal()
+                }
                 <div className='tree'>
                     <div className='navigation'>
                         {
                             this.generatePath()
                         }
-                        <div className='navigation-actions'>
-                            <div className='add-file'><a><NewIcon /></a></div>
-                            <div className='upload-file'><a><UploadIcon /></a></div>
-                        </div>
+                        {
+                            this.currentNode().type & this.state.types.DIR ?
+                                <div className='navigation-actions'>
+                                    <div className='add-folder' onClick={() => this.displayCreateFolderModal()}><a><NewFolderIcon /></a></div>
+                                    <div className='add-file' onClick={() => this.displayCreateFileModal()}><a><NewFileIcon /></a></div>
+                                    <div className='upload-file' onClick={() => this.displayUploadModal()}><a><UploadIcon /></a></div>
+                                </div>
+                                : null
+                        }
                     </div>
                     {
                         this.generateNodes()
