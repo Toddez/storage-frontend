@@ -146,6 +146,31 @@ class Explorer extends React.Component {
             node = next;
         }
 
+        node.children = node.children.sort((a: Node, b: Node) => {
+            const dir = this.state.types.DIR;
+            const file = this.state.types.FILE;
+
+            if (a.type & dir && b.type & file)
+                return -1;
+
+            if (a.type & dir && b.type & file)
+                return 1;
+
+            if (a.type & dir && b.type & dir && a.path < b.path)
+                return -1;
+
+            if (a.type & dir && b.type & dir && a.path > b.path)
+                return 1;
+
+            if (a.type & file && b.type & file && a.file < b.file)
+                return -1;
+
+            if (a.type & file && b.type & file && a.file > b.file)
+                return 1;
+
+            return 0;
+        });
+
         return (
             <div className='nodes'>
                 {node !== this.state.tree ? <a className='node go-up' onClick={this.handleTreeClick}><div className='name'>..</div></a> : null}
