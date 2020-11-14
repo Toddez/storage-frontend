@@ -72,6 +72,10 @@
     background-color: var(--color-background3);
 }
 
+.Explorer > .tree > .nodes > .node > .icon {
+    margin-right: 1rem;
+}
+
 .Explorer > .tree > .nodes > .node:hover {
     background-color: var(--color-background5);
 }
