@@ -71,6 +71,10 @@ class Explorer extends React.Component {
     componentDidMount() : void {
         this._isMounted = true;
 
+        this.fetchTree();
+    }
+
+    fetchTree() : void {
         fetch(`${api_url}/storage/`, {
             method: 'GET',
             headers: {
@@ -138,9 +142,25 @@ class Explorer extends React.Component {
         return elements;
     }
 
-    create(data: Record<string, unknown>) : void {
-        console.log('CREATE!', data, this.currentNode());
-        console.log('TYPE:', this.state.createType);
+    create(data: Record<string, string>) : void {
+        fetch(`${api_url}/storage/write/${data.path}`, {
+            method: 'POST',
+            headers: {
+                'Content-type': 'application/json',
+                'x-access-token': Auth.getToken()
+            },
+            body: JSON.stringify({
+                type: this.state.createType,
+                data: 'hello world'
+            })
+        })
+            .then((res) => res.json())
+            .then((res) => {
+                if (res.errors)
+                    return;
+
+                this.fetchTree();
+            });
     }
 
     upload(data: Record<string, unknown>) : void {
@@ -156,7 +176,7 @@ class Explorer extends React.Component {
                 data={{ type: this.state.createType, types: this.state.types }}
                 cwd={this.currentNode()}
                 hide={() => this.setState({displayCreate: false})}
-                submit={(data) => this.create(data)}
+                submit={(data) => this.create(data as Record<string, string>)}
             />
         );
     }
