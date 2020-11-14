@@ -31,6 +31,7 @@ html {
     --color-border0: #121212;
     --color-border1: #151515;
     --color-border2: #3d3d3d;
+    overflow-x: hidden;
 }
 
 img::selection {
@@ -58,8 +59,8 @@ a:hover {
 }
 
 #root {
-    width: 100vw;
-    height: 100vh;
+    min-height: 100vh;
+    overflow: hidden;
     background-color: var(--color-background1);
     color: var(--color-foreground1);
 }

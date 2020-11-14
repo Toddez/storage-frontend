@@ -30,12 +30,8 @@
 }
 
 .Explorer > .tree {
-    margin-top: 1rem;
     display: flex;
     flex-direction: column;
-    background-color: var(--color-background4);
-    border: 1px solid var(--color-border1);
-    border-radius: 0.5rem;
 }
 
 .Explorer > .tree > .navigation {
@@ -45,8 +41,8 @@
     justify-content: space-between;
     padding: 1rem;
     background-color: var(--color-background3);
-    border-top-left-radius: 0.5rem;
-    border-top-right-radius: 0.5rem;
+    border: 1px solid var(--color-border1);
+    border-top: 0;
 }
 
 .Explorer > .tree > .navigation > .path {
@@ -67,9 +63,15 @@
     padding: 0.5rem 1rem;
     display: flex;
     flex-direction: row;
-    border-top: 1px solid var(--color-border1);
+    border: 1px solid var(--color-border1);
+    border-top: 0;
     align-items: center;
     background-color: var(--color-background3);
+}
+
+.Explorer > .tree > .nodes > .node:last-child {
+    border-bottom-left-radius: 0.5rem;
+    border-bottom-right-radius: 0.5rem;
 }
 
 .Explorer > .tree > .nodes > .node > .icon {
@@ -119,4 +121,12 @@
 .Explorer > .file > .editor > span {
     border-bottom-left-radius: 0.5rem !important;
     border-bottom-right-radius: 0.5rem !important;
+}
+
+@media only screen and (max-width: 1200px) {
+    .Explorer > .tree > .nodes > .node:last-child,
+    .Explorer > .file > .header,
+    .Explorer > .file > .editor > span {
+        border-radius: 0 !important;
+    }
 }
