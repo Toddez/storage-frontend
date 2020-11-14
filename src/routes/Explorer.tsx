@@ -30,11 +30,27 @@ type State = {
 }
 
 class Explorer extends React.Component {
-    _isMounted = false;
-
     constructor(props: Record<string, unknown>) {
         super(props);
+
         this.generateNode = this.generateNode.bind(this);
+        this.handlePathClick = this.handlePathClick.bind(this);
+        this.handleTreeClick = this.handleTreeClick.bind(this);
+    }
+
+    _isMounted = false;
+
+    state: State = {
+        loaded: false,
+        tree: {
+            children: [],
+            type: 0,
+            path: '',
+            file: '',
+            extension: ''
+        },
+        types: {},
+        position: []
     }
 
     componentDidMount() : void {
@@ -54,19 +70,6 @@ class Explorer extends React.Component {
 
                 this.setState({loaded: true, tree: res.tree, types: res.types});
             });
-    }
-
-    state: State = {
-        loaded: false,
-        tree: {
-            children: [],
-            type: 0,
-            path: '',
-            file: '',
-            extension: ''
-        },
-        types: {},
-        position: ['']
     }
 
     componentWillUnmount() : void {
@@ -94,7 +97,7 @@ class Explorer extends React.Component {
         const elements = (
             <div className='path'>
                 <div className='item' key={0}>
-                    <a>~</a>/
+                    <a onClick={this.handlePathClick}>~</a>/
                 </div>
                 {this.state.position.map((value, index) => {
                     const next = this.find(node, value);
@@ -107,7 +110,7 @@ class Explorer extends React.Component {
 
                     return (
                         <div className='item' key={index}>
-                            <a>{value}</a>{isDir ? '/' : ''}
+                            <a onClick={this.handlePathClick}>{value}</a>{isDir ? '/' : ''}
                         </div>
                     );
                 })}
@@ -126,7 +129,7 @@ class Explorer extends React.Component {
                 <div className='icon'>
                     <Icon />
                 </div>
-                <a className='name'>
+                <a className='name' onClick={this.handleTreeClick}>
                     {isDir ? node.path.split('/').slice(-1)[0] : node.file}
                 </a>
             </div>
@@ -145,10 +148,38 @@ class Explorer extends React.Component {
 
         return (
             <div className='nodes'>
-                {node !== this.state.tree ? <a className='node go-up'><div className='name'>..</div></a> : null}
+                {node !== this.state.tree ? <a className='node go-up' onClick={this.handleTreeClick}><div className='name'>..</div></a> : null}
                 {node.children.map(this.generateNode)}
             </div>
         );
+    }
+
+    navigate(path: string) : void {
+        const pos = path.split('/');
+        this.setState({position: pos.filter((a) => a !== '')});
+    }
+
+    handlePathClick(event: any) : void {
+        const target = event.target;
+        const value = target.text;
+
+        if (value === '~')
+            this.navigate('');
+
+        // TODO: Implement path click
+    }
+
+    handleTreeClick(event: any) : void {
+        const target = event.target;
+        const value = target.text;
+
+        console.log(value);
+
+        console.log(this.state.position.slice(0, this.state.position.length - 1).join('/'));
+        if (value === '..')
+            return this.navigate(this.state.position.slice(0, this.state.position.length - 1).join('/'));
+
+        this.navigate([...this.state.position, value].join('/'));
     }
 
     render() : JSX.Element {
