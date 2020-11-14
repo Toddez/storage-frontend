@@ -2,31 +2,30 @@ import React from 'react';
 
 import Auth from '../models/auth';
 import { api_url, theme } from '../models/config';
-
 import { pickIcon } from '../models/icon';
 
-import EditIcon from '@material-ui/icons/EditRounded';
-import DeleteIcon from '@material-ui/icons/DeleteOutlined';
+import Preview from '../components/Preview';
+import { CopyBlock } from 'react-code-blocks';
+
 import NewIcon from 'mdi-material-ui/FilePlusOutline';
 import UploadIcon from 'mdi-material-ui/FileUploadOutline';
 
-import { CodeBlock } from 'react-code-blocks';
-
 import '../style/Explorer.css';
-
-type Node = {
-    children: Array<Node>,
-    type: number,
-    path: string,
-    file: string,
-    extension: string
-}
 
 type State = {
     loaded: boolean
-    tree: Node,
+    tree: TreeNode,
     types: Record<string, number>,
     position: Array<string>
+}
+
+interface ClickTarget extends EventTarget {
+    text: string,
+    parentElement: HTMLElement
+}
+
+interface ClickEvent extends React.MouseEvent<HTMLAnchorElement, MouseEvent> {
+    target: ClickTarget,
 }
 
 class Explorer extends React.Component {
@@ -68,6 +67,9 @@ class Explorer extends React.Component {
                 if (res.errors)
                     return;
 
+                if (!this._isMounted)
+                    return;
+
                 this.setState({loaded: true, tree: res.tree, types: res.types});
             });
     }
@@ -76,7 +78,7 @@ class Explorer extends React.Component {
         this._isMounted = false;
     }
 
-    find(node: Node, name: string) : Node {
+    find(node: TreeNode, name: string) : TreeNode {
         for (const child of node.children) {
             let check = '';
             if (child.type & this.state.types.DIR)
@@ -120,7 +122,7 @@ class Explorer extends React.Component {
         return elements;
     }
 
-    generateNode(node: Node, index: number) : JSX.Element {
+    generateNode(node: TreeNode, index: number) : JSX.Element {
         const Icon = pickIcon(node, this.state.types);
         const isDir = node.type & this.state.types.DIR;
 
@@ -146,7 +148,7 @@ class Explorer extends React.Component {
             node = next;
         }
 
-        node.children = node.children.sort((a: Node, b: Node) => {
+        node.children = node.children.sort((a: TreeNode, b: TreeNode) : number => {
             const dir = this.state.types.DIR;
             const file = this.state.types.FILE;
 
@@ -173,10 +175,22 @@ class Explorer extends React.Component {
 
         return (
             <div className='nodes'>
-                {node !== this.state.tree ? <a className='node go-up' onClick={this.handleTreeClick}><div className='name'>..</div></a> : null}
+                {node !== this.state.tree ? <a className='node go-up' onClick={this.handleTreeClick}>..</a> : null}
                 {node.children.map(this.generateNode)}
             </div>
         );
+    }
+
+    currentNode() : TreeNode {
+        let current = this.state.tree;
+        for (const pos of this.state.position) {
+            const next = this.find(current, pos);
+            if (next === current)
+                return current;
+            current = next;
+        }
+
+        return current;
     }
 
     navigate(path: string) : void {
@@ -184,7 +198,7 @@ class Explorer extends React.Component {
         this.setState({position: pos.filter((a) => a !== '')});
     }
 
-    handlePathClick(event: any) : void {
+    handlePathClick(event: ClickEvent) : void {
         const target = event.target;
         const value = target.text;
         const id = parseInt(target.parentElement.id.split('.')[1]);
@@ -195,7 +209,7 @@ class Explorer extends React.Component {
         this.navigate(this.state.position.slice(0, id).join('/'));
     }
 
-    handleTreeClick(event: any) : void {
+    handleTreeClick(event: ClickEvent) : void {
         const target = event.target;
         const value = target.text;
 
@@ -222,28 +236,7 @@ class Explorer extends React.Component {
                         this.generateNodes()
                     }
                 </div>
-                <div className='file'>
-                    <div className='header'>
-                        <div className='file-info'>
-                            <div className='file-lines'>35 lines</div>
-                            <div className='inline-seperator'></div>
-                            <div className='file-size'>1.65 KB</div>
-                        </div>
-                        <div className='file-actions'>
-                            <a className='file-raw'>Raw</a>
-                            <a className='file-edit'><EditIcon /></a>
-                            <a className='file-delete'><DeleteIcon /></a>
-                        </div>
-                    </div>
-                    <div className='editor'>
-                        <CodeBlock
-                            text={'// a  variable\nconst a = 123;\n// a function\nconst sum = (x, y) => x + y;'}
-                            language='tsx'
-                            showLineNumbers={true}
-                            theme={theme}
-                        />
-                    </div>
-                </div>
+                <Preview cwd={this.currentNode()} types={this.state.types}/>
             </div>
         );
     }
