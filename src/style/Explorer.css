@@ -59,14 +59,30 @@
     margin-left: 0.5rem;
 }
 
+.Explorer > .tree > .nodes {
+    max-height: 600px;
+    overflow-y: scroll;
+    border: 1px solid var(--color-border1);
+    border-top: 0;
+    border-bottom-left-radius: 0.5rem;
+    border-bottom-right-radius: 0.5rem;
+}
+
+.Explorer > .tree > .nodes::-webkit-scrollbar {
+    display: none;
+}
+
 .Explorer > .tree > .nodes > .node {
     padding: 0.5rem 1rem;
     display: flex;
     flex-direction: row;
-    border: 1px solid var(--color-border1);
-    border-top: 0;
+    border-top: 1px solid var(--color-border1);
     align-items: center;
     background-color: var(--color-background3);
+}
+
+.Explorer > .tree > .nodes > .node:first-child {
+    border-top: 0;
 }
 
 .Explorer > .tree > .nodes > .node:last-child {
@@ -124,6 +140,7 @@
 }
 
 @media only screen and (max-width: 1200px) {
+    .Explorer > .tree > .nodes,
     .Explorer > .tree > .nodes > .node:last-child,
     .Explorer > .file > .header,
     .Explorer > .file > .editor > span {
