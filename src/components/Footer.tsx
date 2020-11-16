@@ -1,12 +1,15 @@
 import React from 'react';
 
+import { ReactComponent as Icon } from '../resources/images/icon.svg';
 import '../style/Footer.css';
 
 class Footer extends React.Component {
     render() : JSX.Element {
         return (
             <footer className='Footer'>
-                <a className='icon' href="/"><img src="/icon.svg" alt=""/></a>
+                <a className='icon' href="/">
+                    <Icon />
+                </a>
                 <div className='links'>
                     <div className='item copyright'>&copy; 2020 Teo Carlsson</div>
                     <div className='item'><a href="/">Privacy</a></div>
