@@ -207,12 +207,12 @@ class Explorer extends React.Component {
                     {isDir ? node.path.split('/').slice(-1)[0] : node.file}
                 </a>
                 <a id={`tree-node-actions.${index}`} className='actions' onClick={this.handleNodeActionClick}>
-                    <a className='file-rename'>
+                    <div className='file-rename'>
                         <EditIcon />
-                    </a>
-                    <a className='file-delete'>
+                    </div>
+                    <div className='file-delete'>
                         <DeleteIcon />
-                    </a>
+                    </div>
                 </a>
             </div>
         );
