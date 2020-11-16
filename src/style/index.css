@@ -24,9 +24,16 @@ html {
     --color-foreground1: #eceff1;
     --color-foreground2: #fff;
 
-    --color-accent0: #23a8f2;
-    --color-accent1: #fbc963;
-    --color-danger: #ff5370;
+    --color-accent0: var(--color-foreground1);
+    --color-accent1: #89ddff;
+    --color-accent2: #82aaff;
+    --color-accent3: #8458eb;
+    --color-accent4: #c3e88d;
+    --color-accent5: #c792ea;
+    --color-accent6: #ff5370;
+    --color-accent7: #ffcb6b;
+    --color-accent8: #fbc963;
+    --color-danger: var(--color-accent6);
 
     --color-border0: #121212;
     --color-border1: #151515;
