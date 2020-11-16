@@ -20,7 +20,7 @@ html {
     --color-background4: #3a3a3a;
     --color-background5: #3f3f3f;
 
-    --color-foreground0: #848484;
+    --color-foreground0: #a7a7a7;
     --color-foreground1: #eceff1;
     --color-foreground2: #fff;
 
@@ -31,9 +31,11 @@ html {
     --color-accent4: #c3e88d;
     --color-accent5: #c792ea;
     --color-accent6: #ff5370;
-    --color-accent7: #ffcb6b;
+    --color-accent7: #f6e122;
     --color-accent8: #fbc963;
+
     --color-danger: var(--color-accent6);
+    --color-warning: var(--color-accent7);
 
     --color-border0: #121212;
     --color-border1: #151515;
@@ -63,7 +65,8 @@ a {
 
 a:hover {
     text-decoration: underline;
-    opacity: 0.7;
+    opacity: 1;
+    color: var(--color-foreground0);
 }
 
 #root {

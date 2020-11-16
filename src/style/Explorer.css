@@ -26,6 +26,11 @@
     fill: var(--color-danger);
 }
 
+.Explorer .file-cancel *:hover {
+    color: var(--color-warning);
+    fill: var(--color-warning);
+}
+
 .Explorer {
     display: flex;
     flex-direction: column;
@@ -192,7 +197,31 @@
     margin-left: 0.5rem;
 }
 
-.Explorer > .file > .file-preview > span {
+.Explorer > .file > .file-preview > .editor {
+    border-bottom-left-radius: 0.5rem !important;
+    border-bottom-right-radius: 0.5rem !important;
+}
+
+.Explorer > .file > .file-preview > .editor textarea {
+    border-bottom-left-radius: 0.5rem !important;
+    border-bottom-right-radius: 0.5rem !important;
+    width: 100%;
+    min-height: calc(85vh - 7rem);
+    resize: none;
+    background-color: var(--color-background2);
+    color: var(--color-foreground1);
+    font-size: 1rem;
+    outline: 0;
+    border: 0;
+    padding: 0.5rem;
+}
+
+.Explorer > .file > .file-preview > .markdown-preview {
+    background-color: var(--color-background2);
+}
+
+.Explorer > .file > .file-preview > span,
+.Explorer > .file > .file-preview > .markdown-preview {
     border-bottom-left-radius: 0.5rem !important;
     border-bottom-right-radius: 0.5rem !important;
     padding: 0.5rem;
@@ -202,7 +231,9 @@
     .Explorer > .tree > .nodes,
     .Explorer > .tree > .nodes > .node:last-child,
     .Explorer > .file > .header,
-    .Explorer > .file > .file-preview > span {
+    .Explorer > .file > .file-preview > span,
+    .Explorer > .file > .file-preview > .markdown-preview,
+    .Explorer > .file > .file-preview > .editor {
         border-radius: 0 !important;
     }
 }
