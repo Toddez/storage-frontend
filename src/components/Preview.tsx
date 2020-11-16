@@ -138,7 +138,7 @@ class Preview extends React.Component<PreviewProps> {
                 <div className='inline-seperator'></div>
                 <div className='file-lines'>{lines} lines</div>
                 <div className='inline-seperator'></div>
-                <div className='file-size'>{size} bytes</div>
+                <div className='file-size'>{this.formatBytes(size)}</div>
             </div>
         );
     }
@@ -166,6 +166,18 @@ class Preview extends React.Component<PreviewProps> {
                 <textarea ref={this.dummyRef} className='editor-extra-style' name="data" id="data" value={this.data(this.state.data.data)} readOnly={true}></textarea>
             </div>
         );
+    }
+
+    formatBytes(bytes: number, decimals = 2) {
+        if (bytes === 0) return '0 Bytes';
+
+        const k = 1024;
+        const dm = decimals < 0 ? 0 : decimals;
+        const sizes = ['Bytes', 'KB', 'MB', 'GB', 'TB', 'PB', 'EB', 'ZB', 'YB'];
+
+        const i = Math.floor(Math.log(bytes) / Math.log(k));
+
+        return parseFloat((bytes / Math.pow(k, i)).toFixed(dm)) + ' ' + sizes[i];
     }
 
     data(data: string) : string {
