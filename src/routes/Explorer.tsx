@@ -378,11 +378,6 @@ class Explorer extends React.Component {
         let action = '';
 
         while (target.parentElement) {
-            if (target.id && target.id.includes('-actions')) {
-                id = parseInt(target.id.split('.')[1]);
-                break;
-            }
-
             const classList = target.classList;
 
             if (!classList)
@@ -396,6 +391,11 @@ class Explorer extends React.Component {
 
             if (classList[0] === 'file-delete')
                 action = 'delete';
+
+            if (target.id && target.id.includes('-actions')) {
+                id = parseInt(target.id.split('.')[1]);
+                break;
+            }
 
             target = target.parentElement as HTMLElement;
         }
@@ -482,7 +482,7 @@ class Explorer extends React.Component {
                 {
                     this.generateUploadModal()
                 }
-                <div className='tree'>
+                { this.state.editingFile ? null : <div className='tree'>
                     <div className='navigation'>
                         {
                             this.generatePath()
@@ -501,6 +501,7 @@ class Explorer extends React.Component {
                         this.generateNodes()
                     }
                 </div>
+                }
                 <Preview cwd={this.currentNode()} types={this.state.types} handleNodeActionClick={this.handleNodeActionClick} isEditing={this.state.editingFile} onEdit={this.onEdit} />
             </div>
         );

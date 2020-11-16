@@ -4,10 +4,12 @@ import { api_url, theme } from '../models/config';
 import Auth from '../models/auth';
 
 import { CodeBlock } from 'react-code-blocks';
+import ReactMarkdown from 'react-markdown';
 
 import EditIcon from '@material-ui/icons/EditRounded';
 import DeleteIcon from '@material-ui/icons/DeleteOutlined';
 import SaveIcon from 'mdi-material-ui/ContentSaveOutline';
+import CancelIcon from 'mdi-material-ui/Cancel';
 
 type File = {
     extension: string,
@@ -15,7 +17,8 @@ type File = {
     type: number
     lines: number,
     size: number,
-    file: string
+    file: string,
+    initial: string
 }
 
 type State = {
@@ -41,7 +44,8 @@ class Preview extends React.Component<PreviewProps> {
             data: '',
             extension: '',
             type: 0,
-            file: ''
+            file: '',
+            initial: ''
         }
     }
 
@@ -110,6 +114,8 @@ class Preview extends React.Component<PreviewProps> {
                 if (!this._isMounted)
                     return;
 
+                res.initial = res.data;
+
                 this.setState({data: res});
             });
     }
@@ -118,14 +124,14 @@ class Preview extends React.Component<PreviewProps> {
         this.fetchFile();
     }
 
-    generateFileInfo() : JSX.Element {
+    generateFileInfo(name: string, lines: number, size: number) : JSX.Element {
         return (
             <div className='file-info'>
-                <a className='file-name'>{this.state.data.file}</a>
+                <a id={`file-info-actions.${this.getIndex(this.file())}`} className='file-edit' onClick={this.props.handleNodeActionClick}>{name}</a>
                 <div className='inline-seperator'></div>
-                <div className='file-lines'>{this.state.data.lines} lines</div>
+                <div className='file-lines'>{lines} lines</div>
                 <div className='inline-seperator'></div>
-                <div className='file-size'>{this.state.data.size} bytes</div>
+                <div className='file-size'>{size} bytes</div>
             </div>
         );
     }
@@ -149,7 +155,7 @@ class Preview extends React.Component<PreviewProps> {
     generateCodeEditor() : JSX.Element {
         return (
             <div className='editor'>
-                <textarea name="data" id="data" value={this.state.data.data} onChange={this.onEditor}></textarea>
+                <textarea name="data" id="data" value={this.state.data.data} onChange={this.onEditor} autoFocus></textarea>
             </div>
         );
     }
@@ -168,14 +174,23 @@ class Preview extends React.Component<PreviewProps> {
         return (
             <div className='file'>
                 <div className='header'>
-                    {this.generateFileInfo()}
+                    {
+                        this.props.isEditing ?
+                            this.generateFileInfo(this.state.data.file, this.state.data.data.split('\n').length, (new TextEncoder().encode(this.state.data.data)).length)
+                            :this.generateFileInfo(this.state.data.file, this.state.data.lines, this.state.data.size)
+                    }
                     <div id={`file-preview-actions.${this.getIndex(this.file())}`} className='file-actions' onClick={this.props.handleNodeActionClick}>
-                        {this.props.isEditing ? <a className='file-save' onClick={() => this.props.onEdit(this.file(), this.state.data.data)}><SaveIcon /></a> : <a className='file-edit'><EditIcon /></a>}
+                        {
+                            this.props.isEditing ?
+                                <a className='file-save' onClick={() => this.props.onEdit(this.file(), this.state.data.data)}><SaveIcon /></a>
+                                :<a className='file-edit'><EditIcon /></a>
+                        }
+                        {this.props.isEditing ? <a className='file-save file-cancel' onClick={() => this.props.onEdit(this.file(), this.state.data.initial)}><CancelIcon /></a> : null}
                         <a className='file-delete'><DeleteIcon /></a>
                     </div>
                 </div>
                 <div className='file-preview'>
-                    {this.props.isEditing ? this.generateCodeEditor() : this.generateCodeBlock()}
+                    {this.props.isEditing ? this.generateCodeEditor() : ( this.file().file === 'README.md' ? <ReactMarkdown className='markdown-preview' children={this.state.data.data} /> : this.generateCodeBlock())}
                 </div>
             </div>
         );
