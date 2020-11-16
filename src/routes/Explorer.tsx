@@ -434,10 +434,7 @@ class Explorer extends React.Component {
             headers: {
                 'Content-type': 'application/json',
                 'x-access-token': Auth.getToken()
-            },
-            body: JSON.stringify({
-                path: 'RENAME TO...'
-            })
+            }
         })
             .then((res) => res.json())
             .then(() => {
