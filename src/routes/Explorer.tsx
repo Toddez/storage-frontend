@@ -23,7 +23,9 @@ type State = {
     position: Array<string>,
     displayCreate: boolean,
     displayUpload: boolean,
-    createType: number
+    createType: number,
+    name: string,
+    editingName: TreeNode | null
 }
 
 class Explorer extends React.Component {
@@ -39,6 +41,8 @@ class Explorer extends React.Component {
         this.displayUploadModal = this.displayUploadModal.bind(this);
         this.create = this.create.bind(this);
         this.upload = this.upload.bind(this);
+        this.onNameChange = this.onNameChange.bind(this);
+        this.onNameDown = this.onNameDown.bind(this);
     }
 
     _isMounted = false;
@@ -57,7 +61,9 @@ class Explorer extends React.Component {
         position: [],
         displayCreate: false,
         displayUpload: false,
-        createType: 0
+        createType: 0,
+        name: '',
+        editingName: null
     }
 
     displayCreateFileModal() : void {
@@ -194,18 +200,23 @@ class Explorer extends React.Component {
         );
     }
 
+    treeName (node: TreeNode) : string {
+        if (this.state.editingName === node)
+            return this.state.name;
+
+        const isDir = node.type & this.state.types.DIR;
+        return isDir ? node.path.split('/').slice(-1)[0] : node.file;
+    }
+
     generateNode(node: TreeNode, index: number) : JSX.Element {
         const { Icon, color } = pickIcon(node, this.state.types);
-        const isDir = node.type & this.state.types.DIR;
 
         return (
             <div className='node' key={index}>
                 <div className='icon'>
                     <Icon style={{fill: `var(--color-accent${color})`}}/>
                 </div>
-                <a className='name' onClick={this.handleTreeClick}>
-                    {isDir ? node.path.split('/').slice(-1)[0] : node.file}
-                </a>
+                <input type='text' className='name' onClick={this.handleTreeClick} value={this.treeName(node)} readOnly={true} onChange={this.onNameChange} onKeyDown={this.onNameDown}></input>
                 <div id={`tree-node-actions.${index}`} className='actions' onClick={this.handleNodeActionClick}>
                     <a className='file-rename'>
                         Rename
@@ -255,7 +266,7 @@ class Explorer extends React.Component {
 
         return (
             <div className='nodes'>
-                {node !== this.state.tree ? <a className='node go-up' onClick={this.handleTreeClick}>..</a> : null}
+                {node !== this.state.tree ? <input type='text' className='node go-up' onClick={this.handleTreeClick} value='..' readOnly={true}></input> : null}
                 {node.children.map(this.generateNode)}
             </div>
         );
@@ -289,14 +300,67 @@ class Explorer extends React.Component {
         this.navigate(this.state.position.slice(0, id).join('/'));
     }
 
+    onNameChange(event: React.ChangeEvent<HTMLInputElement>) : void {
+        this.setState({name: event.target.value});
+    }
+
+    onNameDown(event: React.KeyboardEvent<HTMLInputElement>) : void {
+        if (event.keyCode !== 13)
+            return;
+
+        const child = this.state.editingName;
+
+        event.preventDefault();
+        (event.target as HTMLInputElement).readOnly = true;
+        this.setState({editingName: null});
+
+        let cwd = this.currentNode().path.split('/');
+        if (cwd[0] === 'root')
+            cwd = cwd.slice(1, cwd.length);
+
+        let node = this.state.tree;
+        for (const pos of this.state.position) {
+            const next = this.find(node, pos);
+            if (next === node)
+                break;
+
+            node = next;
+        }
+
+        if (!child)
+            return;
+
+        cwd.push(child.path.split('/').slice(-1)[0]);
+
+        fetch(`${api_url}/storage/rename/${cwd.join('/')}`, {
+            method: 'POST',
+            headers: {
+                'Content-type': 'application/json',
+                'x-access-token': Auth.getToken()
+            },
+            body: JSON.stringify({
+                name: this.state.name
+            })
+        })
+            .then((res) => res.json())
+            .then(() => {
+                if (!this._isMounted)
+                    return;
+
+                this.fetchTree();
+            });
+    }
+
     handleNodeActionClick(event: ClickEvent<HTMLDivElement>) : void {
         let target = event.target as unknown as HTMLElement;
         let id = -1;
         let action = '';
 
         while (target.parentElement) {
-            if (target.id && target.id.includes('-actions'))
+            if (target.id && target.id.includes('-actions')) {
                 id = parseInt(target.id.split('.')[1]);
+                break;
+            }
 
             const classList = target.classList;
 
@@ -327,7 +391,19 @@ class Explorer extends React.Component {
         }
 
         if (action === 'rename') {
-            console.log('RENAME ACTION NOT IMPLEMENTED');
+            let nodeElement: HTMLInputElement | null = null;
+            if (target.parentElement)
+                nodeElement = target.parentElement.childNodes[1] as HTMLInputElement;
+
+            if (!nodeElement)
+                return;
+
+            const node = this.currentNode().children[id];
+
+            nodeElement.readOnly = false;
+            this.setState({name: node.file, editingName: node});
+            nodeElement.select();
+
             return;
         }
 
@@ -366,9 +442,12 @@ class Explorer extends React.Component {
             });
     }
 
-    handleTreeClick(event: ClickEvent<HTMLAnchorElement>) : void {
+    handleTreeClick(event: ClickEvent<HTMLInputElement>) : void {
+        if (this.state.editingName)
+            return;
+
         const target = event.target;
-        const value = target.text;
+        const value = target.value;
 
         if (value === '..')
             return this.navigate(this.state.position.slice(0, this.state.position.length - 1).join('/'));

@@ -20,6 +20,7 @@ declare interface ModalProps {
 
 declare interface ClickTarget extends EventTarget {
     text: string,
+    value: string,
     parentElement: HTMLElement,
     classList: Array<string>
 }
