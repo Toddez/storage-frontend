@@ -50,12 +50,29 @@ class Preview extends React.Component<PreviewProps> {
         if (this.props.cwd.type & this.props.types.DIR)
             for (const child of this.props.cwd.children) {
                 if (child.type & this.props.types.FILE && child.file === 'README.md') {
+                    child.parent = this.props.cwd;
                     return child;
                 }
             }
 
         return this.props.cwd;
     }
+
+    getIndex(node: TreeNode) : number {
+        if (!node.parent)
+            return 0;
+
+        let index = 0;
+        for (const child of node.parent.children) {
+            if (child === node)
+                return index;
+
+            index++;
+        }
+
+        return 0;
+    }
+
 
     componentDidMount() : void {
         this._isMounted = true;
@@ -102,7 +119,7 @@ class Preview extends React.Component<PreviewProps> {
     generateFileInfo() : JSX.Element {
         return (
             <div className='file-info'>
-                <div className='file-name'>{this.state.data.file}</div>
+                <a className='file-name'>{this.state.data.file}</a>
                 <div className='inline-seperator'></div>
                 <div className='file-lines'>{this.state.data.lines} lines</div>
                 <div className='inline-seperator'></div>
@@ -138,8 +155,7 @@ class Preview extends React.Component<PreviewProps> {
             <div className='file'>
                 <div className='header'>
                     {this.generateFileInfo()}
-                    <div className='file-actions'>
-                        <a className='file-raw'>Raw</a>
+                    <div id={`file-preview-actions.${this.getIndex(this.file())}`} className='file-actions' onClick={this.props.handleNodeActionClick}>
                         <a className='file-edit'><EditIcon /></a>
                         <a className='file-delete'><DeleteIcon /></a>
                     </div>

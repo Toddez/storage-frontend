@@ -3,12 +3,14 @@ declare type TreeNode = {
     type: number,
     path: string,
     file: string,
-    extension: string
+    extension: string,
+    parent: TreeNode | null
 }
 
 declare interface PreviewProps {
     cwd: TreeNode,
-    types: Record<string, number>
+    types: Record<string, number>,
+    handleNodeActionClick: (event: ClickEvent<T>) => void
 }
 
 declare interface ModalProps {
@@ -26,6 +28,6 @@ declare type FormState = {
     data: Record<string, string | number | boolean>
 }
 
-declare interface ClickEvent extends React.MouseEvent<HTMLAnchorElement, MouseEvent> {
+declare interface ClickEvent<T> extends React.MouseEvent<T, MouseEvent> {
     target: ClickTarget,
 }

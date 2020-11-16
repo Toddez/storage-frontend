@@ -51,7 +51,8 @@ class Explorer extends React.Component {
             type: 0,
             path: '',
             file: '',
-            extension: ''
+            extension: '',
+            parent: null,
         },
         types: {},
         position: [],
@@ -206,14 +207,14 @@ class Explorer extends React.Component {
                 <a className='name' onClick={this.handleTreeClick}>
                     {isDir ? node.path.split('/').slice(-1)[0] : node.file}
                 </a>
-                <a id={`tree-node-actions.${index}`} className='actions' onClick={this.handleNodeActionClick}>
-                    <div className='file-rename'>
+                <div id={`tree-node-actions.${index}`} className='actions' onClick={this.handleNodeActionClick}>
+                    <a className='file-rename'>
                         <EditIcon />
-                    </div>
-                    <div className='file-delete'>
+                    </a>
+                    <a className='file-delete'>
                         <DeleteIcon />
-                    </div>
-                </a>
+                    </a>
+                </div>
             </div>
         );
     }
@@ -278,7 +279,7 @@ class Explorer extends React.Component {
         this.setState({position: pos.filter((a) => a !== '')});
     }
 
-    handlePathClick(event: ClickEvent) : void {
+    handlePathClick(event: ClickEvent<HTMLAnchorElement>) : void {
         const target = event.target;
         const value = target.text;
         const id = parseInt(target.parentElement.id.split('.')[1]);
@@ -289,7 +290,7 @@ class Explorer extends React.Component {
         this.navigate(this.state.position.slice(0, id).join('/'));
     }
 
-    handleNodeActionClick(event: ClickEvent) : void {
+    handleNodeActionClick(event: ClickEvent<HTMLDivElement>) : void {
         let target = event.target as unknown as HTMLElement;
         let id = -1;
         let action = '';
@@ -297,7 +298,7 @@ class Explorer extends React.Component {
         while (target.parentElement) {
             target = target.parentElement as HTMLElement;
 
-            if (target.id && target.id.includes('tree-node-actions'))
+            if (target.id && target.id.includes('-actions'))
                 id = parseInt(target.id.split('.')[1]);
 
             const classList = target.classList;
@@ -358,7 +359,7 @@ class Explorer extends React.Component {
             });
     }
 
-    handleTreeClick(event: ClickEvent) : void {
+    handleTreeClick(event: ClickEvent<HTMLAnchorElement>) : void {
         const target = event.target;
         const value = target.text;
 
@@ -396,7 +397,7 @@ class Explorer extends React.Component {
                         this.generateNodes()
                     }
                 </div>
-                <Preview cwd={this.currentNode()} types={this.state.types}/>
+                <Preview cwd={this.currentNode()} types={this.state.types} handleNodeActionClick={this.handleNodeActionClick}/>
             </div>
         );
     }
