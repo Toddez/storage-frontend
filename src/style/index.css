@@ -2,14 +2,14 @@
     font-family: 'CascadiaCode';
     font-style: normal;
     font-weight: 400;
-    src: url('../fonts/cascadia-code/CascadiaCode.ttf');
+    src: url('../resources/fonts/cascadia-code/CascadiaCode.ttf');
 }
 
 @font-face {
     font-family: 'CascadiaMono';
     font-style: normal;
     font-weight: 400;
-    src: url('../fonts/cascadia-code/CascadiaMono.ttf');
+    src: url('../resources/fonts/cascadia-code/CascadiaMono.ttf');
 }
 
 html {
