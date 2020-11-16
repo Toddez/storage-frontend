@@ -290,6 +290,9 @@ class Explorer extends React.Component {
     }
 
     handlePathClick(event: ClickEvent<HTMLAnchorElement>) : void {
+        if (this.state.editingName)
+            return;
+
         const target = event.target;
         const value = target.text;
         const id = parseInt(target.parentElement.id.split('.')[1]);
@@ -352,6 +355,9 @@ class Explorer extends React.Component {
     }
 
     handleNodeActionClick(event: ClickEvent<HTMLDivElement>) : void {
+        if (this.state.editingName)
+            return;
+
         let target = event.target as unknown as HTMLElement;
         let id = -1;
         let action = '';
