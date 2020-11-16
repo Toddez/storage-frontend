@@ -40,6 +40,10 @@
     height: 2rem;
 }
 
+.Footer > .icon > svg * {
+    fill: var(--color-accent2) !important;
+}
+
 .copyright {
     color: var(--color-foreground0);
 }
