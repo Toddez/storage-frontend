@@ -155,7 +155,7 @@ class Explorer extends React.Component {
             },
             body: JSON.stringify({
                 type: this.state.createType,
-                data: 'hello world'
+                data: '\n'
             })
         })
             .then((res) => res.json())
