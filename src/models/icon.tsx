@@ -10,13 +10,18 @@ type Node = {
 
 type ExtensionDefinition = {
     ext: Array<string>,
-    icon: React.ElementType
+    icon: Icon
 }
 
-const gen = (icon: React.ElementType, extensions: Array<string>) : ExtensionDefinition => {
+type Icon = {
+    Icon: React.ElementType,
+    color: string
+}
+
+const gen = (color: string, icon: React.ElementType, extensions: Array<string>) : ExtensionDefinition => {
     return {
         ext: extensions,
-        icon: icon
+        icon: { Icon: icon, color: color }
     };
 };
 
@@ -29,18 +34,22 @@ import LanguageGif from 'mdi-material-ui/Gif';
 import LanguageJson from 'mdi-material-ui/CodeJson';
 import LanguageHtml from 'mdi-material-ui/CodeTags';
 import LanguageCss from 'mdi-material-ui/LanguageCss3';
+import LanguageSvg from 'mdi-material-ui/Svg';
+import LanguageFont from 'mdi-material-ui/FormatFont';
 
 // Icons by extension
 const byExtension = [
-    gen(LanguageJavascript, ['js']),
-    gen(LanguageTypescript, ['ts']),
-    gen(LanguageReact, ['jsx', 'tsx']),
-    gen(LanguageText, ['txt']),
-    gen(LanguageMarkdown, ['md']),
-    gen(LanguageGif, ['gif']),
-    gen(LanguageJson, ['json']),
-    gen(LanguageHtml, ['html']),
-    gen(LanguageCss, ['css']),
+    gen('2', LanguageJavascript, ['js']),
+    gen('2', LanguageTypescript, ['ts']),
+    gen('2', LanguageReact, ['jsx', 'tsx']),
+    gen('2', LanguageText, ['txt']),
+    gen('2', LanguageMarkdown, ['md']),
+    gen('2', LanguageGif, ['gif']),
+    gen('7', LanguageJson, ['json']),
+    gen('6', LanguageHtml, ['html']),
+    gen('2', LanguageCss, ['css']),
+    gen('7', LanguageSvg, ['svg']),
+    gen('6', LanguageFont, ['ttf']),
 ];
 
 // Icons by name for folders
@@ -48,14 +57,13 @@ import FolderImage from 'mdi-material-ui/FolderImage';
 import FolderRoute from 'mdi-material-ui/FolderSwap';
 
 const byNameFolder = [
-    gen(FolderRoute, ['routes', 'route']),
-    gen(FolderImage, ['images', 'image', 'img', 'imgs']),
+    gen('2', FolderRoute, ['routes', 'route']),
+    gen('2', FolderImage, ['images', 'image', 'img', 'imgs']),
 ];
 
 // Folders given the special icon
 import FolderSpecialIcon from 'mdi-material-ui/FolderStar';
-import FolderSpecialEmptyIcon from 'mdi-material-ui/FolderStarOutline';
-import FolderSpecialMultipleIcon from 'mdi-material-ui/FolderStarOutline';
+import FolderSpecialMultipleIcon from 'mdi-material-ui/FolderStarMultiple';
 
 const byFolderSpecial = [
     'src', 'source',
@@ -71,9 +79,17 @@ const byFolderSpecial = [
 // Icons by name for files
 import FileGitignore from 'mdi-material-ui/SourceBranch';
 import FilePackageJson from 'mdi-material-ui/Nodejs';
+import FileReadme from 'mdi-material-ui/Information';
+import FileLicense from 'mdi-material-ui/Certificate';
+import FileEslint from 'mdi-material-ui/Eslint';
+
 const byNameFile = [
-    gen(FileGitignore, ['.gitignore']),
-    gen(FilePackageJson, ['package.json']),
+    gen('6', FileGitignore, ['.gitignore']),
+    gen('4', FilePackageJson, ['package.json']),
+    gen('4', FilePackageJson, ['package-lock.json']),
+    gen('2', FileReadme, ['README.md']),
+    gen('6', FileLicense, ['LICENSE']),
+    gen('3', FileEslint, ['.eslintignore', '.eslintrc.json']),
 ];
 
 import FileImage from 'mdi-material-ui/FileImageOutline';
@@ -81,10 +97,10 @@ import FileVideo from 'mdi-material-ui/FileVideoOutline';
 import FileUnknown from 'mdi-material-ui/FileQuestionOutline';
 
 // Icons by type
-const byType = (types: Record<string, number>) : Record<string, React.ElementType> => {
+const byType = (types: Record<string, number>) : Record<string, Icon> => {
     return {
-        [types.IMAGE]: FileImage,
-        [types.VIDEO]: FileVideo
+        [types.IMAGE]: { Icon: FileImage, color: '2' },
+        [types.VIDEO]: { Icon: FileVideo, color: '2' }
     };
 };
 
@@ -92,9 +108,8 @@ const byType = (types: Record<string, number>) : Record<string, React.ElementTyp
 import FileIcon from '@material-ui/icons/InsertDriveFileOutlined';
 import FolderIcon from '@material-ui/icons/FolderRounded';
 import FolderMultipleIcon from 'mdi-material-ui/FolderMultiple';
-import FolderEmptyIcon from '@material-ui/icons/FolderOutlined';
 
-const pickIcon = (node: Node, types: Record<string, number>) : React.ElementType => {
+const pickIcon = (node: Node, types: Record<string, number>) : Icon => {
     if (node.type & types.DIR)
         for (const def of byNameFolder)
             if (def.ext.includes(node.path.split('/').slice(-1)[0].toLowerCase()))
@@ -102,7 +117,7 @@ const pickIcon = (node: Node, types: Record<string, number>) : React.ElementType
 
     if (node.type & types.FILE)
         for (const def of byNameFile)
-            if (def.ext.includes(node.file.toLowerCase()))
+            if (def.ext.includes(node.file))
                 return def.icon;
 
     if (node.type & types.DIR) {
@@ -119,28 +134,21 @@ const pickIcon = (node: Node, types: Record<string, number>) : React.ElementType
                 if (child.children.length > 0)
                     isDeep = true;
 
-        if (isEmpty) {
-            if (isSpecial)
-                return FolderSpecialEmptyIcon;
+        if (isSpecial) {
+            if (isDeep)
+                return { Icon: FolderSpecialMultipleIcon, color: '2' };
             else
-                return FolderEmptyIcon;
+                return { Icon: FolderSpecialIcon, color: '2' };
         } else {
-            if (isSpecial) {
-                if (isDeep)
-                    return FolderSpecialMultipleIcon;
-                else
-                    return FolderSpecialIcon;
-            } else {
-                if (isDeep)
-                    return FolderMultipleIcon;
-                else
-                    return FolderIcon;
-            }
+            if (isDeep)
+                return { Icon: FolderMultipleIcon, color: '1' };
+            else
+                return { Icon: FolderIcon, color: '1' };
         }
     }
 
     for (const def of byExtension)
-        if (def.ext.includes(node.extension))
+        if (def.ext.includes(node.extension.toLowerCase()))
             return def.icon;
 
     const generatedTypeTable = byType(types);
@@ -149,9 +157,9 @@ const pickIcon = (node: Node, types: Record<string, number>) : React.ElementType
             return generatedTypeTable[t];
 
     if (node.type & types.UNKNOWN)
-        return FileUnknown;
+        return  { Icon: FileUnknown, color: '0' };
 
-    return FileIcon;
+    return  { Icon: FileIcon, color: '0' };
 };
 
 export { pickIcon };

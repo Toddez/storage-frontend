@@ -195,13 +195,13 @@ class Explorer extends React.Component {
     }
 
     generateNode(node: TreeNode, index: number) : JSX.Element {
-        const Icon = pickIcon(node, this.state.types);
+        const { Icon, color } = pickIcon(node, this.state.types);
         const isDir = node.type & this.state.types.DIR;
 
         return (
             <div className='node' key={index}>
                 <div className='icon'>
-                    <Icon />
+                    <Icon style={{fill: `var(--color-accent${color})`}}/>
                 </div>
                 <a className='name' onClick={this.handleTreeClick}>
                     {isDir ? node.path.split('/').slice(-1)[0] : node.file}
