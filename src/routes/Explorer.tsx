@@ -266,7 +266,7 @@ class Explorer extends React.Component {
 
         return (
             <div className='nodes'>
-                {node !== this.state.tree ? <input type='text' className='node go-up' onClick={this.handleTreeClick} value='..' readOnly={true}></input> : null}
+                {node !== this.state.tree ? <div className='node go-up' onClick={this.handleTreeClick}><input type="text" className="name" value=".." readOnly={true}></input></div> : null}
                 {node.children.map(this.generateNode)}
             </div>
         );

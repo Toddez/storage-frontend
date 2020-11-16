@@ -16,6 +16,7 @@
 }
 
 .Explorer .editor *::selection,
+.Explorer > .tree > .nodes > .node > .name:not(:read-only)::selection,
 .Explorer > .tree > .navigation > .path *::selection {
     background: rgba(255, 255, 255, 0.1);
 }
@@ -92,6 +93,10 @@
     border-top: 0;
 }
 
+.Explorer > .tree > .nodes > .node.node.go-up > .name:hover {
+    text-decoration: none;
+}
+
 .Explorer > .tree > .nodes > .node:last-child {
     border-bottom-left-radius: 0.5rem;
     border-bottom-right-radius: 0.5rem;
@@ -102,7 +107,31 @@
 }
 
 .Explorer > .tree > .nodes > .node > .name {
+    font-size: 1rem;
     width: 100%;
+    border: 0;
+    outline: 0;
+    background-color: var(--color-background3);
+    color: var(--color-foreground1);
+    padding: 0.5rem;
+}
+
+.Explorer > .tree > .nodes > .node > .name:not(:read-only) {
+    cursor: auto;
+    background-color: var(--color-background2);
+    border-radius: 0.25rem;
+}
+
+.Explorer > .tree > .nodes > .node:hover > .name:not(:read-only) {
+    background-color: var(--color-background2);
+}
+
+.Explorer > .tree > .nodes > .node > .name:read-only {
+    cursor: pointer;
+}
+
+.Explorer > .tree > .nodes > .node > .name:read-only:hover {
+    text-decoration: underline;
 }
 
 .Explorer > .tree > .nodes > .node > .actions {
@@ -122,7 +151,8 @@
     cursor: pointer;
 }
 
-.Explorer > .tree > .nodes > .node:hover {
+.Explorer > .tree > .nodes > .node:hover,
+.Explorer > .tree > .nodes > .node:hover .name {
     background-color: var(--color-background5);
 }
 
