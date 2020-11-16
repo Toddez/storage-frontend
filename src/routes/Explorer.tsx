@@ -11,7 +11,6 @@ import UploadModal from '../components/UploadModal';
 import NewFileIcon from 'mdi-material-ui/FilePlusOutline';
 import NewFolderIcon from 'mdi-material-ui/FolderPlusOutline';
 import UploadIcon from 'mdi-material-ui/FileUploadOutline';
-import EditIcon from '@material-ui/icons/EditRounded';
 import DeleteIcon from '@material-ui/icons/DeleteOutlined';
 
 
@@ -209,7 +208,7 @@ class Explorer extends React.Component {
                 </a>
                 <div id={`tree-node-actions.${index}`} className='actions' onClick={this.handleNodeActionClick}>
                     <a className='file-rename'>
-                        <EditIcon />
+                        Rename
                     </a>
                     <a className='file-delete'>
                         <DeleteIcon />
@@ -296,8 +295,6 @@ class Explorer extends React.Component {
         let action = '';
 
         while (target.parentElement) {
-            target = target.parentElement as HTMLElement;
-
             if (target.id && target.id.includes('-actions'))
                 id = parseInt(target.id.split('.')[1]);
 
@@ -309,8 +306,13 @@ class Explorer extends React.Component {
             if (classList[0] === 'file-rename')
                 action = 'rename';
 
+            if (classList[0] === 'file-edit')
+                action = 'edit';
+
             if (classList[0] === 'file-delete')
                 action = 'delete';
+
+            target = target.parentElement as HTMLElement;
         }
 
         if (action === '')
@@ -318,6 +320,11 @@ class Explorer extends React.Component {
 
         if (id === -1)
             return;
+
+        if (action === 'edit') {
+            console.log('EDIT ACTION NOT IMPLEMENTED');
+            return;
+        }
 
         if (action === 'rename') {
             console.log('RENAME ACTION NOT IMPLEMENTED');
