@@ -1,4 +1,4 @@
-import React, { ChangeEvent } from 'react';
+import React, { ChangeEvent, RefObject } from 'react';
 
 import { api_url, theme } from '../models/config';
 import Auth from '../models/auth';
@@ -32,9 +32,16 @@ class Preview extends React.Component<PreviewProps> {
 
         this.fetchFile();
         this.onEditor = this.onEditor.bind(this);
+        this.onScroll = this.onScroll.bind(this);
+
+        this.targetRef = React.createRef();
+        this.dummyRef = React.createRef();
     }
 
-    _isMounted = false
+    _isMounted = false;
+
+    targetRef: RefObject<HTMLTextAreaElement>;
+    dummyRef: RefObject<HTMLTextAreaElement>;
 
     state: State = {
         file: null,
@@ -143,7 +150,7 @@ class Preview extends React.Component<PreviewProps> {
                 language={this.state.data.type & this.props.types.RAW ? this.state.data.extension : 'text'}
                 showLineNumbers={true}
                 theme={theme}
-                wrapLines
+                wrapLines={true}
             />
         );
     }
@@ -155,9 +162,28 @@ class Preview extends React.Component<PreviewProps> {
     generateCodeEditor() : JSX.Element {
         return (
             <div className='editor'>
-                <textarea name="data" id="data" value={this.state.data.data} onChange={this.onEditor} autoFocus></textarea>
+                <textarea ref={this.targetRef} name="data" id="data" value={this.state.data.data} onChange={this.onEditor} onScroll={this.onScroll} spellCheck={false} autoFocus></textarea>
+                <textarea ref={this.dummyRef} className='editor-extra-style' name="data" id="data" value={this.data(this.state.data.data)} readOnly={true}></textarea>
             </div>
         );
+    }
+
+    data(data: string) : string {
+        data = data.replaceAll(/[.↓]/gm, 'a');
+        data = data.replaceAll(/[^\n^.]/gm, ' ');
+        data = data.replaceAll('\n', '↓');
+        data = data.replaceAll(/[\s]/gm, '.');
+        data = data.replaceAll('↓', '↓\n');
+
+        return data;
+    }
+
+    onScroll() : void {
+        if (this.targetRef.current) {
+            if (this.dummyRef.current) {
+                this.dummyRef.current.scrollTop = this.targetRef.current.scrollTop;
+            }
+        }
     }
 
     render() : JSX.Element {

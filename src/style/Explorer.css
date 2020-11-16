@@ -198,11 +198,13 @@
 }
 
 .Explorer > .file > .file-preview > .editor {
+    position: relative;
     border-bottom-left-radius: 0.5rem !important;
     border-bottom-right-radius: 0.5rem !important;
 }
 
 .Explorer > .file > .file-preview > .editor textarea {
+    position: relative;
     border-bottom-left-radius: 0.5rem !important;
     border-bottom-right-radius: 0.5rem !important;
     width: 100%;
@@ -214,6 +216,23 @@
     outline: 0;
     border: 0;
     padding: 0.5rem;
+    z-index: 1;
+    font-family: 'CascadiaMono';
+}
+
+.Explorer > .file > .file-preview > .editor > .editor-extra-style {
+    position: absolute;
+    left: 0;
+    top: 0;
+    pointer-events: none;
+    background: transparent;
+    color: var(--color-foreground0);
+    opacity: 0.25;
+    z-index: 2;
+}
+
+.Explorer > .file > .file-preview > .editor > .editor-extra-style::-webkit-scrollbar {
+    display: none;
 }
 
 .Explorer > .file > .file-preview > .markdown-preview {
