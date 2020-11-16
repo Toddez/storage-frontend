@@ -13,18 +13,67 @@
     transform: translate(-50%, -50%);
 }
 
-.Login > form label {
-    color: var(--color-foreground1)
+.Login .input-section {
+    position: relative;
+    width: 100%;
+    height: 3rem;
+    margin-bottom: 1.5rem;
+    overflow: hidden;
+    background-color: red;
 }
 
-.Login > form input {
+.Login > form input:not([type="submit"]) {
     width: 100%;
-    margin-bottom: 0.5rem;
-    padding: 1rem;
+    height: 100%;
     font-size: 1rem;
-    background-color: var(--color-background3);
-    color: var(--color-foreground1);
+    padding-top: 1.4rem;
     border: none;
+    outline: none;
+    background-color: var(--color-background1);
+    color: var(--color-foreground1);
+}
+
+.Login > form label {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 4rem;
+    color: var(--color-foreground1);
+    pointer-events: none;
+    border-bottom: 1px solid var(--color-border2);
+}
+
+.Login > form label::after {
+    content: '';
+    position: absolute;
+    left: 0;
+    bottom: -1px;
+    height: 100%;
+    width: 100%;
+    border-bottom: 1px solid var(--color-accent2);
+    transform: translate(-100%);
+    transition: transform 0.3s ease;
+}
+
+.Login > form .label-text {
+    font-size: 1.2rem;
+    position: absolute;
+    bottom: 1px;
+    left: 0;
+    transition: all 0.3s ease;
+}
+
+.Login > form input:not([type="submit"]):focus + label > .label-text,
+.Login > form input:not([type="submit"]):valid + label > .label-text {
+    transform: translateY(-150%);
+    color: var(--color-accent2);
+    font-size: 1rem;
+}
+
+.Login > form input:not([type="submit"]):focus + label::after,
+.Login > form input:not([type="submit"]):valid + label::after {
+    transform: translateX(0%);
 }
 
 @media only screen and (max-width: 400px) {

@@ -38,12 +38,17 @@ class Login extends Form<Props> {
         return (
             <div className='Login'>
                 <form onSubmit={this.handleSubmit} >
-                    <label htmlFor="id">ID</label>
-                    <input type="text" name="id" id="id" onChange={this.handleChange} />
+                    <div className='input-section'>
+                        <input type='text' name='id' id='id' onChange={this.handleChange} required autoFocus />
+                        <label htmlFor='id'><span className='label-text'>ID</span></label>
+                    </div>
 
-                    <label htmlFor="key">Key</label>
-                    <input type="password" name="key" id="key" onChange={this.handleChange} />
-                    <input type="submit" value="Authorize" />
+                    <div className='input-section'>
+                        <input type='password' name='key' id='key' onChange={this.handleChange} required />
+                        <label htmlFor='key'><span className='label-text'>Key</span></label>
+                    </div>
+
+                    <input type='submit' value='Authorize' hidden />
                 </form>
             </div>
         );
