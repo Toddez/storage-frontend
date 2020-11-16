@@ -244,11 +244,21 @@
     background-color: var(--color-background2);
 }
 
+.Explorer > .file > .file-preview > .markdown-preview a {
+    color: var(--color-accent2);
+    text-decoration: underline;
+}
+
 .Explorer > .file > .file-preview > span,
 .Explorer > .file > .file-preview > .markdown-preview {
     border-bottom-left-radius: 0.5rem !important;
     border-bottom-right-radius: 0.5rem !important;
     padding: 0.5rem;
+}
+
+.Explorer > .file > .file-preview > span > code:first-child {
+    border-right: 1px solid var(--color-border0);
+    margin-right: 0.2rem;
 }
 
 @media only screen and (max-width: 1200px) {
