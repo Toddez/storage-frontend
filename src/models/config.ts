@@ -11,7 +11,6 @@ const theme = {
     deletionColor: 'red',
     sectionColor: '#FFCB6B',
     commentColor: '#6b6b6b',
-    metaKeywordColor: 'red',
     functionColor: '#82AAFF',
     numberColor: '#ffcb6b'
 };
