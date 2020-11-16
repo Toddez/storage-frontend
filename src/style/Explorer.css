@@ -112,6 +112,10 @@
     cursor: auto;
 }
 
+.Explorer > .tree > .nodes > .node > .actions > * {
+    cursor: pointer;
+}
+
 .Explorer > .tree > .nodes > .node:hover {
     background-color: var(--color-background5);
 }
