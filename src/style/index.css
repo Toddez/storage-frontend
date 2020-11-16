@@ -63,6 +63,13 @@ a {
     cursor: pointer;
 }
 
+code {
+    background-color: var(--color-background1);
+    padding: 0.2rem;
+    border-radius: 0.25rem;
+    width: 100%;
+}
+
 a:hover {
     text-decoration: underline;
     opacity: 1;

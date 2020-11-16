@@ -198,19 +198,20 @@
 }
 
 .Explorer > .file > .file-preview > .editor {
+    background-color: var(--color-background2);
     position: relative;
     border-bottom-left-radius: 0.5rem !important;
     border-bottom-right-radius: 0.5rem !important;
+    padding: 0.5rem;
 }
 
 .Explorer > .file > .file-preview > .editor textarea {
     position: relative;
-    border-bottom-left-radius: 0.5rem !important;
-    border-bottom-right-radius: 0.5rem !important;
+    border-radius: 0.25rem;
     width: 100%;
     min-height: calc(85vh - 7rem);
     resize: none;
-    background-color: var(--color-background2);
+    background-color: var(--color-background1);
     color: var(--color-foreground1);
     font-size: 1rem;
     outline: 0;
@@ -222,8 +223,12 @@
 
 .Explorer > .file > .file-preview > .editor > .editor-extra-style {
     position: absolute;
-    left: 0;
-    top: 0;
+    left: 0.5rem;
+    top: 0.5rem;
+    right: 0.5rem;
+    bottom: 1rem;
+    padding: 0.5rem;
+    width: calc(100% - 1rem);
     pointer-events: none;
     background: transparent;
     color: var(--color-foreground0);
