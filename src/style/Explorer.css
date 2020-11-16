@@ -218,7 +218,7 @@
     border: 0;
     padding: 0.5rem;
     z-index: 1;
-    font-family: 'CascadiaMono';
+    font-family: 'CascadiaCode';
 }
 
 .Explorer > .file > .file-preview > .editor > .editor-extra-style {
@@ -234,6 +234,7 @@
     color: var(--color-foreground0);
     opacity: 0.25;
     z-index: 2;
+    font-family: 'CascadiaMono';
 }
 
 .Explorer > .file > .file-preview > .editor > .editor-extra-style::-webkit-scrollbar {

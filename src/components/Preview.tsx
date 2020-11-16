@@ -170,10 +170,11 @@ class Preview extends React.Component<PreviewProps> {
 
     data(data: string) : string {
         data = data.replaceAll(/[.↓]/gm, 'a');
-        data = data.replaceAll(/[^\n^.]/gm, ' ');
-        data = data.replaceAll('\n', '↓');
+        data = data.replaceAll(/[^\s]/gm, 'a');
+        data = data.replaceAll(/[\n]/gm, '↓');
         data = data.replaceAll(/[\s]/gm, '.');
-        data = data.replaceAll('↓', '↓\n');
+        data = data.replaceAll(/[↓]/gm, '↓\n');
+        data = data.replaceAll(/[a]/gm, ' ');
 
         return data;
     }
