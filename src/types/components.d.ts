@@ -10,7 +10,9 @@ declare type TreeNode = {
 declare interface PreviewProps {
     cwd: TreeNode,
     types: Record<string, number>,
-    handleNodeActionClick: (event: ClickEvent<T>) => void
+    handleNodeActionClick: (event: ClickEvent<T>) => void,
+    isEditing: boolean,
+    onEdit: (node: TreeNode, data: string) => void
 }
 
 declare interface ModalProps {

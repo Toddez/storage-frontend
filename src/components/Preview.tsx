@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { ChangeEvent } from 'react';
 
 import { api_url, theme } from '../models/config';
 import Auth from '../models/auth';
@@ -7,6 +7,7 @@ import { CodeBlock } from 'react-code-blocks';
 
 import EditIcon from '@material-ui/icons/EditRounded';
 import DeleteIcon from '@material-ui/icons/DeleteOutlined';
+import SaveIcon from 'mdi-material-ui/ContentSaveOutline';
 
 type File = {
     extension: string,
@@ -27,6 +28,7 @@ class Preview extends React.Component<PreviewProps> {
         super(props);
 
         this.fetchFile();
+        this.onEditor = this.onEditor.bind(this);
     }
 
     _isMounted = false
@@ -140,6 +142,18 @@ class Preview extends React.Component<PreviewProps> {
         );
     }
 
+    onEditor(event: ChangeEvent<HTMLTextAreaElement>) : void {
+        this.setState({data: {...this.state.data, data: event.target.value}});
+    }
+
+    generateCodeEditor() : JSX.Element {
+        return (
+            <div className='editor'>
+                <textarea name="data" id="data" value={this.state.data.data} onChange={this.onEditor}></textarea>
+            </div>
+        );
+    }
+
     render() : JSX.Element {
         if (!this.state.file)
             return (
@@ -156,12 +170,12 @@ class Preview extends React.Component<PreviewProps> {
                 <div className='header'>
                     {this.generateFileInfo()}
                     <div id={`file-preview-actions.${this.getIndex(this.file())}`} className='file-actions' onClick={this.props.handleNodeActionClick}>
-                        <a className='file-edit'><EditIcon /></a>
+                        {this.props.isEditing ? <a className='file-save' onClick={() => this.props.onEdit(this.file(), this.state.data.data)}><SaveIcon /></a> : <a className='file-edit'><EditIcon /></a>}
                         <a className='file-delete'><DeleteIcon /></a>
                     </div>
                 </div>
-                <div className='editor'>
-                    {this.generateCodeBlock()}
+                <div className='file-preview'>
+                    {this.props.isEditing ? this.generateCodeEditor() : this.generateCodeBlock()}
                 </div>
             </div>
         );

@@ -25,7 +25,8 @@ type State = {
     displayUpload: boolean,
     createType: number,
     name: string,
-    editingName: TreeNode | null
+    editingName: TreeNode | null,
+    editingFile: boolean
 }
 
 class Explorer extends React.Component {
@@ -43,6 +44,7 @@ class Explorer extends React.Component {
         this.upload = this.upload.bind(this);
         this.onNameChange = this.onNameChange.bind(this);
         this.onNameDown = this.onNameDown.bind(this);
+        this.onEdit = this.onEdit.bind(this);
     }
 
     _isMounted = false;
@@ -63,7 +65,8 @@ class Explorer extends React.Component {
         displayUpload: false,
         createType: 0,
         name: '',
-        editingName: null
+        editingName: null,
+        editingFile: false
     }
 
     displayCreateFileModal() : void {
@@ -152,7 +155,10 @@ class Explorer extends React.Component {
         return elements;
     }
 
-    create(data: Record<string, string>) : void {
+    create(data: Record<string, string>, content: string, type: number | null) : void {
+        if (content === '')
+            content = '\n';
+
         fetch(`${api_url}/storage/write/${data.path}`, {
             method: 'POST',
             headers: {
@@ -160,8 +166,8 @@ class Explorer extends React.Component {
                 'x-access-token': Auth.getToken()
             },
             body: JSON.stringify({
-                type: this.state.createType,
-                data: '\n'
+                type: type || this.state.createType,
+                data: content
             })
         })
             .then((res) => res.json())
@@ -186,7 +192,7 @@ class Explorer extends React.Component {
                 data={{ type: this.state.createType, types: this.state.types }}
                 cwd={this.currentNode()}
                 hide={() => this.setState({displayCreate: false})}
-                submit={(data) => this.create(data as Record<string, string>)}
+                submit={(data) => this.create(data as Record<string, string>, '', null)}
             />
         );
     }
@@ -354,6 +360,15 @@ class Explorer extends React.Component {
             });
     }
 
+    onEdit(node: TreeNode, data: string) : void {
+        let path = node.path.split('/');
+        if (path[0] === 'root')
+            path = path.slice(1, path.length);
+
+        this.create({path: path.join('/')}, data, this.state.types.FILE);
+        this.setState({editingFile: false});
+    }
+
     handleNodeActionClick(event: ClickEvent<HTMLDivElement>) : void {
         if (this.state.editingName)
             return;
@@ -392,7 +407,7 @@ class Explorer extends React.Component {
             return;
 
         if (action === 'edit') {
-            console.log('EDIT ACTION NOT IMPLEMENTED');
+            this.setState({editingFile: true});
             return;
         }
 
@@ -486,7 +501,7 @@ class Explorer extends React.Component {
                         this.generateNodes()
                     }
                 </div>
-                <Preview cwd={this.currentNode()} types={this.state.types} handleNodeActionClick={this.handleNodeActionClick}/>
+                <Preview cwd={this.currentNode()} types={this.state.types} handleNodeActionClick={this.handleNodeActionClick} isEditing={this.state.editingFile} onEdit={this.onEdit} />
             </div>
         );
     }
