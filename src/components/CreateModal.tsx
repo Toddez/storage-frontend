@@ -68,13 +68,13 @@ class CreateModal extends Modal<CreateModalProps> {
 
     render() : JSX.Element {
         return (
-            <a className='Modal' onClick={this.handleClick}>
+            <div className='Modal' onClick={this.handleClick}>
                 <form className='modal-content create' onSubmit={(data) => { this.handleSubmit(data); this.props.hide(); }}>
                     <div className='cwd'>~/</div>
                     <input ref={this.pathRef} type="text" name="path" id="path" value={this.state.data.path as string} onChange={this.handleChange} autoFocus />
                     <input hidden type="submit" value="Create" />
                 </form>
-            </a>
+            </div>
         );
     }
 }

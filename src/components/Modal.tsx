@@ -16,7 +16,7 @@ abstract class Modal<P> extends Form<ModalProps> {
         this.props.submit(data);
     }
 
-    handleClick(event: ClickEvent<HTMLAnchorElement>) : void {
+    handleClick(event: ClickEvent<HTMLDivElement>) : void {
         const target = event.target;
 
         if (target.classList.length > 0 && target.classList[0] === 'Modal')

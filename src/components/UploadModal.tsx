@@ -11,11 +11,11 @@ class UploadModal extends Modal<ModalProps> {
 
     render() : JSX.Element {
         return (
-            <a className='Modal' onClick={this.handleClick}>
+            <div className='Modal' onClick={this.handleClick}>
                 <form className='modal-content' onSubmit={(data) => { this.handleSubmit(data); this.props.hide(); }}>
                     Unimplemented Modal
                 </form>
-            </a>
+            </div>
         );
     }
 }
