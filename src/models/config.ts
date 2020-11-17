@@ -1,4 +1,11 @@
-const api_url = process.env.API_URL || 'http://localhost:1337';
+const domain = window.location.href.split('://');
+
+let api_url = 'https://storage-api.teo-jsramverk.me';
+
+if (domain[1].includes('localhost') ||
+    domain[1].includes('127.0.0.1')) {
+    api_url = 'http://localhost:1337';
+}
 
 const theme = {
     lineNumberColor: '#848484',
