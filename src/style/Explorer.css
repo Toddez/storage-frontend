@@ -225,10 +225,10 @@
     white-space: pre;
     line-break: anywhere;
     word-break: break-all;
-    overflow-x: scroll;
+    overflow-x: auto;
 }
 
-.Explorer > .file > .file-preview > .editor > .editor-extra-style:-webkit-scrollbar {
+.Explorer > .file > .file-preview > .editor > .editor-extra-style::-webkit-scrollbar {
     display: none;
 }
 
@@ -253,6 +253,10 @@
 .Explorer > .file > .file-preview > .editor > span > * {
     font-size: 1rem;
     min-width: 3rem;
+}
+
+.Explorer > .file > .file-preview > .editor > span > code:first-child > span:last-child {
+    display: none;
 }
 
 .Explorer > .file > .file-preview > .editor > span *::-webkit-scrollbar {

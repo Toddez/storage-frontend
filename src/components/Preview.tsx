@@ -149,7 +149,7 @@ class Preview extends React.Component<PreviewProps> {
     generateCodeBlock() : JSX.Element {
         return (
             <CodeBlock
-                text={this.state.data.data}
+                text={this.state.data.data + (this.state.data.data[this.state.data.data.length - 1] === '\n' ? ' ' : '')}
                 language={this.state.data.type & this.props.types.RAW ? this.state.data.extension : 'text'}
                 showLineNumbers={true}
                 theme={theme}
@@ -166,7 +166,7 @@ class Preview extends React.Component<PreviewProps> {
         return (
             <div className='editor' ref={this.targetRef}>
                 <CodeBlock
-                    text={this.state.data.data}
+                    text={this.state.data.data + '\n '}
                     language={this.state.data.type & this.props.types.RAW ? this.state.data.extension : 'text'}
                     showLineNumbers={true}
                     theme={theme}
