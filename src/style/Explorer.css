@@ -219,8 +219,8 @@
     line-height: 1.66667rem;
     font-size: 1rem;
     outline: 0;
+    border: 0;
     z-index: 2;
-    border: 1px solid red;
     overflow: hidden;
 }
 
