@@ -83,7 +83,7 @@ class CreateModal extends Modal<CreateModalProps> {
                         value={this.state.data.path as string}
                         onChange={this.handleChange}
                         autoFocus spellCheck={false} required pattern={pattern} />
-                    <div className='path-border'></div>
+                    <div className='input-border'></div>
                     <input hidden type="submit" value="Create" />
                 </form>
             </div>

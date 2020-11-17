@@ -28,7 +28,7 @@ declare interface ClickTarget extends EventTarget {
 }
 
 declare type FormState = {
-    data: Record<string, string | number | boolean>
+    data: Record<string, unknown | string | number | boolean>
 }
 
 declare interface ClickEvent<T> extends React.MouseEvent<T, MouseEvent> {

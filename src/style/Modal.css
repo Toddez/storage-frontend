@@ -49,6 +49,52 @@
     font-size: 1rem;
 }
 
+.Modal > .modal-content > input {
+    outline: 0;
+}
+
+.Modal > .modal-content > #file {
+    width: 0.1px;
+    height: 0.1px;
+    opacity: 0;
+    overflow: hidden;
+    position: absolute;
+    z-index: -1;
+}
+
+.Modal > .modal-content > #file + label {
+    background-color: var(--color-accent2);
+    color: var(--color-foreground2);
+    cursor: pointer;
+    padding: 0.5rem;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+}
+
+.Modal > .modal-content > #file + label > span {
+    margin-left: 0.5rem;
+}
+
+.Modal > .modal-content > input[type="submit"] {
+    background-color: var(--color-background3);
+    color: var(--color-foreground1);
+    width: 100%;
+    border: none;
+    margin-top: 0.5rem;
+    padding: 0.5rem;
+    font-size: 1rem;
+    cursor: pointer;
+}
+
+.Modal > .modal-content > #file + label:hover {
+    opacity: 0.9;
+}
+
+.Modal > .modal-content > input[type="submit"]:hover {
+    background-color: var(--color-background4);
+}
+
 .Modal > .modal-content > #path::selection {
     background: rgba(255, 255, 255, 0.1);
 }
@@ -57,7 +103,7 @@
     outline: none;
 }
 
-.Modal > .modal-content > .path-border::after {
+.Modal > .modal-content > .input-border::after {
     content: '';
     position: absolute;
     top: calc(100% - 2px);
@@ -70,11 +116,11 @@
     transform: translateX(-100%);
 }
 
-.Modal > .modal-content > #path:valid + .path-border::after {
+.Modal > .modal-content > input:valid + .input-border::after {
     transform: translateX(-50%);
 }
 
-.Modal > .modal-content > #path:invalid + .path-border::after {
+.Modal > .modal-content > input:invalid + .input-border::after {
     transform: translateX(0%);
 }
 
