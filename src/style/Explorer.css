@@ -85,6 +85,7 @@
 }
 
 .Explorer > .tree > .nodes > .node {
+    position: relative;
     padding: 0.5rem 1rem;
     display: flex;
     flex-direction: row;
@@ -125,6 +126,7 @@
     cursor: auto;
     background-color: var(--color-background2);
     border-radius: 0.25rem;
+    transition: all 0.3s ease;
 }
 
 .Explorer > .tree > .nodes > .node:hover > .name:not(:read-only) {
@@ -137,6 +139,27 @@
 
 .Explorer > .tree > .nodes > .node > .name:read-only:hover {
     text-decoration: underline;
+}
+
+.Explorer > .tree > .nodes > .node > .node-border::after {
+    content: '';
+    position: absolute;
+    top: calc(100% - 2px);
+    bottom: 0;
+    left: 0;
+    width: 200%;
+    pointer-events: none;
+    transition: all 0.3s ease;
+    background: linear-gradient(90deg, var(--color-danger) 0%, var(--color-danger) 50%, var(--color-accent2) 50%, var(--color-accent2) 100%);
+    transform: translateX(-100%);
+}
+
+.Explorer > .tree > .nodes > .node > .name:valid + .node-border::after {
+    transform: translateX(-50%);
+}
+
+.Explorer > .tree > .nodes > .node > .name:invalid + .node-border::after {
+    transform: translateX(0%);
 }
 
 .Explorer > .tree > .nodes > .node > .actions {
