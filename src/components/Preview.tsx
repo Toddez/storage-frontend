@@ -36,12 +36,14 @@ class Preview extends React.Component<PreviewProps> {
 
         this.targetRef = React.createRef();
         this.dummyRef = React.createRef();
+        this.dummyHighlightRef = React.createRef();
     }
 
     _isMounted = false;
 
-    targetRef: RefObject<HTMLTextAreaElement>;
+    targetRef: RefObject<HTMLDivElement>;
     dummyRef: RefObject<HTMLTextAreaElement>;
+    dummyHighlightRef: RefObject<HTMLTextAreaElement>;
 
     state: State = {
         file: null,
@@ -129,6 +131,7 @@ class Preview extends React.Component<PreviewProps> {
 
     componentDidUpdate() : void {
         this.fetchFile();
+        this.onScroll();
     }
 
     generateFileInfo(name: string, lines: number, size: number) : JSX.Element {
@@ -161,9 +164,15 @@ class Preview extends React.Component<PreviewProps> {
 
     generateCodeEditor() : JSX.Element {
         return (
-            <div className='editor'>
-                <textarea ref={this.targetRef} name="data" id="data" value={this.state.data.data} onChange={this.onEditor} onScroll={this.onScroll} spellCheck={false} autoFocus></textarea>
-                <textarea ref={this.dummyRef} className='editor-extra-style' name="data" id="data" value={this.data(this.state.data.data)} readOnly={true}></textarea>
+            <div className='editor' ref={this.targetRef}>
+                <CodeBlock
+                    text={this.state.data.data}
+                    language={this.state.data.type & this.props.types.RAW ? this.state.data.extension : 'text'}
+                    showLineNumbers={true}
+                    theme={theme}
+                />
+                <textarea ref={this.dummyHighlightRef} className='editor-extra-style' name="data" id="data" value={this.data(this.state.data.data)} readOnly={true}></textarea>
+                <textarea ref={this.dummyRef} name="data" id="data" value={this.state.data.data} onChange={this.onEditor} onScroll={this.onScroll} spellCheck={false} autoFocus></textarea>
             </div>
         );
     }
@@ -192,9 +201,18 @@ class Preview extends React.Component<PreviewProps> {
     }
 
     onScroll() : void {
+        if (!this._isMounted)
+            return;
+
         if (this.targetRef.current) {
             if (this.dummyRef.current) {
-                this.dummyRef.current.scrollTop = this.targetRef.current.scrollTop;
+                this.dummyRef.current.style.height = (this.targetRef.current.childNodes[0].childNodes[1] as HTMLElement).offsetHeight + 'px';
+                this.dummyRef.current.style.width = (this.targetRef.current.childNodes[0].childNodes[1] as HTMLElement).offsetWidth + 'px';
+            }
+
+            if (this.dummyHighlightRef.current) {
+                this.dummyHighlightRef.current.style.height = (this.targetRef.current.childNodes[0].childNodes[1] as HTMLElement).offsetHeight + 'px';
+                this.dummyHighlightRef.current.style.width = (this.targetRef.current.childNodes[0].childNodes[1] as HTMLElement).offsetWidth + 'px';
             }
         }
     }

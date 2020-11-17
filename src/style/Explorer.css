@@ -202,42 +202,51 @@
     position: relative;
     border-bottom-left-radius: 0.5rem !important;
     border-bottom-right-radius: 0.5rem !important;
+    min-height: calc(85vh - 7rem);
     padding: 0.5rem;
 }
 
-.Explorer > .file > .file-preview > .editor textarea {
-    position: relative;
+.Explorer > .file > .file-preview > .editor > textarea {
+    position: absolute;
+    top: 0.5rem;
+    right: 0.5rem;
+    padding: 0.5rem;
     border-radius: 0.25rem;
-    width: 100%;
-    min-height: calc(85vh - 7rem);
     resize: none;
-    background-color: var(--color-background1);
+    background-color: transparent;
     color: var(--color-foreground1);
+    -webkit-text-fill-color: transparent;
+    line-height: 1.66667rem;
     font-size: 1rem;
     outline: 0;
-    border: 0;
-    padding: 0.5rem;
-    z-index: 1;
-    font-family: 'CascadiaCode';
+    z-index: 2;
+    border: 1px solid red;
+    overflow: hidden;
 }
 
 .Explorer > .file > .file-preview > .editor > .editor-extra-style {
-    position: absolute;
-    left: 0.5rem;
-    top: 0.5rem;
-    right: 0.5rem;
-    bottom: 1rem;
-    padding: 0.5rem;
-    width: calc(100% - 1rem);
     pointer-events: none;
-    background: transparent;
     color: var(--color-foreground0);
-    opacity: 0.25;
-    z-index: 2;
+    -webkit-text-fill-color: var(--color-foreground0);
+    opacity: 0.5;
     font-family: 'CascadiaMono';
+    z-index: 3;
 }
 
-.Explorer > .file > .file-preview > .editor > .editor-extra-style::-webkit-scrollbar {
+.Explorer > .file > .file-preview > .editor > span {
+    background: transparent;
+    width: calc(100%);
+    pointer-events: none;
+    z-index: 1;
+    display: flex;
+}
+
+.Explorer > .file > .file-preview > .editor > span > * {
+    font-size: 1rem;
+    min-width: 3rem;
+}
+
+.Explorer > .file > .file-preview > .editor > *::-webkit-scrollbar {
     display: none;
 }
 
@@ -261,11 +270,10 @@
     display: flex;
 }
 
-.Explorer > .file > .file-preview > span > code:first-child {
+.Explorer > .file > .file-preview span > code:first-child {
     border-right: 1px solid var(--color-border0);
-    margin-right: 0.2rem;
-    flex: 1;
-    min-width: 3rem;
+    margin-right: 0.25rem;
+    width: 5rem !important;
 }
 
 @media only screen and (max-width: 1200px) {
