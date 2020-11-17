@@ -217,6 +217,13 @@ class Explorer extends React.Component {
     generateNode(node: TreeNode, index: number) : JSX.Element {
         const { Icon, color } = pickIcon(node, this.state.types);
 
+        const filePattern = '([.]{0,1}[A-Za-z0-9]+)+([A-Za-z0-9]|([./][A-Za-z0-9]))*';
+        const dirPattern = '[A-Za-z0-9]+([A-Za-z0-9]|([/][A-Za-z0-9])|([/]$))*';
+
+        let pattern = '';
+        if (this.state.editingName)
+            pattern = this.state.editingName.type & this.state.types.FILE ? filePattern : dirPattern;
+
         return (
             <div className='node' key={index}>
                 <div className='icon'>
@@ -227,7 +234,7 @@ class Explorer extends React.Component {
                     value={this.treeName(node)}
                     onChange={this.onNameChange}
                     onKeyDown={this.onNameDown}
-                    readOnly={true} spellCheck={false} required pattern={'([/.]{0,1}[A-Za-z0-9]+)*([A-Za-z0-9]|([./][A-Za-z0-9]))*'} ></input>
+                    readOnly={true} spellCheck={false} required pattern={pattern} ></input>
                 <div className='node-border'></div>
                 <div id={`tree-node-actions.${index}`} className='actions' onClick={this.handleNodeActionClick}>
                     <a className='file-rename'>
