@@ -67,11 +67,24 @@ class CreateModal extends Modal<CreateModalProps> {
     }
 
     render() : JSX.Element {
+        const filePattern = '([.]{0,1}[A-Za-z0-9]+)+([A-Za-z0-9]|([./][A-Za-z0-9]))*';
+        const dirPattern = '[A-Za-z0-9]+([A-Za-z0-9]|([/][A-Za-z0-9])|([/]$))*';
+
+        const pattern = this.props.data.type & this.props.data.types.FILE ? filePattern : dirPattern;
+
+        console.log(pattern);
+
         return (
             <div className='Modal' onClick={this.handleClick}>
                 <form className='modal-content create' onSubmit={(data) => { this.handleSubmit(data); this.props.hide(); }}>
                     <div className='cwd'>~/</div>
-                    <input ref={this.pathRef} type="text" name="path" id="path" value={this.state.data.path as string} onChange={this.handleChange} autoFocus />
+                    <input ref={this.pathRef}
+                        type="text"
+                        name="path"
+                        id="path"
+                        value={this.state.data.path as string}
+                        onChange={this.handleChange}
+                        autoFocus spellCheck={false} required pattern={pattern} />
                     <input hidden type="submit" value="Create" />
                 </form>
             </div>
