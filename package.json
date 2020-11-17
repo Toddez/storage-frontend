@@ -5,6 +5,7 @@
     "scripts": {
         "start": "react-scripts start",
         "build": "react-scripts build",
+        "deploy": "npm run build && rsync -av build/* deploy@teo-jsramverk.me:/var/www/storage.teo-jsramverk.me/html/",
         "test": "exit 0",
         "posttest": "npm run eslint",
         "eslint": "eslint ."
