@@ -72,8 +72,6 @@ class CreateModal extends Modal<CreateModalProps> {
 
         const pattern = this.props.data.type & this.props.data.types.FILE ? filePattern : dirPattern;
 
-        console.log(pattern);
-
         return (
             <div className='Modal' onClick={this.handleClick}>
                 <form className='modal-content create' onSubmit={(data) => { this.handleSubmit(data); this.props.hide(); }}>
