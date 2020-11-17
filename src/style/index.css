@@ -63,6 +63,11 @@ a {
     cursor: pointer;
 }
 
+a:focus,
+input:focus {
+    outline: 1px dotted var(--color-accent2);
+}
+
 code {
     background-color: var(--color-background1);
     padding: 0.2rem;
