@@ -180,7 +180,28 @@ class Explorer extends React.Component {
     }
 
     upload(data: Record<string, unknown>) : void {
-        console.log('UPLOAD!', data, this.currentNode());
+        const path = this.currentNode().path.split('/');
+        const files = data.files as Array<File>;
+
+        const formData = new FormData();
+        for (const file of files) {
+            formData.append(`files`, file);
+        }
+
+        fetch(`${api_url}/storage/upload/${path.slice(1, path.length).join('/')}`, {
+            method: 'POST',
+            headers: {
+                'x-access-token': Auth.getToken()
+            },
+            body: formData
+        })
+            .then((res) => res.json())
+            .then((res) => {
+                if (!this._isMounted)
+                    return;
+
+                this.fetchTree();
+            });
     }
 
     generateCreateModal() : JSX.Element | null {
