@@ -222,7 +222,13 @@ class Explorer extends React.Component {
                 <div className='icon'>
                     <Icon style={{fill: `var(--color-accent${color})`}}/>
                 </div>
-                <input type='text' className='name' onClick={this.handleTreeClick} value={this.treeName(node)} readOnly={true} onChange={this.onNameChange} onKeyDown={this.onNameDown}></input>
+                <input type='text' className='name'
+                    onClick={this.handleTreeClick}
+                    value={this.treeName(node)}
+                    onChange={this.onNameChange}
+                    onKeyDown={this.onNameDown}
+                    readOnly={true} spellCheck={false} required pattern={'([/.]{0,1}[A-Za-z0-9]+)*([A-Za-z0-9]|([./][A-Za-z0-9]))*'} ></input>
+                <div className='node-border'></div>
                 <div id={`tree-node-actions.${index}`} className='actions' onClick={this.handleNodeActionClick}>
                     <a className='file-rename'>
                         Rename
