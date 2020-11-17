@@ -312,6 +312,12 @@ class Explorer extends React.Component {
         if (this.state.editingName)
             return;
 
+        if (this.state.displayCreate)
+            return;
+
+        if (this.state.displayUpload)
+            return;
+
         const target = event.target;
         const value = target.text;
         const id = parseInt(target.parentElement.id.split('.')[1]);
@@ -384,6 +390,12 @@ class Explorer extends React.Component {
 
     handleNodeActionClick(event: ClickEvent<HTMLDivElement>) : void {
         if (this.state.editingName)
+            return;
+
+        if (this.state.displayCreate)
+            return;
+
+        if (this.state.displayUpload)
             return;
 
         let target = event.target as unknown as HTMLElement;
@@ -475,6 +487,12 @@ class Explorer extends React.Component {
 
     handleTreeClick(event: ClickEvent<HTMLInputElement>) : void {
         if (this.state.editingName)
+            return;
+
+        if (this.state.displayCreate)
+            return;
+
+        if (this.state.displayUpload)
             return;
 
         const target = event.target;
