@@ -196,7 +196,7 @@ class Explorer extends React.Component {
             body: formData
         })
             .then((res) => res.json())
-            .then((res) => {
+            .then(() => {
                 if (!this._isMounted)
                     return;
 
@@ -316,6 +316,7 @@ class Explorer extends React.Component {
         let current = this.state.tree;
         for (const pos of this.state.position) {
             const next = this.find(current, pos);
+            next.parent = current;
             if (next === current)
                 return current;
             current = next;
@@ -487,8 +488,10 @@ class Explorer extends React.Component {
             node = next;
         }
 
-        const child = node.children[id];
-        cwd.push(child.path.split('/').slice(-1)[0]);
+        if (!(node.type & this.state.types.FILE)) {
+            const child = node.children[id];
+            cwd.push(child.path.split('/').slice(-1)[0]);
+        }
 
         fetch(`${api_url}/storage/${action}/${cwd.join('/')}`, {
             method: 'POST',
