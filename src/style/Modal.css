@@ -5,6 +5,7 @@
     right: 0;
     bottom: 0;
     cursor: auto;
+    z-index: 1;
 }
 
 .Modal > .modal-content {
