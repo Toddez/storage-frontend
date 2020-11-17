@@ -221,7 +221,15 @@
     outline: 0;
     border: 0;
     z-index: 2;
-    overflow: hidden;
+    overflow-y: hidden;
+    white-space: pre;
+    line-break: anywhere;
+    word-break: break-all;
+    overflow-x: scroll;
+}
+
+.Explorer > .file > .file-preview > .editor > .editor-extra-style:-webkit-scrollbar {
+    display: none;
 }
 
 .Explorer > .file > .file-preview > .editor > .editor-extra-style {
@@ -231,11 +239,12 @@
     opacity: 0.5;
     font-family: 'CascadiaMono';
     z-index: 3;
+    overflow: hidden;
 }
 
 .Explorer > .file > .file-preview > .editor > span {
     background: transparent;
-    width: calc(100%);
+    width: 100%;
     pointer-events: none;
     z-index: 1;
     display: flex;
@@ -246,7 +255,7 @@
     min-width: 3rem;
 }
 
-.Explorer > .file > .file-preview > .editor > *::-webkit-scrollbar {
+.Explorer > .file > .file-preview > .editor > span *::-webkit-scrollbar {
     display: none;
 }
 
@@ -274,6 +283,10 @@
     border-right: 1px solid var(--color-border0);
     margin-right: 0.25rem;
     width: 5rem !important;
+}
+
+.Explorer > .file > .file-preview span > code:last-child {
+    overflow-x: auto;
 }
 
 @media only screen and (max-width: 1200px) {

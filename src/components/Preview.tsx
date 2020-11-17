@@ -206,11 +206,13 @@ class Preview extends React.Component<PreviewProps> {
 
         if (this.targetRef.current) {
             if (this.dummyRef.current) {
+                (this.targetRef.current.childNodes[0].childNodes[1] as HTMLElement).scrollLeft = this.dummyRef.current.scrollLeft;
                 this.dummyRef.current.style.height = (this.targetRef.current.childNodes[0].childNodes[1] as HTMLElement).offsetHeight + 'px';
                 this.dummyRef.current.style.width = (this.targetRef.current.childNodes[0].childNodes[1] as HTMLElement).offsetWidth + 'px';
             }
 
             if (this.dummyHighlightRef.current) {
+                this.dummyHighlightRef.current.scrollLeft = (this.targetRef.current.childNodes[0].childNodes[1] as HTMLElement).scrollLeft;
                 this.dummyHighlightRef.current.style.height = (this.targetRef.current.childNodes[0].childNodes[1] as HTMLElement).offsetHeight + 'px';
                 this.dummyHighlightRef.current.style.width = (this.targetRef.current.childNodes[0].childNodes[1] as HTMLElement).offsetWidth + 'px';
             }
