@@ -224,11 +224,16 @@
     background-color: var(--color-background2);
 }
 
-.Explorer > .file > .file-preview > img {
+.Explorer > .file > .file-preview > img,
+.Explorer > .file > .file-preview > video {
     display: block;
     max-width: 100%;
     margin: 0 auto;
     padding: 0.5rem;
+}
+
+.Explorer > .file > .file-preview > video:focus {
+    outline: 0;
 }
 
 .Explorer > .file > .file-preview > .editor {
