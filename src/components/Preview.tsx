@@ -146,16 +146,41 @@ class Preview extends React.Component<PreviewProps> {
         );
     }
 
-    generateCodeBlock() : JSX.Element {
-        return (
-            <CodeBlock
-                text={this.state.data.data + (this.state.data.data[this.state.data.data.length - 1] === '\n' ? ' ' : '')}
-                language={this.state.data.type & this.props.types.RAW ? this.state.data.extension : 'text'}
-                showLineNumbers={true}
-                theme={theme}
-                wrapLines={true}
-            />
-        );
+    isEditable(node: TreeNode | File) : boolean {
+        return !(node.type & this.props.types.IMAGE
+            || node.type & this.props.types.VIDEO);
+    }
+
+    generateFilePreview() : JSX.Element | null {
+        const file = this.state.data;
+        console.log(file);
+        console.log(this.state.data);
+
+        if (!file)
+            return null;
+
+        if (file.file === 'README.md')
+            return (
+                <ReactMarkdown className='markdown-preview' children={this.state.data.data} />
+            );
+
+        if (this.isEditable(file))
+            return (
+                <CodeBlock
+                    text={this.state.data.data + (this.state.data.data[this.state.data.data.length - 1] === '\n' ? ' ' : '')}
+                    language={this.state.data.type & this.props.types.RAW ? this.state.data.extension : 'text'}
+                    showLineNumbers={true}
+                    theme={theme}
+                    wrapLines={true}
+                />
+            );
+
+        if (file.type & this.props.types.IMAGE)
+            return (
+                <img src={`data:image/png;base64,${this.state.data.initial}`} />
+            );
+
+        return null;
     }
 
     onEditor(event: ChangeEvent<HTMLTextAreaElement>) : void {
@@ -239,17 +264,17 @@ class Preview extends React.Component<PreviewProps> {
                             :this.generateFileInfo(this.state.data.file, this.state.data.lines, this.state.data.size)
                     }
                     <div id={`file-preview-actions.${this.getIndex(this.file())}`} className='file-actions' onClick={this.props.handleNodeActionClick}>
-                        {
+                        {this.isEditable(this.file()) ? (
                             this.props.isEditing ?
                                 <a className='file-save' onClick={() => this.props.onEdit(this.file(), this.state.data.data)}><SaveIcon /></a>
                                 :<a className='file-edit'><EditIcon /></a>
-                        }
+                        ) : null }
                         {this.props.isEditing ? <a className='file-save file-cancel' onClick={() => this.props.onEdit(this.file(), this.state.data.initial)}><CancelIcon /></a> : null}
                         <a className='file-delete'><DeleteIcon /></a>
                     </div>
                 </div>
                 <div className='file-preview'>
-                    {this.props.isEditing ? this.generateCodeEditor() : ( this.file().file === 'README.md' ? <ReactMarkdown className='markdown-preview' children={this.state.data.data} /> : this.generateCodeBlock())}
+                    {this.props.isEditing ? this.generateCodeEditor() : this.generateFilePreview()}
                 </div>
             </div>
         );
