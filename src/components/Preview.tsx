@@ -153,8 +153,6 @@ class Preview extends React.Component<PreviewProps> {
 
     generateFilePreview() : JSX.Element | null {
         const file = this.state.data;
-        console.log(file);
-        console.log(this.state.data);
 
         if (!file)
             return null;
@@ -177,7 +175,14 @@ class Preview extends React.Component<PreviewProps> {
 
         if (file.type & this.props.types.IMAGE)
             return (
-                <img src={`data:image/png;base64,${this.state.data.initial}`} />
+                <img src={`data:image/*;base64,${this.state.data.initial}`} />
+            );
+
+        if (file.type & this.props.types.VIDEO)
+            return (
+                <video controls>
+                    <source src={`data:video/*;base64,${this.state.data.initial}`} type={`video/${file.extension}`}/>
+                </video>
             );
 
         return null;
