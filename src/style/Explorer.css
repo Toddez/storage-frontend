@@ -220,6 +220,17 @@
     margin-left: 0.5rem;
 }
 
+.Explorer > .file > .file-preview {
+    background-color: var(--color-background2);
+}
+
+.Explorer > .file > .file-preview > img {
+    display: block;
+    max-width: 100%;
+    margin: 0 auto;
+    padding: 0.5rem;
+}
+
 .Explorer > .file > .file-preview > .editor {
     background-color: var(--color-background2);
     position: relative;
