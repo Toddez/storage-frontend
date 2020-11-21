@@ -232,6 +232,27 @@
     padding: 0.5rem;
 }
 
+.Explorer > .file > .file-preview > .run-output {
+    padding: 0.5rem;
+    margin: 0.5rem;
+    margin-bottom: 0;
+    background-color: var(--color-background1);
+    border-radius: 0.25rem;
+}
+
+.Explorer > .file > .file-preview > .run-output > .run-result,
+.Explorer > .file > .file-preview > .run-output > .run-error {
+    padding-left: 1rem;
+}
+
+.Explorer > .file > .file-preview > .run-output > .run-result {
+    color: var(--color-accent4);
+}
+
+.Explorer > .file > .file-preview > .run-output > .run-error {
+    color: var(--color-danger);
+}
+
 .Explorer > .file > .file-preview > video:focus {
     outline: 0;
 }
