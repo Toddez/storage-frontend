@@ -169,7 +169,7 @@ class Preview extends React.Component<PreviewProps> {
         if (!file)
             return null;
 
-        if (file.file === 'README.md')
+        if (file.extension === 'md')
             return (
                 <ReactMarkdown className='markdown-preview' children={this.state.data.data} />
             );
