@@ -301,7 +301,7 @@ class Preview extends React.Component<PreviewProps> {
                             :this.generateFileInfo(this.state.data.file, this.state.data.lines, this.state.data.size)
                     }
                     <div id={`file-preview-actions.${this.getIndex(this.file())}`} className='file-actions' onClick={this.props.handleNodeActionClick}>
-                        {this.file().extension === 'js' ? <a className='file-run' onClick={() => this.run() } ><RunIcon /></a> : null}
+                        {this.props.isEditing === false && this.file().extension === 'js' ? <a className='file-run' onClick={() => this.run() } ><RunIcon /></a> : null}
                         {this.isEditable(this.file()) ? (
                             this.props.isEditing ?
                                 <a className='file-save' onClick={() => this.props.onEdit(this.file(), this.state.data.data)}><SaveIcon /></a>
