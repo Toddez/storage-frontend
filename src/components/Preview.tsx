@@ -10,6 +10,7 @@ import EditIcon from '@material-ui/icons/EditRounded';
 import DeleteIcon from '@material-ui/icons/DeleteOutlined';
 import SaveIcon from 'mdi-material-ui/ContentSaveOutline';
 import CancelIcon from 'mdi-material-ui/Cancel';
+import RunIcon from 'mdi-material-ui/PlayOutline';
 
 type File = {
     extension: string,
@@ -23,7 +24,12 @@ type File = {
 
 type State = {
     file: TreeNode | null,
-    data: File
+    data: File,
+    run: {
+        res: string,
+        err: string,
+        file: TreeNode | null
+    }
 }
 
 class Preview extends React.Component<PreviewProps> {
@@ -33,6 +39,7 @@ class Preview extends React.Component<PreviewProps> {
         this.fetchFile();
         this.onEditor = this.onEditor.bind(this);
         this.onScroll = this.onScroll.bind(this);
+        this.run = this.run.bind(this);
 
         this.targetRef = React.createRef();
         this.dummyRef = React.createRef();
@@ -55,6 +62,11 @@ class Preview extends React.Component<PreviewProps> {
             type: 0,
             file: '',
             initial: ''
+        },
+        run: {
+            res: '',
+            err: '',
+            file: null
         }
     }
 
@@ -249,6 +261,26 @@ class Preview extends React.Component<PreviewProps> {
         }
     }
 
+    run() : void {
+        if (!this._isMounted)
+            return;
+
+        let script = `
+            console.defaultLog = console.log;
+            console.log = (value) => value;
+        `;
+        script += this.state.data.data;
+
+        let res, err;
+        try {
+            res = eval(script);
+        } catch (thrownError) {
+            err = thrownError.toString();
+        }
+
+        this.setState({run: {res: res, err: err, file: this.file()}});
+    }
+
     render() : JSX.Element {
         if (!this.state.file)
             return (
@@ -269,6 +301,7 @@ class Preview extends React.Component<PreviewProps> {
                             :this.generateFileInfo(this.state.data.file, this.state.data.lines, this.state.data.size)
                     }
                     <div id={`file-preview-actions.${this.getIndex(this.file())}`} className='file-actions' onClick={this.props.handleNodeActionClick}>
+                        {this.file().extension === 'js' ? <a className='file-run' onClick={() => this.run() } ><RunIcon /></a> : null}
                         {this.isEditable(this.file()) ? (
                             this.props.isEditing ?
                                 <a className='file-save' onClick={() => this.props.onEdit(this.file(), this.state.data.data)}><SaveIcon /></a>
@@ -279,6 +312,7 @@ class Preview extends React.Component<PreviewProps> {
                     </div>
                 </div>
                 <div className='file-preview'>
+                    {this.props.isEditing === false && this.file().extension === 'js' ? (this.state.run.file === this.file() ? <div className='run-output'>Output:<div className='run-result'>{this.state.run.res}</div><div className='run-error'>{this.state.run.err}</div></div> : null) : null}
                     {this.props.isEditing ? this.generateCodeEditor() : this.generateFilePreview()}
                 </div>
             </div>
