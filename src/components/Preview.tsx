@@ -1,6 +1,6 @@
 import React, { ChangeEvent, RefObject } from 'react';
 
-import { api_url, theme } from '../models/config';
+import { apiUrl, theme } from '../models/config';
 import Auth from '../models/auth';
 
 import { CodeBlock } from 'react-code-blocks';
@@ -120,7 +120,7 @@ class Preview extends React.Component<PreviewProps> {
             return;
 
         const spl = file.path.split('/');
-        fetch(`${api_url}/storage/read/${spl.slice(1, spl.length).join('/')}`, {
+        fetch(`${apiUrl}/storage/read/${spl.slice(1, spl.length).join('/')}`, {
             method: 'GET',
             headers: {
                 'Content-type': 'application/json',

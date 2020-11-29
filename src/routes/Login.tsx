@@ -1,7 +1,7 @@
 import React from 'react';
 
 import auth from '../models/auth';
-import { api_url } from '../models/config';
+import { apiUrl } from '../models/config';
 
 import Form from '../components/Form';
 
@@ -13,7 +13,7 @@ interface Props {
 
 class Login extends Form<Props> {
     onSubmit(data: Record<string, unknown>) : void {
-        fetch(`${api_url}/authorize`, {
+        fetch(`${apiUrl}/authorize`, {
             method: 'POST',
             headers: {
                 'Content-type': 'application/json'

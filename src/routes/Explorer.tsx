@@ -1,7 +1,7 @@
 import React from 'react';
 
 import Auth from '../models/auth';
-import { api_url } from '../models/config';
+import { apiUrl } from '../models/config';
 import { pickIcon } from '../models/icon';
 
 import Preview from '../components/Preview';
@@ -88,7 +88,7 @@ class Explorer extends React.Component {
     }
 
     fetchTree() : void {
-        fetch(`${api_url}/storage/`, {
+        fetch(`${apiUrl}/storage/`, {
             method: 'GET',
             headers: {
                 'Content-type': 'application/json',
@@ -159,7 +159,7 @@ class Explorer extends React.Component {
         if (content === '')
             content = '\n';
 
-        fetch(`${api_url}/storage/write/${data.path}`, {
+        fetch(`${apiUrl}/storage/write/${data.path}`, {
             method: 'POST',
             headers: {
                 'Content-type': 'application/json',
@@ -188,7 +188,7 @@ class Explorer extends React.Component {
             formData.append(`files`, file);
         }
 
-        fetch(`${api_url}/storage/upload/${path.slice(1, path.length).join('/')}`, {
+        fetch(`${apiUrl}/storage/upload/${path.slice(1, path.length).join('/')}`, {
             method: 'POST',
             headers: {
                 'x-access-token': Auth.getToken()
@@ -382,7 +382,7 @@ class Explorer extends React.Component {
 
         cwd.push(child.path.split('/').slice(-1)[0]);
 
-        fetch(`${api_url}/storage/rename/${cwd.join('/')}`, {
+        fetch(`${apiUrl}/storage/rename/${cwd.join('/')}`, {
             method: 'POST',
             headers: {
                 'Content-type': 'application/json',
@@ -493,7 +493,7 @@ class Explorer extends React.Component {
             cwd.push(child.path.split('/').slice(-1)[0]);
         }
 
-        fetch(`${api_url}/storage/${action}/${cwd.join('/')}`, {
+        fetch(`${apiUrl}/storage/${action}/${cwd.join('/')}`, {
             method: 'POST',
             headers: {
                 'Content-type': 'application/json',

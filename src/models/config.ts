@@ -1,10 +1,10 @@
 const domain = window.location.href.split('://');
 
-let api_url = 'https://storage-api.teo-jsramverk.me';
+let apiUrl = 'https://storage-api.teo-jsramverk.me';
 
 if (domain[1].includes('localhost') ||
     domain[1].includes('127.0.0.1')) {
-    api_url = 'http://localhost:1337';
+    apiUrl = 'http://localhost:1337';
 }
 
 const theme = {
@@ -22,4 +22,4 @@ const theme = {
     numberColor: '#ffcb6b'
 };
 
-export { api_url, theme };
+export { apiUrl, theme };
