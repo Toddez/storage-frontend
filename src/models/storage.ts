@@ -4,7 +4,7 @@ import { apiUrl } from '../models/config';
 class Storage {
     static running = false;
     static listeners = [] as Array<() => void>;
-    static root: TreeNode | null = null;
+    static root: TreeNode = {} as TreeNode;
     static types: Record<string, NodeType>
 
     static initialize() : void {
@@ -44,12 +44,12 @@ class Storage {
         return node;
     }
 
-    static cwd(path: string) : TreeNode | null {
+    static cwd(path: string) : TreeNode {
         if (!this.running)
-            return null;
+            return this.root;
 
-        if (!this.root)
-            return null;
+        if (!this.root.children)
+            return this.root;
 
         let current = this.root;
         for (const pos of path.split('/')) {
