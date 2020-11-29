@@ -7,6 +7,8 @@ declare type TreeNode = {
     parent: TreeNode | null
 }
 
+declare type NodeType = number
+
 declare interface PreviewProps {
     cwd: TreeNode,
     types: Record<string, number>,
