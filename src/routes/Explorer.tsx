@@ -44,7 +44,7 @@ class Explorer extends React.Component {
         this.onEdit = this.onEdit.bind(this);
 
         Storage.initialize();
-        Storage.addListener(this.onStorageFetch.bind(this));
+        Storage.addFetchListener(this.onStorageFetch.bind(this));
     }
 
     _isMounted = false;
