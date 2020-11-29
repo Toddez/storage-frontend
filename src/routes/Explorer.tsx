@@ -12,7 +12,6 @@ import NewFolderIcon from 'mdi-material-ui/FolderPlusOutline';
 import UploadIcon from 'mdi-material-ui/FileUploadOutline';
 import DeleteIcon from '@material-ui/icons/DeleteOutlined';
 
-
 import '../style/Explorer.css';
 
 type State = {
@@ -228,16 +227,7 @@ class Explorer extends React.Component {
     }
 
     currentNode() : TreeNode {
-        let current = this.state.tree;
-        for (const pos of this.state.position) {
-            const next = Storage.findChildNode(current, pos);
-            next.parent = current;
-            if (next === current)
-                return current;
-            current = next;
-        }
-
-        return current;
+        return Storage.cwd(this.state.position.join('/'));
     }
 
     navigate(path: string) : void {
@@ -374,25 +364,29 @@ class Explorer extends React.Component {
             return;
         }
 
-        let cwd = this.currentNode().path.split('/');
-        if (cwd[0] === 'root')
-            cwd = cwd.slice(1, cwd.length);
+        if (action === 'delete') {
+            let cwd = this.currentNode().path.split('/');
+            if (cwd[0] === 'root')
+                cwd = cwd.slice(1, cwd.length);
 
-        let node = this.state.tree;
-        for (const pos of this.state.position) {
-            const next = Storage.findChildNode(node, pos);
-            if (next === node)
-                break;
+            let node = this.state.tree;
+            for (const pos of this.state.position) {
+                const next = Storage.findChildNode(node, pos);
+                if (next === node)
+                    break;
 
-            node = next;
+                node = next;
+            }
+
+            if (!(node.type & this.state.types.FILE)) {
+                const child = node.children[id];
+                cwd.push(child.path.split('/').slice(-1)[0]);
+            }
+
+            Storage.delete(cwd.join('/'));
         }
 
-        if (!(node.type & this.state.types.FILE)) {
-            const child = node.children[id];
-            cwd.push(child.path.split('/').slice(-1)[0]);
-        }
-
-        Storage.delete(cwd.join('/'));
+        return;
     }
 
     handleTreeClick(event: ClickEvent<HTMLInputElement>) : void {
