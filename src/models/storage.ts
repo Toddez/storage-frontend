@@ -3,7 +3,8 @@ import { apiUrl } from '../models/config';
 
 class Storage {
     static running = false;
-    static listeners = [] as Array<() => void>;
+    static fetchListeners = [] as Array<FetchCallback>;
+    static readListeners = [] as Array<ReadCallback>;
     static root: TreeNode = {} as TreeNode;
     static types: Record<string, NodeType>
 
@@ -16,16 +17,29 @@ class Storage {
         this.running = true;
     }
 
-    static addListener(cb: () => void) : void {
-        this.listeners.push(cb);
+    static addFetchListener(cb: FetchCallback) : void {
+        this.fetchListeners.push(cb);
     }
 
-    static callListeners() : void {
+    static addReadListener(cb: ReadCallback) : void {
+        this.readListeners.push(cb);
+    }
+
+    static callFetchListeners() : void {
         if (!this.running)
             return;
 
-        for (const cb of this.listeners) {
+        for (const cb of this.fetchListeners) {
             cb();
+        }
+    }
+
+    static callReadListeners(file: FileNode) : void {
+        if (!this.running)
+            return;
+
+        for (const cb of this.readListeners) {
+            cb(file);
         }
     }
 
@@ -108,11 +122,36 @@ class Storage {
 
                 this.root = res.tree;
                 this.types = res.types;
-                this.callListeners();
+                this.callFetchListeners();
+            });
+    }
+
+    static read(path: string) : void {
+        if (!Auth.authorized)
+            return;
+
+        fetch(`${apiUrl}/storage/read/${path}`, {
+            method: 'GET',
+            headers: {
+                'Content-type': 'application/json',
+                'x-access-token': Auth.getToken()
+            }
+        })
+            .then((res) => res.json())
+            .then((res) => {
+                if (res.errors)
+                    return;
+
+                res.initial = res.data;
+
+                this.callReadListeners(res as FileNode);
             });
     }
 
     static write(path: string, type: NodeType, data: string) : void {
+        if (!Auth.authorized)
+            return;
+
         fetch(`${apiUrl}/storage/write/${path}`, {
             method: 'POST',
             headers: {
@@ -131,6 +170,9 @@ class Storage {
     }
 
     static upload(path: string, data: FormData) : void {
+        if (!Auth.authorized)
+            return;
+
         fetch(`${apiUrl}/storage/upload/${path}`, {
             method: 'POST',
             headers: {
@@ -145,6 +187,9 @@ class Storage {
     }
 
     static delete(path: string) : void {
+        if (!Auth.authorized)
+            return;
+
         fetch(`${apiUrl}/storage/delete/${path}`, {
             method: 'POST',
             headers: {
@@ -159,6 +204,9 @@ class Storage {
     }
 
     static rename(path: string, name: string) : void {
+        if (!Auth.authorized)
+            return;
+
         fetch(`${apiUrl}/storage/rename/${path}`, {
             method: 'POST',
             headers: {

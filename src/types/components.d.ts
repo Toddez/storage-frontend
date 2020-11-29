@@ -9,6 +9,19 @@ declare type TreeNode = {
 
 declare type NodeType = number
 
+declare type FileNode = {
+    extension: string,
+    data: string,
+    type: number
+    lines: number,
+    size: number,
+    file: string,
+    initial: string
+}
+
+declare type FetchCallback = () => void
+declare type ReadCallback = (file: FileNode) => void
+
 declare interface PreviewProps {
     cwd: TreeNode,
     types: Record<string, number>,
