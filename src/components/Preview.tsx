@@ -266,16 +266,18 @@ class Preview extends React.Component<PreviewProps> {
             return;
 
         let script = `
-            console.defaultLog = console.log;
-            console.log = (value) => value;
+            (function () {
+            'use strict';
+            const log = function (value) { return value; };
         `;
         script += this.state.data.data;
+        script += `})();`;
 
         let res, err;
         try {
             res = eval(script);
         } catch (thrownError) {
-            err = thrownError.toString();
+            err = thrownError.stack;
         }
 
         this.setState({run: {res: res, err: err, file: this.file()}});
