@@ -1,7 +1,7 @@
 import React, { ChangeEvent, RefObject } from 'react';
 
-import { apiUrl, theme } from '../models/config';
-import Auth from '../models/auth';
+import { theme } from '../models/config';
+import Storage from '../models/storage';
 
 import { CodeBlock } from 'react-code-blocks';
 import ReactMarkdown from 'react-markdown';
@@ -12,19 +12,9 @@ import SaveIcon from 'mdi-material-ui/ContentSaveOutline';
 import CancelIcon from 'mdi-material-ui/Cancel';
 import RunIcon from 'mdi-material-ui/PlayOutline';
 
-type File = {
-    extension: string,
-    data: string,
-    type: number
-    lines: number,
-    size: number,
-    file: string,
-    initial: string
-}
-
 type State = {
     file: TreeNode | null,
-    data: File,
+    data: FileNode,
     run: {
         res: string,
         err: string,
@@ -44,6 +34,9 @@ class Preview extends React.Component<PreviewProps> {
         this.targetRef = React.createRef();
         this.dummyRef = React.createRef();
         this.dummyHighlightRef = React.createRef();
+
+        Storage.initialize();
+        Storage.addReadListener(this.onStorageRead.bind(this));
     }
 
     _isMounted = false;
@@ -68,6 +61,13 @@ class Preview extends React.Component<PreviewProps> {
             err: '',
             file: null
         }
+    }
+
+    onStorageRead(file: FileNode) : void {
+        if (!this._isMounted)
+            return;
+
+        this.setState({data: file});
     }
 
     file() : TreeNode {
@@ -120,25 +120,7 @@ class Preview extends React.Component<PreviewProps> {
             return;
 
         const spl = file.path.split('/');
-        fetch(`${apiUrl}/storage/read/${spl.slice(1, spl.length).join('/')}`, {
-            method: 'GET',
-            headers: {
-                'Content-type': 'application/json',
-                'x-access-token': Auth.getToken()
-            }
-        })
-            .then((res) => res.json())
-            .then((res) => {
-                if (res.errors)
-                    return;
-
-                if (!this._isMounted)
-                    return;
-
-                res.initial = res.data;
-
-                this.setState({data: res});
-            });
+        Storage.read(spl.slice(1, spl.length).join('/'));
     }
 
     componentDidUpdate() : void {
@@ -158,7 +140,7 @@ class Preview extends React.Component<PreviewProps> {
         );
     }
 
-    isEditable(node: TreeNode | File) : boolean {
+    isEditable(node: TreeNode | FileNode) : boolean {
         return !(node.type & this.props.types.IMAGE
             || node.type & this.props.types.VIDEO);
     }
