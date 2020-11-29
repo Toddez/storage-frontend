@@ -1,7 +1,6 @@
 import React from 'react';
 
-import Auth from '../models/auth';
-import { apiUrl } from '../models/config';
+import Storage from '../models/storage';
 import { pickIcon } from '../models/icon';
 
 import Preview from '../components/Preview';
@@ -17,13 +16,12 @@ import DeleteIcon from '@material-ui/icons/DeleteOutlined';
 import '../style/Explorer.css';
 
 type State = {
-    loaded: boolean
     tree: TreeNode,
-    types: Record<string, number>,
+    types: Record<string, NodeType>,
     position: Array<string>,
     displayCreate: boolean,
     displayUpload: boolean,
-    createType: number,
+    createType: NodeType,
     name: string,
     editingName: TreeNode | null,
     editingFile: boolean
@@ -45,12 +43,14 @@ class Explorer extends React.Component {
         this.onNameChange = this.onNameChange.bind(this);
         this.onNameDown = this.onNameDown.bind(this);
         this.onEdit = this.onEdit.bind(this);
+
+        Storage.initialize();
+        Storage.addListener(this.onStorageFetch.bind(this));
     }
 
     _isMounted = false;
 
     state: State = {
-        loaded: false,
         tree: {
             children: [],
             type: 0,
@@ -66,7 +66,14 @@ class Explorer extends React.Component {
         createType: 0,
         name: '',
         editingName: null,
-        editingFile: false
+        editingFile: false,
+    }
+
+    onStorageFetch() : void {
+        if (!this._isMounted)
+            return;
+
+        this.setState({tree: Storage.root, types: Storage.types, loaded: true});
     }
 
     displayCreateFileModal() : void {
@@ -83,47 +90,10 @@ class Explorer extends React.Component {
 
     componentDidMount() : void {
         this._isMounted = true;
-
-        this.fetchTree();
-    }
-
-    fetchTree() : void {
-        fetch(`${apiUrl}/storage/`, {
-            method: 'GET',
-            headers: {
-                'Content-type': 'application/json',
-                'x-access-token': Auth.getToken()
-            }
-        })
-            .then((res) => res.json())
-            .then((res) => {
-                if (res.errors)
-                    return;
-
-                if (!this._isMounted)
-                    return;
-
-                this.setState({loaded: true, tree: res.tree, types: res.types});
-            });
     }
 
     componentWillUnmount() : void {
         this._isMounted = false;
-    }
-
-    find(node: TreeNode, name: string) : TreeNode {
-        for (const child of node.children) {
-            let check = '';
-            if (child.type & this.state.types.DIR)
-                check = child.path.split('/').slice(-1)[0];
-            else if(child.type & this.state.types.FILE)
-                check = child.file;
-
-            if (check === name)
-                return child;
-        }
-
-        return node;
     }
 
     generatePath() : JSX.Element {
@@ -135,7 +105,7 @@ class Explorer extends React.Component {
                     <a onClick={this.handlePathClick}>~</a>/
                 </div>
                 {this.state.position.map((value, index) => {
-                    const next = this.find(node, value);
+                    const next = Storage.findChildNode(node, value);
 
                     if (next === node)
                         return null;
@@ -159,24 +129,7 @@ class Explorer extends React.Component {
         if (content === '')
             content = '\n';
 
-        fetch(`${apiUrl}/storage/write/${data.path}`, {
-            method: 'POST',
-            headers: {
-                'Content-type': 'application/json',
-                'x-access-token': Auth.getToken()
-            },
-            body: JSON.stringify({
-                type: type || this.state.createType,
-                data: content
-            })
-        })
-            .then((res) => res.json())
-            .then(() => {
-                if (!this._isMounted)
-                    return;
-
-                this.fetchTree();
-            });
+        Storage.write(data.path, type || this.state.createType, content);
     }
 
     upload(data: Record<string, unknown>) : void {
@@ -188,20 +141,7 @@ class Explorer extends React.Component {
             formData.append(`files`, file);
         }
 
-        fetch(`${apiUrl}/storage/upload/${path.slice(1, path.length).join('/')}`, {
-            method: 'POST',
-            headers: {
-                'x-access-token': Auth.getToken()
-            },
-            body: formData
-        })
-            .then((res) => res.json())
-            .then(() => {
-                if (!this._isMounted)
-                    return;
-
-                this.fetchTree();
-            });
+        Storage.upload(path.slice(1, path.length).join('/'), formData);
     }
 
     generateCreateModal() : JSX.Element | null {
@@ -272,42 +212,17 @@ class Explorer extends React.Component {
     generateNodes() : JSX.Element {
         let node = this.state.tree;
         for (const pos of this.state.position) {
-            const next = this.find(node, pos);
+            const next = Storage.findChildNode(node, pos);
             if (next === node)
                 break;
 
             node = next;
         }
 
-        node.children = node.children.sort((a: TreeNode, b: TreeNode) : number => {
-            const dir = this.state.types.DIR;
-            const file = this.state.types.FILE;
-
-            if (a.type & dir && b.type & file)
-                return -1;
-
-            if (a.type & dir && b.type & file)
-                return 1;
-
-            if (a.type & dir && b.type & dir && a.path < b.path)
-                return -1;
-
-            if (a.type & dir && b.type & dir && a.path > b.path)
-                return 1;
-
-            if (a.type & file && b.type & file && a.file < b.file)
-                return -1;
-
-            if (a.type & file && b.type & file && a.file > b.file)
-                return 1;
-
-            return 0;
-        });
-
         return (
             <div className='nodes'>
                 {node !== this.state.tree ? <div className='node go-up' onClick={this.handleTreeClick}><input type="text" className="name" value=".." readOnly={true}></input></div> : null}
-                {node.children.map(this.generateNode)}
+                {Storage.sortNodes(node.children).map(this.generateNode)}
             </div>
         );
     }
@@ -315,7 +230,7 @@ class Explorer extends React.Component {
     currentNode() : TreeNode {
         let current = this.state.tree;
         for (const pos of this.state.position) {
-            const next = this.find(current, pos);
+            const next = Storage.findChildNode(current, pos);
             next.parent = current;
             if (next === current)
                 return current;
@@ -370,7 +285,7 @@ class Explorer extends React.Component {
 
         let node = this.state.tree;
         for (const pos of this.state.position) {
-            const next = this.find(node, pos);
+            const next = Storage.findChildNode(node, pos);
             if (next === node)
                 break;
 
@@ -382,23 +297,7 @@ class Explorer extends React.Component {
 
         cwd.push(child.path.split('/').slice(-1)[0]);
 
-        fetch(`${apiUrl}/storage/rename/${cwd.join('/')}`, {
-            method: 'POST',
-            headers: {
-                'Content-type': 'application/json',
-                'x-access-token': Auth.getToken()
-            },
-            body: JSON.stringify({
-                name: this.state.name
-            })
-        })
-            .then((res) => res.json())
-            .then(() => {
-                if (!this._isMounted)
-                    return;
-
-                this.fetchTree();
-            });
+        Storage.rename(cwd.join('/'), this.state.name);
     }
 
     onEdit(node: TreeNode, data: string) : void {
@@ -481,7 +380,7 @@ class Explorer extends React.Component {
 
         let node = this.state.tree;
         for (const pos of this.state.position) {
-            const next = this.find(node, pos);
+            const next = Storage.findChildNode(node, pos);
             if (next === node)
                 break;
 
@@ -493,20 +392,7 @@ class Explorer extends React.Component {
             cwd.push(child.path.split('/').slice(-1)[0]);
         }
 
-        fetch(`${apiUrl}/storage/${action}/${cwd.join('/')}`, {
-            method: 'POST',
-            headers: {
-                'Content-type': 'application/json',
-                'x-access-token': Auth.getToken()
-            }
-        })
-            .then((res) => res.json())
-            .then(() => {
-                if (!this._isMounted)
-                    return;
-
-                this.fetchTree();
-            });
+        Storage.delete(cwd.join('/'));
     }
 
     handleTreeClick(event: ClickEvent<HTMLInputElement>) : void {
