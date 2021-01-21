@@ -49,6 +49,15 @@
     font-size: 1rem;
 }
 
+.Modal > .modal-content > #url {
+    background-color: var(--color-background3);
+    color: var(--color-foreground1);
+    width: 100%;
+    border: none;
+    padding: 0.5rem;
+    font-size: 1rem;
+}
+
 .Modal > .modal-content > input {
     outline: 0;
 }
