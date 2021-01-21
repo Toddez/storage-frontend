@@ -323,6 +323,14 @@
     display: none;
 }
 
+.Explorer > .file > .file-preview > .markdown-preview code {
+    padding-left: 0;
+}
+
+.Explorer > .file > .file-preview > .markdown-preview code * {
+    padding: 0.2rem;
+}
+
 .Explorer > .file > .file-preview > .markdown-preview {
     background-color: var(--color-background2);
 }
@@ -352,6 +360,7 @@
 .Explorer > .file > .file-preview span > code:last-child {
     overflow-x: auto;
 }
+
 
 @media only screen and (max-width: 1200px) {
     .Explorer > .tree > .nodes,
