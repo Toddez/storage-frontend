@@ -189,6 +189,26 @@ class Storage {
             });
     }
 
+    static uploadFromURL(path: string, url: string) : void {
+        if (!Auth.authorized)
+            return;
+
+        fetch(`${apiUrl}/storage/uploadFromURL/${path}`, {
+            method: 'POST',
+            headers: {
+                'Content-type': 'application/json',
+                'x-access-token': Auth.getToken()
+            },
+            body: JSON.stringify({
+                url: url
+            })
+        })
+            .then((res) => res.json())
+            .then(() => {
+                this.fetch();
+            });
+    }
+
     static delete(path: string) : void {
         if (!Auth.authorized)
             return;
