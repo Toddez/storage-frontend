@@ -6,10 +6,12 @@ import { pickIcon } from '../models/icon';
 import Preview from '../components/Preview';
 import CreateModal from '../components/CreateModal';
 import UploadModal from '../components/UploadModal';
+import UploadURLModal from '../components/UploadURLModal';
 
 import NewFileIcon from 'mdi-material-ui/FilePlusOutline';
 import NewFolderIcon from 'mdi-material-ui/FolderPlusOutline';
 import UploadIcon from 'mdi-material-ui/FileUploadOutline';
+import CloudIcon from 'mdi-material-ui/FileCloudOutline';
 import DeleteIcon from '@material-ui/icons/DeleteOutlined';
 
 import '../style/Explorer.css';
@@ -20,6 +22,7 @@ type State = {
     position: Array<string>,
     displayCreate: boolean,
     displayUpload: boolean,
+    displayUploadURL: boolean,
     createType: NodeType,
     name: string,
     editingName: TreeNode | null,
@@ -37,6 +40,7 @@ class Explorer extends React.Component {
         this.displayCreateFileModal = this.displayCreateFileModal.bind(this);
         this.displayCreateFolderModal = this.displayCreateFolderModal.bind(this);
         this.displayUploadModal = this.displayUploadModal.bind(this);
+        this.displayUploadURLModal = this.displayUploadURLModal.bind(this);
         this.create = this.create.bind(this);
         this.upload = this.upload.bind(this);
         this.onNameChange = this.onNameChange.bind(this);
@@ -62,6 +66,7 @@ class Explorer extends React.Component {
         position: [],
         displayCreate: false,
         displayUpload: false,
+        displayUploadURL: false,
         createType: 0,
         name: '',
         editingName: null,
@@ -85,6 +90,10 @@ class Explorer extends React.Component {
 
     displayUploadModal() : void {
         this.setState({displayUpload: true});
+    }
+
+    displayUploadURLModal() : void {
+        this.setState({displayUploadURL: true});
     }
 
     componentDidMount() : void {
@@ -143,6 +152,13 @@ class Explorer extends React.Component {
         Storage.upload(path.slice(1, path.length).join('/'), formData);
     }
 
+    uploadFromURL(data: Record<string, string>) : void {
+        const url = data.url;
+        const path = this.currentNode().path.split('/');
+
+        Storage.uploadFromURL(path.slice(1, path.length).join('/'), url);
+    }
+
     generateCreateModal() : JSX.Element | null {
         if (!this.state.displayCreate)
             return null;
@@ -163,6 +179,15 @@ class Explorer extends React.Component {
 
         return (
             <UploadModal hide={() => this.setState({displayUpload: false})} submit={(data) => this.upload(data)} />
+        );
+    }
+
+    generateUploadURLModal() : JSX.Element | null {
+        if (!this.state.displayUploadURL)
+            return null;
+
+        return (
+            <UploadURLModal hide={() => this.setState({displayUploadURL: false})} submit={(data) => this.uploadFromURL(data)} />
         );
     }
 
@@ -417,6 +442,9 @@ class Explorer extends React.Component {
                 {
                     this.generateUploadModal()
                 }
+                {
+                    this.generateUploadURLModal()
+                }
                 { this.state.editingFile ? null : <div className='tree'>
                     <div className='navigation'>
                         {
@@ -428,6 +456,7 @@ class Explorer extends React.Component {
                                     <div className='add-folder' onClick={() => this.displayCreateFolderModal()}><a><NewFolderIcon /></a></div>
                                     <div className='add-file' onClick={() => this.displayCreateFileModal()}><a><NewFileIcon /></a></div>
                                     <div className='upload-file' onClick={() => this.displayUploadModal()}><a><UploadIcon /></a></div>
+                                    <div className='upload-file' onClick={() => this.displayUploadURLModal()}><a><CloudIcon /></a></div>
                                 </div>
                                 : null
                         }
