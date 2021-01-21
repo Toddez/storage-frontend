@@ -126,11 +126,11 @@ class Storage {
             });
     }
 
-    static read(path: string) : void {
+    static async read(path: string, ignoreCallbacks = false) : Promise<FileNode> {
         if (!Auth.authorized)
-            return;
+            return {} as FileNode;
 
-        fetch(`${apiUrl}/storage/read/${path}`, {
+        return fetch(`${apiUrl}/storage/read/${path}`, {
             method: 'GET',
             headers: {
                 'Content-type': 'application/json',
@@ -140,11 +140,14 @@ class Storage {
             .then((res) => res.json())
             .then((res) => {
                 if (res.errors)
-                    return;
+                    return {} as FileNode;
 
                 res.initial = res.data;
 
-                this.callReadListeners(res as FileNode);
+                if (!ignoreCallbacks)
+                    this.callReadListeners(res as FileNode);
+
+                return res as FileNode;
             });
     }
 
