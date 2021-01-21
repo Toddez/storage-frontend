@@ -49,3 +49,8 @@ declare type FormState = {
 declare interface ClickEvent<T> extends React.MouseEvent<T, MouseEvent> {
     target: ClickTarget,
 }
+
+declare interface StorageImageProps {
+    src: string,
+    alt: string
+}
