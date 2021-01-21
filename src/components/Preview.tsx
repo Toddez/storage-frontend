@@ -3,14 +3,31 @@ import React, { ChangeEvent, RefObject } from 'react';
 import { theme } from '../models/config';
 import Storage from '../models/storage';
 
+import StorageImage from './StorageImage';
+
 import { CodeBlock } from 'react-code-blocks';
 import ReactMarkdown from 'react-markdown';
+import { Prism as SyntaxHighlighter } from 'react-syntax-highlighter';
+import dark from 'react-syntax-highlighter/dist/esm/styles/prism/vs-dark';
 
 import EditIcon from '@material-ui/icons/EditRounded';
 import DeleteIcon from '@material-ui/icons/DeleteOutlined';
 import SaveIcon from 'mdi-material-ui/ContentSaveOutline';
 import CancelIcon from 'mdi-material-ui/Cancel';
 import RunIcon from 'mdi-material-ui/PlayOutline';
+
+const markdownRenderers = {
+    code: ({language, value} : CodeRendererProps) => {
+        return (
+            <SyntaxHighlighter style={dark} language={language} children={value} />
+        );
+    },
+    image: ({src, alt} : ImageRendererProps) => {
+        return (
+            <StorageImage src={src} alt={alt} />
+        );
+    }
+};
 
 type State = {
     file: TreeNode | null,
@@ -153,7 +170,7 @@ class Preview extends React.Component<PreviewProps> {
 
         if (file.extension === 'md')
             return (
-                <ReactMarkdown className='markdown-preview' children={this.state.data.data} />
+                <ReactMarkdown className='markdown-preview' renderers={markdownRenderers} children={this.state.data.data} />
             );
 
         if (this.isEditable(file))
