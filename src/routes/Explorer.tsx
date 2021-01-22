@@ -202,7 +202,7 @@ class Explorer extends React.Component {
     generateNode(node: TreeNode, index: number) : JSX.Element {
         const { Icon, color } = pickIcon(node, this.state.types);
 
-        const filePattern = '([.]{0,1}[A-Za-z0-9]+)+([A-Za-z0-9]|([./][A-Za-z0-9]))*';
+        const filePattern = '(([.]{0,1}|([.][/]){0,1}|([.][.][/]){0,1})[A-Za-z0-9]+)+([A-Za-z0-9]|([./][A-Za-z0-9]))*';
         const dirPattern = '[A-Za-z0-9]+([A-Za-z0-9]|([/][A-Za-z0-9])|([/]$))*';
 
         let pattern = '';
