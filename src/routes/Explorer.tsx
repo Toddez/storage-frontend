@@ -188,7 +188,7 @@ class Explorer extends React.Component {
             return null;
 
         return (
-            <UploadURLModal hide={() => this.setState({displayUploadURL: false})} submit={(data) => this.uploadFromURL(data)} />
+            <UploadURLModal hide={() => this.setState({displayUploadURL: false})} submit={(data) => this.uploadFromURL(data as Record<string, string>)} />
         );
     }
 
