@@ -49,6 +49,7 @@ class Explorer extends React.Component {
 
         Storage.initialize();
         Storage.addFetchListener(this.onStorageFetch.bind(this));
+        Storage.addReadListener(this.onStorageFetch.bind(this));
     }
 
     _isMounted = false;
