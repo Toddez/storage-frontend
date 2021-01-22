@@ -19,7 +19,6 @@
     height: 3rem;
     margin-bottom: 1.5rem;
     overflow: hidden;
-    background-color: red;
 }
 
 .Login > form input:not([type="submit"]) {
@@ -64,16 +63,38 @@
     transition: all 0.3s ease;
 }
 
-.Login > form input:not([type="submit"]):focus + label > .label-text,
-.Login > form input:not([type="submit"]):valid + label > .label-text {
+.Login > form > .input-section > .always-show + label > .label-text,
+.Login > form > .input-section > input:not([type="submit"]):focus + label > .label-text,
+.Login > form > .input-section > input:not([type="submit"]):valid + label > .label-text {
     transform: translateY(-150%);
     color: var(--color-accent2);
     font-size: 1rem;
 }
 
-.Login > form input:not([type="submit"]):focus + label::after,
-.Login > form input:not([type="submit"]):valid + label::after {
+.Login > form > .input-section > .always-show + label::after,
+.Login > form > .input-section > input:not([type="submit"]):focus + label::after,
+.Login > form > .input-section > input:not([type="submit"]):valid + label::after {
     transform: translateX(0%);
+}
+
+.Login > form input.authKey::-webkit-outer-spin-button,
+.Login > form input.authKey::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+}
+
+.Login > form input.authKey {
+    -moz-appearance: textfield;
+    width: calc(100% / 6);
+    text-align: center;
+}
+
+.qr-code {
+    text-align: center;
+}
+
+.Login .authKey:invalid {
+    opacity: 0.5;
 }
 
 @media only screen and (max-width: 400px) {
