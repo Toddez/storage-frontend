@@ -164,8 +164,32 @@ class Preview extends React.Component<PreviewProps> {
 
     generateFilePreview() : JSX.Element | null {
         const file = this.state.data;
+        const cwd = this.state.file as TreeNode;
+
+        if (cwd.type & this.props.types.CRAWLABLE) {
+            const images = cwd.children.map((node, index) => {
+                if (node.type & this.props.types.IMAGE) {
+                    const path = node.path.split('/');
+                    return (
+                        <li key={index}>
+                            <StorageImage src={path.slice(1, path.length).join('/')} alt={node.file} />
+                        </li>
+                    );
+                }
+            });
+
+            if (images.length > 0)
+                return (
+                    <ul className='images'>
+                        {images}
+                    </ul>
+                );
+        }
 
         if (!file)
+            return null;
+
+        if (!(cwd.type & this.props.types.FILE))
             return null;
 
         if (file.extension === 'md')
@@ -288,30 +312,28 @@ class Preview extends React.Component<PreviewProps> {
                 <div className='file'></div>
             );
 
-        if (!(this.state.file.type & this.props.types.FILE))
-            return (
-                <div className='file'></div>
-            );
-
         return (
             <div className='file'>
-                <div className='header'>
-                    {
-                        this.props.isEditing ?
-                            this.generateFileInfo(this.state.data.file, this.state.data.data.split('\n').length, (new TextEncoder().encode(this.state.data.data)).length)
-                            :this.generateFileInfo(this.state.data.file, this.state.data.lines, this.state.data.size)
-                    }
-                    <div id={`file-preview-actions.${this.getIndex(this.file())}`} className='file-actions' onClick={this.props.handleNodeActionClick}>
-                        {this.props.isEditing === false && this.file().extension === 'js' ? <a className='file-run' onClick={() => this.run() } ><RunIcon /></a> : null}
-                        {this.isEditable(this.file()) ? (
+                { (this.state.file.type & this.props.types.FILE) ?
+                    <div className='header'>
+                        {
                             this.props.isEditing ?
-                                <a className='file-save' onClick={() => this.props.onEdit(this.file(), this.state.data.data)}><SaveIcon /></a>
-                                :<a className='file-edit'><EditIcon /></a>
-                        ) : null }
-                        {this.props.isEditing ? <a className='file-save file-cancel' onClick={() => this.props.onEdit(this.file(), this.state.data.initial)}><CancelIcon /></a> : null}
-                        <a className='file-delete'><DeleteIcon /></a>
+                                this.generateFileInfo(this.state.data.file, this.state.data.data.split('\n').length, (new TextEncoder().encode(this.state.data.data)).length)
+                                :this.generateFileInfo(this.state.data.file, this.state.data.lines, this.state.data.size)
+                        }
+                        <div id={`file-preview-actions.${this.getIndex(this.file())}`} className='file-actions' onClick={this.props.handleNodeActionClick}>
+                            {this.props.isEditing === false && this.file().extension === 'js' ? <a className='file-run' onClick={() => this.run() } ><RunIcon /></a> : null}
+                            {this.isEditable(this.file()) ? (
+                                this.props.isEditing ?
+                                    <a className='file-save' onClick={() => this.props.onEdit(this.file(), this.state.data.data)}><SaveIcon /></a>
+                                    :<a className='file-edit'><EditIcon /></a>
+                            ) : null }
+                            {this.props.isEditing ? <a className='file-save file-cancel' onClick={() => this.props.onEdit(this.file(), this.state.data.initial)}><CancelIcon /></a> : null}
+                            <a className='file-delete'><DeleteIcon /></a>
+                        </div>
                     </div>
-                </div>
+                    : null
+                }
                 <div className='file-preview'>
                     {this.props.isEditing === false && this.file().extension === 'js' ? (this.state.run.file === this.file() ? <div className='run-output'>Output:<div className='run-result'>{this.state.run.res}</div><div className='run-error'>{this.state.run.err}</div></div> : null) : null}
                     {this.props.isEditing ? this.generateCodeEditor() : this.generateFilePreview()}
