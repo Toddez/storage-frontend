@@ -71,6 +71,10 @@
     margin-left: 0.5rem;
 }
 
+.Explorer > .tree .navigation > .navigation-actions > .logout:hover svg {
+    color: var(--color-accent6);
+}
+
 .Explorer > .tree > .nodes {
     max-height: 600px;
     overflow-y: scroll;
