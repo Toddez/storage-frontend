@@ -8,7 +8,8 @@ import Form from '../components/Form';
 import '../style/Login.css';
 
 interface Props {
-    onLogin: () => void
+    onLogin: () => void,
+    onLogout: () => void
 }
 
 type State = {
@@ -25,9 +26,10 @@ class Login extends Form<Props> {
                 headers: {
                     'Content-type': 'application/json'
                 },
+                credentials: 'include',
                 body: JSON.stringify({
                     id: data.id,
-                    key: data.key
+                    key: data.key,
                 })
             })
                 .then((res) => res.json())
@@ -59,8 +61,9 @@ class Login extends Form<Props> {
                 method: 'POST',
                 headers: {
                     'Content-type': 'application/json',
-                    'x-access-token': Auth.getToken()
+                    'x-access-token': Auth.getToken(),
                 },
+                credentials: 'include',
                 body: JSON.stringify({
                     authKey: data.authKey0 + data.authKey1 + data.authKey2 + data.authKey3 + data.authKey4 + data.authKey5,
                 })
@@ -72,6 +75,7 @@ class Login extends Form<Props> {
                         return;
 
                     Auth.setToken(res.data.token);
+                    this.setState({ step: 0 });
                     this.props.onLogin();
                 });
         }
@@ -87,21 +91,69 @@ class Login extends Form<Props> {
 
     componentDidMount() : void {
         this._isMounted = true;
+
+        fetch(`${apiUrl}/checkup`, {
+            method: 'POST',
+            credentials: 'include'
+        })
+            .then((res) => res.json())
+            .then((res) => {
+                if (res.errors)
+                    return;
+
+                if (res.data.token) {
+                    Auth.setToken(res.data.token);
+
+                    if (res.data.auth)
+                        this.props.onLogin();
+                    else {
+                        this.setState({ step:1 });
+
+                        fetch(`${apiUrl}/2faqrc`, {
+                            method: 'POST',
+                            headers: {
+                                'Content-type': 'application/json',
+                                'x-access-token': Auth.getToken()
+                            }
+                        })
+                            .then((res) => res.blob())
+                            .then((res) => {
+                                const urlCreator = window.URL || window.webkitURL;
+                                return urlCreator.createObjectURL(res);
+                            })
+                            .then((res) => {
+                                this.setState({ config: res });
+                            });
+                    }
+                }
+            });
     }
 
     componentWillUnmount() : void {
         this._isMounted = false;
     }
 
-    onInput(event: any) : void {
-        if (event.target.value.length === 1) {
-            event.target.nextElementSibling.focus();
+    onInput(event: React.FormEvent<HTMLInputElement>) : void {
+        if (!event.currentTarget)
+            return;
+
+        if (event.currentTarget.value.length === 1) {
+            if (!event.currentTarget.nextElementSibling)
+                return;
+
+            (event.currentTarget.nextElementSibling as HTMLElement).focus();
         }
     }
 
-    onKeydown(event: any) : void {
-        if (event.target.value.length === 0 && ["Backspace", "Delete"].includes(event.key)) {
-            event.target.previousElementSibling.focus();
+    onKeydown(event: React.FormEvent<HTMLInputElement>) : void {
+        if (!event.currentTarget)
+            return;
+
+        if (event.currentTarget.value.length === 0 && ["Backspace", "Delete"].includes((event.nativeEvent as KeyboardEvent).key)) {
+            if (!event.currentTarget.previousElementSibling)
+                return;
+
+            (event.currentTarget.previousElementSibling as HTMLElement).focus();
         }
     }
 
@@ -143,6 +195,7 @@ class Login extends Form<Props> {
                                 <input key={5} className='authKey' type='number' name='authKey5' id='authKey5' onKeyDown={this.onKeydown} onChange={this.handleChange} min={0} max={9} placeholder="." required pattern={authPattern} />
                             </div>
                             <label htmlFor='authKey'><span className='label-text'>2FA Key</span></label>
+                            <a className='logout' onClick={() => {this.props.onLogout(); this.setState({ step:0 });}}>Cancel</a>
                         </div>
 
                         <input type='submit' value='Authorize' hidden />
