@@ -13,6 +13,7 @@ import NewFolderIcon from 'mdi-material-ui/FolderPlusOutline';
 import UploadIcon from 'mdi-material-ui/FileUploadOutline';
 import CloudIcon from 'mdi-material-ui/FileCloudOutline';
 import DeleteIcon from '@material-ui/icons/DeleteOutlined';
+import LogoutIcon from 'mdi-material-ui/Logout';
 
 import '../style/Explorer.css';
 
@@ -29,8 +30,12 @@ type State = {
     editingFile: boolean
 }
 
-class Explorer extends React.Component {
-    constructor(props: Record<string, unknown>) {
+interface Props {
+    onLogout: () => void
+}
+
+class Explorer extends React.Component<Props> {
+    constructor(props: Props) {
         super(props);
 
         this.generateNode = this.generateNode.bind(this);
@@ -46,10 +51,6 @@ class Explorer extends React.Component {
         this.onNameChange = this.onNameChange.bind(this);
         this.onNameDown = this.onNameDown.bind(this);
         this.onEdit = this.onEdit.bind(this);
-
-        Storage.initialize();
-        Storage.addFetchListener(this.onStorageFetch.bind(this));
-        Storage.addReadListener(this.onStorageFetch.bind(this));
     }
 
     _isMounted = false;
@@ -99,6 +100,10 @@ class Explorer extends React.Component {
 
     componentDidMount() : void {
         this._isMounted = true;
+
+        Storage.addFetchListener(this.onStorageFetch.bind(this));
+        Storage.addReadListener(this.onStorageFetch.bind(this));
+        Storage.initialize();
     }
 
     componentWillUnmount() : void {
@@ -461,6 +466,9 @@ class Explorer extends React.Component {
                                 </div>
                                 : null
                         }
+                        <div className='navigation-actions'>
+                            <div className='logout' onClick={() => {this.props.onLogout(); this.setState({ step:0 });}}><a><LogoutIcon /></a></div>
+                        </div>
                     </div>
                     {
                         this.generateNodes()
