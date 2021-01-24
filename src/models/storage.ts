@@ -9,9 +9,6 @@ class Storage {
     static types: Record<string, NodeType>
 
     static initialize() : void {
-        if (this.running)
-            return;
-
         this.fetch();
 
         this.running = true;
