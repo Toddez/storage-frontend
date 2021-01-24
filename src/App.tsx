@@ -2,6 +2,7 @@ import React from 'react';
 import { BrowserRouter as Router, Route, Switch, Redirect } from 'react-router-dom'; // eslint-disable-line no-unused-vars
 
 import Auth from './models/auth';
+import { apiUrl } from './models/config';
 
 import Login from './routes/Login';
 import Explorer from './routes/Explorer';
@@ -36,13 +37,22 @@ class App extends React.Component {
     }
 
     handleLogout() : void {
-        Auth.setToken('');
-        Auth.data = {};
+        fetch(`${apiUrl}/logout`, {
+            method: 'POST',
+            credentials: 'include'
+        })
+            .then((res) => res.json())
+            .then((res) => {
+                if (res.errors)
+                    return;
 
-        this.setState({
-            authorized: false,
-            data: {}
-        });
+                Auth.setToken('');
+                Auth.data = {};
+                this.setState({
+                    authorized: false,
+                    data: {}
+                });
+            });
     }
 
     render() : JSX.Element {
@@ -53,11 +63,11 @@ class App extends React.Component {
                         {
                             this.state.authorized
                                 ? <Switch>
-                                    <Route path='/explorer' render={() => <Explorer />} />
+                                    <Route path='/explorer' render={() => <Explorer onLogout={this.handleLogout} />} />
                                     <Redirect exact strict from='/' to='/explorer' />
                                 </Switch>
                                 : <Switch>
-                                    <Route path='/' render={() => <Login onLogin={this.handleLogin} />} />
+                                    <Route path='/' render={() => <Login onLogin={this.handleLogin} onLogout={this.handleLogout} />} />
                                     <Redirect strict from='/explorer' to='/' />
                                 </Switch>
                         }
