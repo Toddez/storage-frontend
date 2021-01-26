@@ -165,7 +165,7 @@ class Login extends Form<Props> {
                 { this.state.step === 0 ?
                     <form onSubmit={this.handleSubmit} >
                         <div className='input-section'>
-                            <input key={0}  type='text' name='id' id='id' onChange={this.handleChange} required autoFocus />
+                            <input key={0}  type='password' name='id' id='id' onChange={this.handleChange} required autoFocus />
                             <label htmlFor='id'><span className='label-text'>ID</span></label>
                         </div>
 
