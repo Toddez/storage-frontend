@@ -4,6 +4,7 @@ import { theme } from '../models/config';
 import Storage from '../models/storage';
 
 import StorageImage from './StorageImage';
+import StorageLink from './StorageLink';
 
 import { CodeBlock } from 'react-code-blocks';
 import ReactMarkdown from 'react-markdown';
@@ -15,19 +16,6 @@ import DeleteIcon from '@material-ui/icons/DeleteOutlined';
 import SaveIcon from 'mdi-material-ui/ContentSaveOutline';
 import CancelIcon from 'mdi-material-ui/Cancel';
 import RunIcon from 'mdi-material-ui/PlayOutline';
-
-const markdownRenderers = {
-    code: ({language, value} : CodeRendererProps) => {
-        return (
-            <SyntaxHighlighter style={dark} language={language} children={value} />
-        );
-    },
-    image: ({src, alt} : ImageRendererProps) => {
-        return (
-            <StorageImage src={src} alt={alt} />
-        );
-    }
-};
 
 type State = {
     file: TreeNode | null,
@@ -162,6 +150,27 @@ class Preview extends React.Component<PreviewProps> {
             || node.type & this.props.types.VIDEO);
     }
 
+    // eslint-disable-next-line
+    markdownRenderers() : Record<string, ((data: any) => JSX.Element)> {
+        return {
+            code: ({language, value} : CodeRendererProps) => {
+                return (
+                    <SyntaxHighlighter style={dark} language={language} children={value} />
+                );
+            },
+            image: ({src, alt} : ImageRendererProps) => {
+                return (
+                    <StorageImage src={src} alt={alt} />
+                );
+            },
+            link: ({href, children} : LinkRendererProps) => {
+                return (
+                    <StorageLink href={href} children={children} callback={this.props.linkCallback} />
+                );
+            }
+        };
+    }
+
     generateFilePreview() : JSX.Element | null {
         const file = this.state.data;
         const cwd = this.state.file as TreeNode;
@@ -194,7 +203,7 @@ class Preview extends React.Component<PreviewProps> {
 
         if (file.extension === 'md')
             return (
-                <ReactMarkdown className='markdown-preview' renderers={markdownRenderers} children={this.state.data.data} />
+                <ReactMarkdown className='markdown-preview' renderers={this.markdownRenderers()} children={this.state.data.data} />
             );
 
         if (this.isEditable(file))

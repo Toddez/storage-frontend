@@ -12,3 +12,8 @@ declare type ImageRendererProps = {
     src: string,
     alt: string
 }
+
+declare type LinkRendererProps = {
+    children: HTMLElement[],
+    href: string
+}

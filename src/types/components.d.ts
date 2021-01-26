@@ -27,7 +27,8 @@ declare interface PreviewProps {
     types: Record<string, number>,
     handleNodeActionClick: (event: ClickEvent<T>) => void,
     isEditing: boolean,
-    onEdit: (node: TreeNode, data: string) => void
+    onEdit: (node: TreeNode, data: string) => void,
+    linkCallback: (href: string) => void
 }
 
 declare interface ModalProps {
@@ -53,4 +54,10 @@ declare interface ClickEvent<T> extends React.MouseEvent<T, MouseEvent> {
 declare interface StorageImageProps {
     src: string,
     alt: string
+}
+
+declare interface StorageLinkProps {
+    href: string,
+    children: HTMLElement[],
+    callback: (href: string) => void
 }

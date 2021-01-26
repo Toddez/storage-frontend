@@ -51,6 +51,7 @@ class Explorer extends React.Component<Props> {
         this.onNameChange = this.onNameChange.bind(this);
         this.onNameDown = this.onNameDown.bind(this);
         this.onEdit = this.onEdit.bind(this);
+        this.onLink = this.onLink.bind(this);
     }
 
     _isMounted = false;
@@ -330,6 +331,25 @@ class Explorer extends React.Component<Props> {
         this.setState({editingFile: false});
     }
 
+    onLink(href: string) : void {
+        let cwd = this.currentNode().path.split('/');
+        if (cwd[0] === 'root')
+            cwd = cwd.slice(1, cwd.length);
+
+        const node = Storage.cwd(cwd + (cwd.length === 0 ? '' : '/') + href);
+
+        const path = node.path.split('/');
+        const finalPath = path.slice(1, path.length).join('/');
+
+        if (finalPath.endsWith(href)) {
+            this.navigate(finalPath);
+        } else {
+            if (href.startsWith('http://') || href.startsWith('https://')) {
+                window.location.href = href;
+            }
+        }
+    }
+
     handleNodeActionClick(event: ClickEvent<HTMLDivElement>) : void {
         if (this.state.editingName)
             return;
@@ -475,7 +495,7 @@ class Explorer extends React.Component<Props> {
                     }
                 </div>
                 }
-                <Preview cwd={this.currentNode()} types={this.state.types} handleNodeActionClick={this.handleNodeActionClick} isEditing={this.state.editingFile} onEdit={this.onEdit} />
+                <Preview cwd={this.currentNode()} types={this.state.types} handleNodeActionClick={this.handleNodeActionClick} isEditing={this.state.editingFile} onEdit={this.onEdit} linkCallback={this.onLink} />
             </div>
         );
     }
