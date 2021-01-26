@@ -362,11 +362,6 @@
     background-color: var(--color-background2);
 }
 
-.Explorer > .file > .file-preview > .markdown-preview a {
-    color: var(--color-accent2);
-    text-decoration: underline;
-}
-
 .Explorer > .file > .file-preview > span,
 .Explorer > .file > .file-preview > .markdown-preview {
     border-bottom-left-radius: 0.5rem !important;
@@ -388,6 +383,19 @@
     overflow-x: auto;
 }
 
+.Explorer > .file > .file-preview > .markdown-preview a.local.valid {
+    color: var(--color-accent4);
+}
+
+.Explorer > .file > .file-preview > .markdown-preview a.local.invalid {
+    color: var(--color-accent6);
+    opacity: 0.5;
+}
+
+.Explorer > .file > .file-preview > .markdown-preview a.external {
+    color: var(--color-accent2);
+    text-decoration: underline;
+}
 
 @media only screen and (max-width: 1200px) {
     .Explorer > .tree > .nodes,
