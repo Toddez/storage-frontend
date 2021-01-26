@@ -58,6 +58,8 @@ declare interface StorageImageProps {
 
 declare interface StorageLinkProps {
     href: string,
+    local: boolean,
+    valid: boolean,
     children: HTMLElement[],
     callback: (href: string) => void
 }

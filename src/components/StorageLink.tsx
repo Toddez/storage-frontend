@@ -7,7 +7,9 @@ class StorageLink extends React.Component<StorageLinkProps> {
 
     render() : JSX.Element {
         return (
-            <a onClick={() => { this.props.callback(this.props.href); }}>{this.props.children}</a>
+            this.props.local ?
+                <a className={`local${this.props.valid ? ' valid' : ' invalid'}`} onClick={() => { this.props.callback(this.props.href); }}>{this.props.children}</a>
+                : <a className='external' href={this.props.href}>{this.props.children}</a>
         );
     }
 }

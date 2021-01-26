@@ -164,8 +164,26 @@ class Preview extends React.Component<PreviewProps> {
                 );
             },
             link: ({href, children} : LinkRendererProps) => {
+                let isLocal = true;
+                let isValid = true;
+
+                let cwd = this.props.cwd.path.split('/');
+                if (cwd[0] === 'root')
+                    cwd = cwd.slice(1, cwd.length);
+
+                const node = Storage.cwd(cwd + (cwd.length === 0 ? '' : '/') + href);
+
+                const path = node.path.split('/');
+                const finalPath = path.slice(1, path.length).join('/');
+
+                if (!finalPath.endsWith(href))
+                    if (href.startsWith('http://') || href.startsWith('https://'))
+                        isLocal = false;
+                    else
+                        isValid = false;
+
                 return (
-                    <StorageLink href={href} children={children} callback={this.props.linkCallback} />
+                    <StorageLink local={isLocal} valid={isValid} href={href} children={children} callback={this.props.linkCallback} />
                 );
             }
         };
