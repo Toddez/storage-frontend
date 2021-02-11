@@ -106,7 +106,7 @@ class Storage {
             return;
 
         fetch(`${apiUrl}/storage/`, {
-            method: 'GET',
+            method: 'POST',
             headers: {
                 'Content-type': 'application/json',
                 'x-access-token': Auth.getToken()
@@ -127,12 +127,15 @@ class Storage {
         if (!Auth.authorized)
             return {} as FileNode;
 
-        return fetch(`${apiUrl}/storage/read/${path}`, {
-            method: 'GET',
+        return fetch(`${apiUrl}/storage/read`, {
+            method: 'POST',
             headers: {
                 'Content-type': 'application/json',
                 'x-access-token': Auth.getToken()
-            }
+            },
+            body: JSON.stringify({
+                localPath: path
+            })
         })
             .then((res) => res.json())
             .then((res) => {
@@ -152,13 +155,14 @@ class Storage {
         if (!Auth.authorized)
             return;
 
-        fetch(`${apiUrl}/storage/write/${path}`, {
+        fetch(`${apiUrl}/storage/write`, {
             method: 'POST',
             headers: {
                 'Content-type': 'application/json',
                 'x-access-token': Auth.getToken()
             },
             body: JSON.stringify({
+                localPath: path,
                 type: type,
                 data: data
             })
@@ -173,10 +177,11 @@ class Storage {
         if (!Auth.authorized)
             return;
 
-        fetch(`${apiUrl}/storage/upload/${path}`, {
+        fetch(`${apiUrl}/storage/upload`, {
             method: 'POST',
             headers: {
-                'x-access-token': Auth.getToken()
+                'x-access-token': Auth.getToken(),
+                'local-path': path
             },
             body: data
         })
@@ -190,13 +195,14 @@ class Storage {
         if (!Auth.authorized)
             return;
 
-        fetch(`${apiUrl}/storage/uploadFromURL/${path}`, {
+        fetch(`${apiUrl}/storage/uploadFromURL`, {
             method: 'POST',
             headers: {
                 'Content-type': 'application/json',
                 'x-access-token': Auth.getToken()
             },
             body: JSON.stringify({
+                localPath: path,
                 url: url
             })
         })
@@ -210,12 +216,15 @@ class Storage {
         if (!Auth.authorized)
             return;
 
-        fetch(`${apiUrl}/storage/delete/${path}`, {
+        fetch(`${apiUrl}/storage/delete`, {
             method: 'POST',
             headers: {
                 'Content-type': 'application/json',
                 'x-access-token': Auth.getToken()
-            }
+            },
+            body: JSON.stringify({
+                localPath: path
+            })
         })
             .then((res) => res.json())
             .then(() => {
@@ -227,13 +236,14 @@ class Storage {
         if (!Auth.authorized)
             return;
 
-        fetch(`${apiUrl}/storage/rename/${path}`, {
+        fetch(`${apiUrl}/storage/rename`, {
             method: 'POST',
             headers: {
                 'Content-type': 'application/json',
                 'x-access-token': Auth.getToken()
             },
             body: JSON.stringify({
+                localPath: path,
                 name: name
             })
         })
