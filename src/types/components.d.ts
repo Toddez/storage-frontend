@@ -16,7 +16,8 @@ declare type FileNode = {
     lines: number,
     size: number,
     file: string,
-    initial: string
+    initial: string,
+    path: string
 }
 
 declare type FetchCallback = () => void

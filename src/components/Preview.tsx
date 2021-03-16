@@ -59,7 +59,8 @@ class Preview extends React.Component<PreviewProps> {
             extension: '',
             type: 0,
             file: '',
-            initial: ''
+            initial: '',
+            path: ''
         },
         run: {
             res: '',
