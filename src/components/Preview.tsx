@@ -238,7 +238,7 @@ class Preview extends React.Component<PreviewProps> {
 
         if (file.type & this.props.types.IMAGE)
             return (
-                <img src={`data:image/*;base64,${this.state.data.initial}`} />
+                <StorageImage src={file.path} alt={file.file} />
             );
 
         if (file.type & this.props.types.VIDEO)
