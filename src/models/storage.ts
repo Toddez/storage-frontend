@@ -1,24 +1,12 @@
 import Auth from '../models/auth';
 import { apiUrl } from '../models/config';
 
-function hslToHex(h: number, s: number, l: number) : string {
-    l /= 100;
-    const a = s * Math.min(l, 1 - l) / 100;
-    const f = (n: number) => {
-        const k = (n + h / 30) % 12;
-        const color = l - a * Math.max(Math.min(k - 3, 9 - k, 1), -1);
-        return Math.round(255 * color).toString(16).padStart(2, '0');
-    };
-    return `#${f(0)}${f(8)}${f(4)}`;
-}
-
 class Storage {
     static running = false;
     static fetchListeners = [] as Array<FetchCallback>;
     static readListeners = [] as Array<ReadCallback>;
     static root: TreeNode = {} as TreeNode;
     static types: Record<string, NodeType>;
-    static meta: any;
 
     static initialize() : void {
         this.fetch();
@@ -129,51 +117,10 @@ class Storage {
                 if (res.errors)
                     return;
 
-                this.read('meta.json', true)
-                    .then((meta) => {
-                        this.root = res.tree;
-                        this.types = res.types;
-
-                        try {
-                            this.meta = JSON.parse(meta.data);
-                        } catch {
-                            this.meta = {};
-                        }
-
-                        if (!this.meta?.tags)
-                            this.write('meta.json', this.types.RAW, JSON.stringify({tags: []}, null, 2));
-
-                        this.applyMeta(this.root, true);
-
-                        this.callFetchListeners();
-                    });
+                this.root = res.tree;
+                this.types = res.types;
+                this.callFetchListeners();
             });
-    }
-
-    static async applyMeta(root: TreeNode, generateColors = false) {
-        const tags = this.meta?.tags ?? [];
-        if (generateColors) {
-            let index = 0;
-            for (const tag of tags) {
-                tag.color = hslToHex(index * (360 / tags.length), 75, 40);
-                index++;
-            }
-        }
-
-        for (const tag of tags) {
-            const files = tag?.files ?? [];
-
-            if (files.includes(root.path)) {
-                if (!root.tags)
-                    root.tags = [];
-
-                root.tags.push(tag);
-            }
-        }
-
-        for (const child of root.children) {
-            this.applyMeta(child);
-        }
     }
 
     static async read(path: string, ignoreCallbacks = false) : Promise<FileNode> {

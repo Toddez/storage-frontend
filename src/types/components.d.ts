@@ -5,17 +5,6 @@ declare type TreeNode = {
     file: string,
     extension: string,
     parent: TreeNode | null,
-    tags: any
-}
-
-declare type Tag = {
-    label: string,
-    color: string,
-    files: Array<TreeNode>
-}
-
-declare type Meta = {
-    tags: Array<Tag>
 }
 
 declare type NodeType = number

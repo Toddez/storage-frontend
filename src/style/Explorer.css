@@ -158,26 +158,6 @@
     transform: translateX(-100%);
 }
 
-.Explorer > .tree > .nodes > .node > .node-tags {
-    display: flex;
-    flex-direction: row;
-    align-items: center;
-}
-
-.Explorer > .tree > .nodes > .node > .node-tags > .node-tag {
-    display: flex;
-    flex-direction: row;
-    align-items: center;
-    margin-right: 0.1rem;
-}
-
-.Explorer > .tree > .nodes > .node > .node-tags > .node-tag > .node-tag-circle {
-    width: 1rem;
-    height: 1rem;
-    border-radius: 50%;
-    display: inline-block;
-}
-
 .Explorer > .tree > .nodes > .node > .name:valid + .node-border::after {
     transform: translateX(-50%);
 }

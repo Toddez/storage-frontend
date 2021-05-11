@@ -64,7 +64,6 @@ class Explorer extends React.Component<Props> {
             file: '',
             extension: '',
             parent: null,
-            tags: []
         },
         types: {},
         position: [],
@@ -229,16 +228,6 @@ class Explorer extends React.Component<Props> {
                     onKeyDown={this.onNameDown}
                     readOnly={true} spellCheck={false} required pattern={pattern} ></input>
                 <div className='node-border'></div>
-                <div className='node-tags'>
-                    { node?.tags?.map((value: Tag, index: number) => {
-                        return (
-                            <div className='node-tag' key={index}>
-                                <span className='node-tag-circle' style={{backgroundColor: value.color}}></span>
-                                <span className='node-tag-label'>{value.label}</span>
-                            </div>
-                        );
-                    }) }
-                </div>
                 <div id={`tree-node-actions.${index}`} className='actions' onClick={this.handleNodeActionClick}>
                     <a className='file-rename'>
                         Rename
