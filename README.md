@@ -1,5 +1,7 @@
 # storage-frontend
 
+![Image of file explorer](docs/images/storage.png)
+
 ## Requirements
 Requires [storage-backend](https://github.com/Toddez/storage-backend) API.
 
