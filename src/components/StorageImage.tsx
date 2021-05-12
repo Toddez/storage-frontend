@@ -16,8 +16,8 @@ class StorageImage extends React.Component<StorageImageProps> {
 
     state: State = {
         src: '',
-        width: '100%',
-        height: '100%',
+        width: 'auto',
+        height: 'auto',
         observer: new IntersectionObserver(
             ([entry]) => {
                 if (entry.isIntersecting)
@@ -43,8 +43,8 @@ class StorageImage extends React.Component<StorageImageProps> {
         const res = await Storage.read(src[0], true);
         const state = {
             src: `data:image/${res.extension};base64,${res.data}`,
-            width: '100%',
-            height: '100%'
+            width: this.state.width,
+            height: this.state.height
         };
 
         if (src.length > 1) {
