@@ -2,7 +2,7 @@ import React from 'react';
 
 import Storage from '../models/storage';
 
-function openBase64InNewTab (data: string, mimeType: string) {
+const openBase64InNewTab = (data: string, mimeType: string) : void => {
     const byteCharacters = atob(data);
     const byteNumbers = new Array(byteCharacters.length);
     for (let i = 0; i < byteCharacters.length; i++) {
@@ -12,7 +12,7 @@ function openBase64InNewTab (data: string, mimeType: string) {
     const file = new Blob([byteArray], { type: mimeType + ';base64' });
     const fileURL = URL.createObjectURL(file);
     window.open(fileURL);
-}
+};
 
 type State = {
     src: string,
