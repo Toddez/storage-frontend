@@ -2,18 +2,6 @@ import React from 'react';
 
 import Storage from '../models/storage';
 
-const openBase64InNewTab = (data: string, mimeType: string) : void => {
-    const byteCharacters = atob(data);
-    const byteNumbers = new Array(byteCharacters.length);
-    for (let i = 0; i < byteCharacters.length; i++) {
-        byteNumbers[i] = byteCharacters.charCodeAt(i);
-    }
-    const byteArray = new Uint8Array(byteNumbers);
-    const file = new Blob([byteArray], { type: mimeType + ';base64' });
-    const fileURL = URL.createObjectURL(file);
-    window.open(fileURL);
-};
-
 type State = {
     src: string,
     width: string,
@@ -54,9 +42,7 @@ class StorageImage extends React.Component<StorageImageProps> {
 
     render() : JSX.Element {
         return (
-            <img src={this.state.src} alt={this.props.alt} style={{maxWidth: this.state.width, maxHeight: this.state.height}} onClick={ () => {
-                //openBase64InNewTab(this.state.data, 'image/png');
-            }} />
+            <img src={this.state.src} alt={this.props.alt} style={{maxWidth: this.state.width, maxHeight: this.state.height}} />
         );
     }
 }
