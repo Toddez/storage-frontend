@@ -16,7 +16,6 @@ const openBase64InNewTab = (data: string, mimeType: string) : void => {
 
 type State = {
     src: string,
-    data: string,
     width: string,
     height: string
 }
@@ -28,7 +27,6 @@ class StorageImage extends React.Component<StorageImageProps> {
 
     state: State = {
         src: '',
-        data: '',
         width: '100%',
         height: '100%'
     }
@@ -38,8 +36,7 @@ class StorageImage extends React.Component<StorageImageProps> {
         const src = this.props.src.split('=');
         const res = await Storage.read(src[0], true);
         const state = {
-            src: `data:image/*;base64,${res.data}`,
-            data: res.data,
+            src: `data:image/${res.extension};base64,${res.data}`,
             width: '100%',
             height: '100%'
         };
@@ -57,8 +54,8 @@ class StorageImage extends React.Component<StorageImageProps> {
 
     render() : JSX.Element {
         return (
-            <img src={this.state.src} alt={this.props.alt} style={{maxWidth: this.state.width, maxHeight: this.state.height}} onContextMenu={(event) => event.preventDefault()} onClick={ () => {
-                openBase64InNewTab(this.state.data, 'image/png');
+            <img src={this.state.src} alt={this.props.alt} style={{maxWidth: this.state.width, maxHeight: this.state.height}} onClick={ () => {
+                //openBase64InNewTab(this.state.data, 'image/png');
             }} />
         );
     }
