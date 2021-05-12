@@ -25,7 +25,6 @@ class StorageVideo extends React.Component<StorageVideoProps> {
         const res = await Storage.read(src[0], true);
         const state = {
             src: `data:video/${res.extension};base64,${res.data}`,
-            extension: res.extension,
             width: '100%',
             height: '100%'
         };
