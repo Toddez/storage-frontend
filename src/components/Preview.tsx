@@ -210,7 +210,7 @@ class Preview extends React.Component<PreviewProps> {
                         <StorageVideo key={index} src={path.slice(1, path.length).join('/')} />
                     );
                 }
-            });
+            }).filter(node => node !== undefined);
 
             if (images.length > 0)
                 return (
