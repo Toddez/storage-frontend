@@ -335,24 +335,21 @@
     justify-content: space-evenly;
 }
 
-.Explorer > .file > .file-preview > .images > li {
+.Explorer > .file > .file-preview > .images > * {
     flex-grow: 1;
-    max-height: 20rem;
-    max-width: calc(20% - 1rem);
-    min-width: 10rem;
     margin: 0.5rem;
     box-sizing: border-box;
+    min-height: 20rem;
+    max-height: 40vh;
+    min-width: 20vw;
+    object-fit: contain;
 }
 
-.Explorer > .file > .file-preview > .images > li:last-child {
+.Explorer > .file > .file-preview > .images > *:last-child {
     flex-grow: 10;
 }
 
-.Explorer > .file > .file-preview > .images > li > img,
-.Explorer > .file > .file-preview > .images > li > video {
-    max-height: 100%;
-    min-width: 100%;
-    object-fit: cover;
+.Explorer > .file > .file-preview > .images > * {
     vertical-align: bottom;
     border-radius: 0.1rem;
 }

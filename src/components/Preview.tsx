@@ -200,18 +200,14 @@ class Preview extends React.Component<PreviewProps> {
                 if (node.type & this.props.types.IMAGE) {
                     const path = node.path.split('/');
                     return (
-                        <li key={index}>
-                            <StorageImage src={path.slice(1, path.length).join('/')} alt={node.file} />
-                        </li>
+                        <StorageImage key={index} src={path.slice(1, path.length).join('/')} alt={node.file} />
                     );
                 }
 
                 if (node.type & this.props.types.VIDEO) {
                     const path = node.path.split('/');
                     return (
-                        <li key={index}>
-                            <StorageVideo src={path.slice(1, path.length).join('/')} />
-                        </li>
+                        <StorageVideo key={index} src={path.slice(1, path.length).join('/')} />
                     );
                 }
             });
