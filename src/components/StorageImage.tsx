@@ -1,11 +1,12 @@
-import React from 'react';
+import React, { RefObject } from 'react';
 
 import Storage from '../models/storage';
 
 type State = {
     src: string,
     width: string,
-    height: string
+    height: string,
+    observer: IntersectionObserver
 }
 
 class StorageImage extends React.Component<StorageImageProps> {
@@ -16,11 +17,28 @@ class StorageImage extends React.Component<StorageImageProps> {
     state: State = {
         src: '',
         width: '100%',
-        height: '100%'
+        height: '100%',
+        observer: new IntersectionObserver(
+            ([entry]) => {
+                if (entry.isIntersecting)
+                    this.onSeen();
+            }
+        )
     }
 
-    // eslint-disable-next-line
-    async componentDidMount() : Promise<any> {
+    ref: RefObject<HTMLImageElement> = React.createRef();
+
+    componentDidMount() : void {
+        if (!this.ref.current)
+            return;
+
+        this.state.observer.observe(this.ref.current);
+    }
+
+    async onSeen() : Promise<void> {
+        if (this.state.src)
+            return;
+
         const src = this.props.src.split('=');
         const res = await Storage.read(src[0], true);
         const state = {
@@ -40,9 +58,13 @@ class StorageImage extends React.Component<StorageImageProps> {
         this.setState(state);
     }
 
+    componentWillUnmount() : void {
+        this.state.observer.disconnect();
+    }
+
     render() : JSX.Element {
         return (
-            <img src={this.state.src} alt={this.props.alt} style={{maxWidth: this.state.width, maxHeight: this.state.height}} />
+            <img ref={this.ref} src={this.state.src} alt={this.props.alt} style={{maxWidth: this.state.width, maxHeight: this.state.height}} />
         );
     }
 }
