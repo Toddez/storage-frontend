@@ -7,7 +7,7 @@
     position: absolute;
     width: 60%;
     max-width: 450px;
-    min-width: 400px;
+    min-width: min(400px, calc(100% - 2rem));
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
@@ -52,7 +52,7 @@
     width: 100%;
     border-bottom: 1px solid var(--color-accent2);
     transform: translate(-100%);
-    transition: transform 0.3s ease;
+    transition: all 0.3s ease;
 }
 
 .Login > form .label-text {
@@ -83,10 +83,15 @@
     margin: 0;
 }
 
+.Login > form input:invalid + label::after {
+    border-color: var(--color-accent6);
+}
+
 .Login > form input.authKey {
     -moz-appearance: textfield;
-    width: calc(100% / 6);
+    width: 100%;
     text-align: center;
+    letter-spacing: 1rem;
 }
 
 .qr-code {

@@ -65,7 +65,7 @@ class Login extends Form<Props> {
                 },
                 credentials: 'include',
                 body: JSON.stringify({
-                    authKey: data.authKey0 + data.authKey1 + data.authKey2 + data.authKey3 + data.authKey4 + data.authKey5,
+                    authKey: data.authKey,
                 })
             })
                 .then((res) => res.json())
@@ -158,7 +158,7 @@ class Login extends Form<Props> {
     }
 
     render() : JSX.Element {
-        const authPattern = '[0-9]{1,1}';
+        const authPattern = '[0-9]{6}';
 
         return (
             <div className='Login'>
@@ -186,14 +186,7 @@ class Login extends Form<Props> {
                         }
 
                         <div className='input-section'>
-                            <div id='authKey' className='always-show'>
-                                <input key={0} className='authKey' type='number' name='authKey0' id='authKey0' onInput={this.onInput} onChange={this.handleChange} min={0} max={9} placeholder="." required autoFocus pattern={authPattern} />
-                                <input key={1} className='authKey' type='number' name='authKey1' id='authKey1' onKeyDown={this.onKeydown} onInput={this.onInput} onChange={this.handleChange} min={0} max={9} placeholder="." required pattern={authPattern} />
-                                <input key={2} className='authKey' type='number' name='authKey2' id='authKey2' onKeyDown={this.onKeydown} onInput={this.onInput} onChange={this.handleChange} min={0} max={9} placeholder="." required pattern={authPattern} />
-                                <input key={3} className='authKey' type='number' name='authKey3' id='authKey3' onKeyDown={this.onKeydown} onInput={this.onInput} onChange={this.handleChange} min={0} max={9} placeholder="." required pattern={authPattern} />
-                                <input key={4} className='authKey' type='number' name='authKey4' id='authKey4' onKeyDown={this.onKeydown} onInput={this.onInput} onChange={this.handleChange} min={0} max={9} placeholder="." required pattern={authPattern} />
-                                <input key={5} className='authKey' type='number' name='authKey5' id='authKey5' onKeyDown={this.onKeydown} onChange={this.handleChange} min={0} max={9} placeholder="." required pattern={authPattern} />
-                            </div>
+                            <input className='authKey always-show' type='text' name='authKey' id='authKey' onInput={this.onInput} onChange={this.handleChange} inputMode='numeric' minLength={6} maxLength={6} required autoFocus pattern={authPattern} />
                             <label htmlFor='authKey'><span className='label-text'>2FA Key</span></label>
                             <a className='logout' onClick={() => {this.props.onLogout(); this.setState({ step:0 });}}>Cancel</a>
                         </div>
