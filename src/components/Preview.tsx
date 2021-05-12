@@ -4,6 +4,7 @@ import { theme } from '../models/config';
 import Storage from '../models/storage';
 
 import StorageImage from './StorageImage';
+import StorageVideo from './StorageVideo';
 import StorageLink from './StorageLink';
 
 import { CodeBlock } from 'react-code-blocks';
@@ -204,6 +205,15 @@ class Preview extends React.Component<PreviewProps> {
                         </li>
                     );
                 }
+
+                if (node.type & this.props.types.VIDEO) {
+                    const path = node.path.split('/');
+                    return (
+                        <li key={index}>
+                            <StorageVideo src={path.slice(1, path.length).join('/')} />
+                        </li>
+                    );
+                }
             });
 
             if (images.length > 0)
@@ -241,12 +251,11 @@ class Preview extends React.Component<PreviewProps> {
                 <StorageImage src={file.path} alt={file.file} />
             );
 
-        if (file.type & this.props.types.VIDEO)
+        if (file.type & this.props.types.VIDEO) {
             return (
-                <video controls>
-                    <source src={`data:video/*;base64,${this.state.data.initial}`} type={`video/${file.extension}`}/>
-                </video>
+                <StorageVideo src={file.path} />
             );
+        }
 
         return null;
     }
