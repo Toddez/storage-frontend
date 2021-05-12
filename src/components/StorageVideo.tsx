@@ -1,11 +1,12 @@
-import React from 'react';
+import React, { RefObject } from 'react';
 
 import Storage from '../models/storage';
 
 type State = {
     src: string,
     width: string,
-    height: string
+    height: string,
+    observer: IntersectionObserver
 }
 
 class StorageVideo extends React.Component<StorageVideoProps> {
@@ -16,11 +17,28 @@ class StorageVideo extends React.Component<StorageVideoProps> {
     state: State = {
         src: '',
         width: '100%',
-        height: '100%'
+        height: '100%',
+        observer: new IntersectionObserver(
+            ([entry]) => {
+                if (entry.isIntersecting)
+                    this.onSeen();
+            }
+        )
     }
 
-    // eslint-disable-next-line
-    async componentDidMount() : Promise<any> {
+    ref: RefObject<HTMLVideoElement> = React.createRef();
+
+    componentDidMount() : void {
+        if (!this.ref.current)
+            return;
+
+        this.state.observer.observe(this.ref.current);
+    }
+
+    async onSeen() : Promise<void> {
+        if (this.state.src)
+            return;
+
         const src = this.props.src.split('=');
         const res = await Storage.read(src[0], true);
         const state = {
@@ -42,8 +60,7 @@ class StorageVideo extends React.Component<StorageVideoProps> {
 
     render() : JSX.Element {
         return (
-            <video controls loop src={this.state.src} >
-            </video>
+            <video ref={this.ref} controls loop src={this.state.src}></video>
         );
     }
 }
