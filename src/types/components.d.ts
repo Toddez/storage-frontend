@@ -64,3 +64,7 @@ declare interface StorageLinkProps {
     children: HTMLElement[],
     callback: (href: string) => void
 }
+
+declare interface StorageVideoProps {
+    src: string
+}
