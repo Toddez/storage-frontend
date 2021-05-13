@@ -446,6 +446,11 @@
     margin: 0 auto;
 }
 
+:not(.images) > .image-container > img,
+:not(.images) > .image-container > video {
+    max-width: 100vw;
+}
+
 :not(.images) > .image-container .overlay-text {
     display: none;
 }
