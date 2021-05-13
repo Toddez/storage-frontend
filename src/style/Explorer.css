@@ -501,7 +501,7 @@
     }
 }
 
-@media only screen and (max-width: 400px) {
+@media only screen and (max-width: 300px) {
     .Explorer > .file > .file-preview > .images :not(span) {
         margin: 0;
         border-radius: 0;
