@@ -87,9 +87,9 @@ class StorageImage extends React.Component<StorageImageProps> {
         this.state.observer.disconnect();
     }
 
-    render() : JSX.Element {
+    render() : JSX.Element | null {
         return (
-            <span className='image-container'>
+            <span className='image-container' style={{maxWidth: `${this.ref.current?.offsetWidth}px`, maxHeight: `${this.ref.current?.offsetHeight}px`}}>
                 <img ref={this.ref} src={this.state.src} alt={this.props.alt} style={this.state.width && this.state.height ? {maxWidth: this.state.width, maxHeight: this.state.height} : {}} className={this.state.className} />
                 <span className='overlay-text'>{this.props.src.split('/').pop()}</span>
             </span>
