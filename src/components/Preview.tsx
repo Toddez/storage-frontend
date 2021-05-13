@@ -160,7 +160,7 @@ class Preview extends React.Component<PreviewProps> {
                     <SyntaxHighlighter style={dark} language={language} children={value} />
                 );
             },
-            image: ({src, alt} : ImageRendererProps) => {
+            image: ({src} : ImageRendererProps) => {
                 return (
                     <StorageImage src={src} />
                 );
