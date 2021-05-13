@@ -446,6 +446,10 @@
     margin: 0 auto;
 }
 
+:not(.images) > .image-container .overlay-text {
+    display: none;
+}
+
 @media only screen and (max-width: 1300px) {
     .Explorer > .tree > .nodes,
     .Explorer > .tree > .nodes > .node:last-child,
