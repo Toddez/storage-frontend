@@ -26,6 +26,9 @@ class StorageImage extends React.Component<StorageImageProps> {
             ([entry]) => {
                 this.setState({ ...this.state, visible: entry.isIntersecting });
                 this.onObserve();
+            },
+            {
+                rootMargin: '100%'
             }
         )
     }
