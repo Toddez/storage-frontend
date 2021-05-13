@@ -248,6 +248,11 @@
     background-color: rgba(255, 255, 255, 0.05);
 }
 
+.Explorer > .file > .file-preview:not(:empty) {
+    height: 100%;
+    overflow: hidden;
+}
+
 .Explorer > .file > .file-preview > img,
 .Explorer > .file > .file-preview > video {
     display: block;
@@ -493,6 +498,10 @@
 :not(.images) > .image-container > img,
 :not(.images) > .image-container > video {
     max-width: 100vw;
+}
+
+:not(.images) > .image-container {
+    padding: 0 !important;
 }
 
 :not(.images) > .image-container .overlay-text {
