@@ -605,16 +605,21 @@
     }
 
     .Explorer > .file > .header > .file-info {
-        flex-direction: column;
+        flex-wrap: wrap;
+        width: 100%;
     }
 
-    .Explorer > .file > .header > .file-info > *:not(:last-child) {
-        border-bottom: 1px solid white;
+    .Explorer > .file > .header > .file-info > .file-edit {
+        width: 100%;
+        border-bottom: none;
+    }
+
+    .Explorer > .file > .header > .file-info > * {
         margin-bottom: 0.15rem;
         padding-bottom: 0.15rem;
     }
 
-    .Explorer > .file > .header > .file-info > .inline-seperator {
+    .Explorer > .file > .header > .file-info > .inline-seperator:nth-of-type(1) {
         display: none;
     }
 
@@ -643,6 +648,21 @@
     }
 }
 
+@media only screen and (max-width: 400px) {
+    .Explorer > .file > .header {
+        flex-direction: row;
+        align-items: center;
+    }
+
+    .Explorer > .file > .header > .file-info {
+        flex-direction: column;
+    }
+
+    .Explorer > .file > .header > .file-info > .inline-seperator {
+        display: none;
+    }
+}
+
 @media only screen and (max-width: 300px) {
     .Explorer > .file > .header {
         flex-direction: column;
@@ -650,8 +670,11 @@
     }
 
     .Explorer > .file > .header > .file-info {
-        flex-direction: column;
-        margin-bottom: 0.5rem;
+        margin-bottom: 0.2rem;
+    }
+
+    .Explorer > .file > .header > .file-actions {
+        margin-left: -0.5rem;
     }
 
     .Explorer > .file > .file-preview > .images :not(span) {
