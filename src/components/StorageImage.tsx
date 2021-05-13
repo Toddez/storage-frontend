@@ -63,7 +63,6 @@ class StorageImage extends React.Component<StorageImageProps> {
             }
 
             this.setState(state);
-            this.onObserve();
         }
 
         if (this.state.visible) {
