@@ -53,6 +53,8 @@ class StorageVideo extends React.Component<StorageVideoProps> {
 
         this.state.loadObserver.observe(this.ref.current);
         this.state.playObserver.observe(this.ref.current);
+        this.onLoad();
+        this.onPlay();
     }
 
     async onLoad() : Promise<void> {
@@ -76,7 +78,7 @@ class StorageVideo extends React.Component<StorageVideoProps> {
             }
 
             this.setState(state);
-            this.onLoad();
+            this.onPlay();
         }
 
         if (!this.state.src)
@@ -86,11 +88,14 @@ class StorageVideo extends React.Component<StorageVideoProps> {
             return;
 
         if (this.state.shouldLoad) {
-            let className = 'loading';
-            if (this.ref.current.videoWidth > this.ref.current.videoHeight)
-                className = 'wide';
-            else
-                className = 'tall';
+            await this.ref.current.play();
+
+            const width = this.ref.current.videoWidth;
+            const height = this.ref.current.videoHeight;
+            const className = width > height ? 'wide' : 'tall';
+
+            if (!this.state.shouldPlay)
+                await this.ref.current.pause();
 
             this.setState({ ...this.state, className: className });
         }
