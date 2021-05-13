@@ -7,8 +7,10 @@ type State = {
     width: string,
     height: string,
     className: string,
-    visible: boolean,
-    observer: IntersectionObserver
+    shouldLoad: boolean,
+    shouldPlay: boolean,
+    loadObserver: IntersectionObserver,
+    playObserver: IntersectionObserver
 }
 
 class StorageVideo extends React.Component<StorageVideoProps> {
@@ -21,11 +23,24 @@ class StorageVideo extends React.Component<StorageVideoProps> {
         width: 'auto',
         height: 'auto',
         className: 'loading',
-        visible: false,
-        observer: new IntersectionObserver(
+        shouldLoad: false,
+        shouldPlay: false,
+        loadObserver: new IntersectionObserver(
             ([entry]) => {
-                this.setState({ ...this.state, visible: entry.isIntersecting });
-                this.onObserve();
+                this.setState({ ...this.state, shouldLoad: entry.isIntersecting });
+                this.onLoad();
+            },
+            {
+                rootMargin: '100%'
+            }
+        ),
+        playObserver: new IntersectionObserver(
+            ([entry]) => {
+                this.setState({ ...this.state, shouldPlay: entry.isIntersecting });
+                this.onPlay();
+            },
+            {
+                threshold: 0.5
             }
         )
     }
@@ -36,12 +51,12 @@ class StorageVideo extends React.Component<StorageVideoProps> {
         if (!this.ref.current)
             return;
 
-        this.state.observer.observe(this.ref.current);
-        this.onObserve();
+        this.state.loadObserver.observe(this.ref.current);
+        this.state.playObserver.observe(this.ref.current);
     }
 
-    async onObserve() : Promise<void> {
-        if (!this.state.src && this.state.visible) {
+    async onLoad() : Promise<void> {
+        if (!this.state.src && this.state.shouldLoad) {
             const src = this.props.src.split('=');
             const res = await Storage.read(src[0], true);
 
@@ -61,32 +76,48 @@ class StorageVideo extends React.Component<StorageVideoProps> {
             }
 
             this.setState(state);
-            this.onObserve();
+            this.onLoad();
         }
 
-        if (this.state.visible) {
+        if (!this.state.src)
+            return;
+
+        if (!this.ref.current)
+            return;
+
+        if (this.state.shouldLoad) {
+            let className = 'loading';
+            if (this.ref.current.videoWidth > this.ref.current.videoHeight)
+                className = 'wide';
+            else
+                className = 'tall';
+
+            this.setState({ ...this.state, className: className });
+        }
+    }
+
+    async onPlay() : Promise<void> {
+        if (!this.state.src)
+            return;
+
+        if (!this.ref.current)
+            return;
+
+        if (this.state.shouldPlay)
             await this.ref.current?.play();
-
-            if (this.ref.current && this.state.src) {
-                let className = 'loading';
-                if (this.ref.current)
-                    if (this.ref.current.videoWidth > this.ref.current.videoHeight)
-                        className = 'wide';
-                    else
-                        className = 'tall';
-
-                this.setState({ ...this.state, className: className });
-            }
-        } else {
+        else
             await this.ref.current?.pause();
-        }
     }
 
     componentWillUnmount() : void {
-        this.state.observer.disconnect();
+        if (!this.ref.current)
+            return;
+
+        this.state.loadObserver.unobserve(this.ref.current);
+        this.state.playObserver.unobserve(this.ref.current);
     }
 
-    render() : JSX.Element {
+    render() : JSX.Element | null {
         return (
             <video ref={this.ref} controls loop muted src={this.state.src} preload={"metadata"} className={this.state.className} ></video>
         );
