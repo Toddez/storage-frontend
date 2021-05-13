@@ -345,6 +345,7 @@
     list-style: none;
     padding: 2rem;
     justify-content: space-evenly;
+    position: relative;
 }
 
 .Explorer > .file > .file-preview > .images :not(span) {
@@ -368,6 +369,42 @@
 
 .Explorer > .file > .file-preview > .images video::-webkit-media-controls-panel {
     display: none;
+}
+
+.Explorer > .file > .file-preview > .images .video-paused {
+    position: absolute;
+    width: 74px;
+    height: 74px;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    transition: 0.1s border-width ease;
+    border-color: transparent transparent transparent var(--color-foreground1);
+}
+
+@keyframes resume {
+    0% {
+        border-color: transparent transparent transparent var(--color-foreground1);
+    }
+    20% {
+        border-color: transparent transparent transparent var(--color-foreground1);
+    }
+    100% {
+        border-color: transparent transparent transparent transparent;
+    }
+}
+
+.Explorer > .file > .file-preview > .images video:not(.paused) + .video-paused {
+    border-style: solid;
+    border-width: 37px 0 37px 60px;
+    border-color: transparent transparent transparent transparent;
+    animation-name: resume;
+    animation-duration: 0.5s;
+}
+
+.Explorer > .file > .file-preview > .images video.paused + .video-paused {
+    border-style: double;
+    border-width: 0px 0 0px 60px;
 }
 
 .Explorer > .file > .file-preview > .images *.tall {
