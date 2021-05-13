@@ -476,17 +476,16 @@ class Explorer extends React.Component<Props> {
                         {
                             this.generatePath()
                         }
-                        {
-                            this.currentNode().type & this.state.types.DIR ?
-                                <div className='navigation-actions'>
+                        <div className='navigation-actions'>
+                            {
+                                this.currentNode().type & this.state.types.DIR ? <React.Fragment>
                                     <div className='add-folder' onClick={() => this.displayCreateFolderModal()}><a><NewFolderIcon /></a></div>
                                     <div className='add-file' onClick={() => this.displayCreateFileModal()}><a><NewFileIcon /></a></div>
                                     <div className='upload-file' onClick={() => this.displayUploadModal()}><a><UploadIcon /></a></div>
                                     <div className='upload-file' onClick={() => this.displayUploadURLModal()}><a><CloudIcon /></a></div>
-                                </div>
-                                : null
-                        }
-                        <div className='navigation-actions'>
+                                </React.Fragment>
+                                    : null
+                            }
                             <div className='logout' onClick={() => {this.props.onLogout(); this.setState({ step:0 });}}><a><LogoutIcon /></a></div>
                         </div>
                     </div>

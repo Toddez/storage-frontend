@@ -518,6 +518,16 @@
 }
 
 @media only screen and (max-width: 700px) {
+    .Explorer > .tree > .navigation {
+        flex-direction: column;
+        align-items: baseline;
+        justify-content: space-between;
+    }
+
+    .Explorer > .tree > .navigation > .path {
+        margin-bottom: 1rem;
+    }
+
     .Explorer > .file > .file-preview > .images > span {
         margin: 0;
     }
