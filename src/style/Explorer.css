@@ -230,6 +230,10 @@
     flex-direction: row;
 }
 
+.Explorer > .file > .header > .file-info > .file-edit {
+    color: var(--color-accent4);
+}
+
 .Explorer > .file > .header > .file-actions {
     display: flex;
     flex-direction: row;
@@ -551,7 +555,7 @@
     }
 
     .Explorer > .tree > .collapse-nodes:not(.collapsed) {
-        border-bottom: 1px solid var(--color-accent2);
+        border-bottom: 1px solid var(--color-accent4);
     }
 
     .Explorer > .tree > .collapse-nodes.collapsed {
@@ -578,7 +582,7 @@
         height: 5px;
         display: inline-block;
         transition: all 0.2s ease-out;
-        background-color: var(--color-accent2);
+        background-color: var(--color-accent4);
     }
 
     .Explorer > .tree > .collapse-nodes.collapsed > .collapse-chevron  > .part-l,
@@ -594,6 +598,24 @@
     .Explorer > .tree > .collapse-nodes.collapsed > .collapse-chevron  > .part-l,
     .Explorer > .tree > .collapse-nodes:not(.collapsed) > .collapse-chevron  > .part-r {
         transform: skewY(-40deg);
+    }
+
+    .Explorer > .file > .header {
+        flex-direction: row;
+    }
+
+    .Explorer > .file > .header > .file-info {
+        flex-direction: column;
+    }
+
+    .Explorer > .file > .header > .file-info > *:not(:last-child) {
+        border-bottom: 1px solid white;
+        margin-bottom: 0.15rem;
+        padding-bottom: 0.15rem;
+    }
+
+    .Explorer > .file > .header > .file-info > .inline-seperator {
+        display: none;
     }
 
     .Explorer > .file > .file-preview > .images > span {
@@ -622,6 +644,16 @@
 }
 
 @media only screen and (max-width: 300px) {
+    .Explorer > .file > .header {
+        flex-direction: column;
+        align-items: baseline;
+    }
+
+    .Explorer > .file > .header > .file-info {
+        flex-direction: column;
+        margin-bottom: 0.5rem;
+    }
+
     .Explorer > .file > .file-preview > .images :not(span) {
         margin: 0;
         border-radius: 0;
