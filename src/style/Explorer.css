@@ -282,7 +282,6 @@
 }
 
 .Explorer > .file > .file-preview > .editor {
-    background-color: var(--color-background2);
     position: relative;
     border-bottom-left-radius: 0.5rem !important;
     border-bottom-right-radius: 0.5rem !important;

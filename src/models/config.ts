@@ -10,7 +10,7 @@ if (domain[1].includes('localhost') ||
 const theme = {
     lineNumberColor: '#848484',
     lineNumberBgColor: '#ff0000',
-    backgroundColor: '#212121',
+    backgroundColor: 'transparent',
     textColor: '#eceff1',
     keywordColor: '#C792EA',
     builtInColor: '#FFCB6B',
