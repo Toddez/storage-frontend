@@ -122,7 +122,7 @@ class StorageVideo extends React.Component<StorageVideoProps> {
         this.state.playObserver.unobserve(this.ref.current);
     }
 
-    render() : JSX.Element | null {
+    render() : JSX.Element {
         return (
             <span className='image-container' style={{maxWidth: `${this.ref.current?.offsetWidth}px`, maxHeight: `${this.ref.current?.offsetHeight}px`}}>
                 <video ref={this.ref} controls loop muted src={this.state.src} preload={"metadata"} style={this.state.width && this.state.height ? {maxWidth: this.state.width, maxHeight: this.state.height} : {}}  className={`${this.state.className}${this.state.shouldPlay ? ' playing' : ' paused'}`} ></video>
