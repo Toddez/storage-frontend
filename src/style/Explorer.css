@@ -78,6 +78,10 @@
     color: var(--color-accent6);
 }
 
+.Explorer > .tree > .collapse-nodes {
+    display: none;
+}
+
 .Explorer > .tree > .nodes {
     max-height: min(50vh, 600px);
     overflow-y: scroll;
@@ -492,7 +496,7 @@
     display: none;
 }
 
-@media only screen and (max-width: 1300px) {
+@media only screen and (max-width: 1200px) {
     .Explorer > .tree > .nodes,
     .Explorer > .tree > .nodes > .node:last-child,
     .Explorer > .file > .header,
@@ -500,6 +504,11 @@
     .Explorer > .file > .file-preview > .markdown-preview,
     .Explorer > .file > .file-preview > .editor {
         border-radius: 0 !important;
+    }
+
+    .Explorer > .tree > .navigation {
+        border-left: none;
+        border-right: none;
     }
 
     .Explorer > .tree > .nodes {
@@ -526,6 +535,65 @@
 
     .Explorer > .tree > .navigation > .path {
         margin-bottom: 1rem;
+    }
+
+    .Explorer > .tree > .collapse-nodes {
+        position: relative;
+        display: flex;
+        padding: 1rem;
+        cursor: pointer;
+        background-color: var(--color-background3);
+        transition: border-color 0.2s ease-in-out;
+    }
+
+    .Explorer > .tree > .collapse-nodes:hover {
+        background-color: var(--color-background5);
+    }
+
+    .Explorer > .tree > .collapse-nodes:not(.collapsed) {
+        border-bottom: 1px solid var(--color-accent2);
+    }
+
+    .Explorer > .tree > .collapse-nodes.collapsed {
+        border-bottom: 1px solid var(--color-accent6);
+    }
+
+    .Explorer > .tree > .nodes {
+        transition: max-height 0.2s ease-out;
+    }
+
+    .Explorer > .tree > .collapse-nodes.collapsed + .nodes {
+        max-height: 0;
+    }
+
+    .Explorer > .tree > .collapse-nodes > .collapse-chevron {
+        position: absolute;
+        left: 1rem;
+        top: 0.25rem;
+    }
+
+    .Explorer > .tree > .collapse-nodes > .collapse-chevron > .part-l,
+    .Explorer > .tree > .collapse-nodes > .collapse-chevron > .part-r {
+        width: 10px;
+        height: 5px;
+        display: inline-block;
+        transition: all 0.2s ease-out;
+        background-color: var(--color-accent2);
+    }
+
+    .Explorer > .tree > .collapse-nodes.collapsed > .collapse-chevron  > .part-l,
+    .Explorer > .tree > .collapse-nodes.collapsed > .collapse-chevron  > .part-r {
+        background-color: var(--color-accent6);
+    }
+
+    .Explorer > .tree > .collapse-nodes:not(.collapsed) > .collapse-chevron  > .part-l,
+    .Explorer > .tree > .collapse-nodes.collapsed > .collapse-chevron  > .part-r {
+        transform: skewY(40deg);
+    }
+
+    .Explorer > .tree > .collapse-nodes.collapsed > .collapse-chevron  > .part-l,
+    .Explorer > .tree > .collapse-nodes:not(.collapsed) > .collapse-chevron  > .part-r {
+        transform: skewY(-40deg);
     }
 
     .Explorer > .file > .file-preview > .images > span {

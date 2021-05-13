@@ -251,10 +251,20 @@ class Explorer extends React.Component<Props> {
         }
 
         return (
-            <div className='nodes'>
-                {node !== this.state.tree ? <div className='node go-up' onClick={this.handleTreeClick}><input type="text" className="name" value=".." readOnly={true}></input></div> : null}
-                {Storage.sortNodes(node.children).map(this.generateNode)}
-            </div>
+            <React.Fragment>
+                <div className='collapse-nodes collapsed' onClick={(event) => {
+                    (event.target as HTMLElement).classList.toggle('collapsed');
+                }}>
+                    <i className='collapse-chevron'>
+                        <span className='part-l'></span>
+                        <span className='part-r'></span>
+                    </i>
+                </div>
+                <div className='nodes'>
+                    {node !== this.state.tree ? <div className='node go-up' onClick={this.handleTreeClick}><input type="text" className="name" value=".." readOnly={true}></input></div> : null}
+                    {Storage.sortNodes(node.children).map(this.generateNode)}
+                </div>
+            </React.Fragment>
         );
     }
 
