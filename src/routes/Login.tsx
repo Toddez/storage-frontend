@@ -188,7 +188,7 @@ class Login extends Form<Props> {
                         <div className='input-section'>
                             <input className='authKey always-show' type='text' name='authKey' id='authKey' onInput={this.onInput} onChange={this.handleChange} inputMode='numeric' minLength={6} maxLength={6} required autoFocus pattern={authPattern} />
                             <label htmlFor='authKey'><span className='label-text'>2FA Key</span></label>
-                            <a className='logout' onClick={() => {this.props.onLogout(); this.setState({ step:0 });}}>Cancel</a>
+                            <a className='logout' onClick={() => {this.props.onLogout(); this.setState({ step:0, config: null });}}>Cancel</a>
                         </div>
 
                         <input type='submit' value='Authorize' hidden />
