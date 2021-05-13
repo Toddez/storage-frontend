@@ -124,7 +124,10 @@ class StorageVideo extends React.Component<StorageVideoProps> {
 
     render() : JSX.Element | null {
         return (
-            <video ref={this.ref} controls loop muted src={this.state.src} preload={"metadata"} className={this.state.className} ></video>
+            <span className='image-container' style={{maxWidth: `${this.ref.current?.offsetWidth}px`, maxHeight: `${this.ref.current?.offsetHeight}px`}}>
+                <video ref={this.ref} controls loop muted src={this.state.src} preload={"metadata"} style={this.state.width && this.state.height ? {maxWidth: this.state.width, maxHeight: this.state.height} : {}}  className={this.state.className} ></video>
+                <span className='overlay-text' >{this.props.src.split('/').pop()}</span>
+            </span>
         );
     }
 }
