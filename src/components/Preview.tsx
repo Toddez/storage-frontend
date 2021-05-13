@@ -211,6 +211,10 @@ class Preview extends React.Component<PreviewProps> {
                     );
                 }
             }).filter(node => node !== undefined);
+            const randValues = new Array(images.length).fill(0).map(() => Math.random());
+            images.sort((a, b) => {
+                return randValues[images.indexOf(a)] > randValues[images.indexOf(b)] ? 1 : -1;
+            });
 
             if (images.length > 0)
                 return (
