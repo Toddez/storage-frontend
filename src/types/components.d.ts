@@ -53,8 +53,11 @@ declare interface ClickEvent<T> extends React.MouseEvent<T, MouseEvent> {
 }
 
 declare interface StorageImageProps {
-    src: string,
-    alt: string
+    src: string
+}
+
+declare interface StorageVideoProps {
+    src: string
 }
 
 declare interface StorageLinkProps {
@@ -63,8 +66,4 @@ declare interface StorageLinkProps {
     valid: boolean,
     children: HTMLElement[],
     callback: (href: string) => void
-}
-
-declare interface StorageVideoProps {
-    src: string
 }

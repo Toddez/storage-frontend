@@ -162,7 +162,7 @@ class Preview extends React.Component<PreviewProps> {
             },
             image: ({src, alt} : ImageRendererProps) => {
                 return (
-                    <StorageImage src={src} alt={alt} />
+                    <StorageImage src={src} />
                 );
             },
             link: ({href, children} : LinkRendererProps) => {
@@ -200,7 +200,7 @@ class Preview extends React.Component<PreviewProps> {
                 if (node.type & this.props.types.IMAGE) {
                     const path = node.path.split('/');
                     return (
-                        <StorageImage key={index} src={path.slice(1, path.length).join('/')} alt={node.file} />
+                        <StorageImage key={index} src={path.slice(1, path.length).join('/')} />
                     );
                 }
 
@@ -248,7 +248,7 @@ class Preview extends React.Component<PreviewProps> {
 
         if (file.type & this.props.types.IMAGE)
             return (
-                <StorageImage src={file.path} alt={file.file} />
+                <StorageImage src={file.path} />
             );
 
         if (file.type & this.props.types.VIDEO) {
