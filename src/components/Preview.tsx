@@ -21,6 +21,7 @@ import RunIcon from 'mdi-material-ui/PlayOutline';
 type State = {
     file: TreeNode | null,
     data: FileNode,
+    previewOrder: Array<number>,
     run: {
         res: string,
         err: string,
@@ -63,6 +64,7 @@ class Preview extends React.Component<PreviewProps> {
             initial: '',
             path: ''
         },
+        previewOrder: new Array<number>(),
         run: {
             res: '',
             err: '',
@@ -211,7 +213,10 @@ class Preview extends React.Component<PreviewProps> {
                     );
                 }
             }).filter(node => node !== undefined);
-            const randValues = new Array(images.length).fill(0).map(() => Math.random());
+            const randValues = this.state.previewOrder;
+            while (randValues.length < images.length)
+                randValues.push(Math.random());
+
             images.sort((a, b) => {
                 return randValues[images.indexOf(a)] > randValues[images.indexOf(b)] ? 1 : -1;
             });
