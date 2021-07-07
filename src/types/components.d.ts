@@ -29,7 +29,9 @@ declare interface PreviewProps {
     handleNodeActionClick: (event: ClickEvent<T>) => void,
     isEditing: boolean,
     onEdit: (node: TreeNode, data: string) => void,
-    linkCallback: (href: string) => void
+    linkCallback: (href: string) => void,
+    offset: number,
+    innerRef: RefObject<HTMLElement>
 }
 
 declare interface ModalProps {
