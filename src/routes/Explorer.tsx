@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {RefObject} from 'react';
 
 import Storage from '../models/storage';
 import { pickIcon } from '../models/icon';
@@ -28,7 +28,8 @@ type State = {
     name: string,
     editingName: TreeNode | null,
     editingFile: boolean,
-    collapsed: boolean
+    collapsed: boolean,
+    previewOffset: number
 }
 
 interface Props {
@@ -53,9 +54,12 @@ class Explorer extends React.Component<Props> {
         this.onNameDown = this.onNameDown.bind(this);
         this.onEdit = this.onEdit.bind(this);
         this.onLink = this.onLink.bind(this);
+
+        this.previewRef = React.createRef();
     }
 
     _isMounted = false;
+    previewRef: RefObject<HTMLElement>;
 
     state: State = {
         tree: {
@@ -75,7 +79,8 @@ class Explorer extends React.Component<Props> {
         name: '',
         editingName: null,
         editingFile: false,
-        collapsed: true
+        collapsed: true,
+        previewOffset: 0
     }
 
     onStorageFetch() : void {
@@ -104,6 +109,8 @@ class Explorer extends React.Component<Props> {
     componentDidMount() : void {
         this._isMounted = true;
 
+        document.body.addEventListener('scroll', this.updateScrollPosition.bind(this));
+
         Storage.addFetchListener(this.onStorageFetch.bind(this));
         Storage.addReadListener(this.onStorageFetch.bind(this));
         Storage.initialize();
@@ -111,6 +118,8 @@ class Explorer extends React.Component<Props> {
 
     componentWillUnmount() : void {
         this._isMounted = false;
+
+        document.body.removeEventListener('scroll', this.updateScrollPosition);
     }
 
     generatePath() : JSX.Element {
@@ -474,6 +483,23 @@ class Explorer extends React.Component<Props> {
         this.navigate([...this.state.position, value].join('/'));
     }
 
+    componentDidUpdate() : void {
+        this.updateScrollPosition();
+    }
+
+    updateScrollPosition() : void {
+        let previewOffset = 0;
+        const preview = this.previewRef.current;
+        if (preview) {
+            const bodyRect = document.body.getBoundingClientRect();
+            const containerRect = preview.getBoundingClientRect();
+            previewOffset = containerRect.top - bodyRect.top;
+        }
+
+        if (this.state.previewOffset !== previewOffset)
+            this.setState({previewOffset});
+    }
+
     render() : JSX.Element {
         return (
             <div className='Explorer'>
@@ -509,7 +535,7 @@ class Explorer extends React.Component<Props> {
                     }
                 </div>
                 }
-                <Preview cwd={this.currentNode()} types={this.state.types} handleNodeActionClick={this.handleNodeActionClick} isEditing={this.state.editingFile} onEdit={this.onEdit} linkCallback={this.onLink} />
+                <Preview innerRef={this.previewRef} cwd={this.currentNode()} types={this.state.types} handleNodeActionClick={this.handleNodeActionClick} isEditing={this.state.editingFile} onEdit={this.onEdit} linkCallback={this.onLink} offset={this.state.previewOffset} />
             </div>
         );
     }
