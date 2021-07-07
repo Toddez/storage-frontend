@@ -37,6 +37,8 @@ class Preview extends React.Component<PreviewProps> {
         this.onEditor = this.onEditor.bind(this);
         this.onScroll = this.onScroll.bind(this);
         this.run = this.run.bind(this);
+        this.toggleScroll = this.toggleScroll.bind(this);
+        this.updateScroll = this.updateScroll.bind(this);
 
         this.scrollRef = React.createRef();
         this.targetRef = React.createRef();
@@ -55,6 +57,7 @@ class Preview extends React.Component<PreviewProps> {
 
         this.viewLength = 1;
         this.maxLength = 1;
+        this.autoScroll = false;
 
         Storage.initialize();
         Storage.addReadListener(this.onStorageRead.bind(this));
@@ -69,6 +72,7 @@ class Preview extends React.Component<PreviewProps> {
     loadObserver: IntersectionObserver;
     viewLength: number;
     maxLength: number;
+    autoScroll: boolean;
 
     state: State = {
         file: null,
@@ -275,9 +279,12 @@ class Preview extends React.Component<PreviewProps> {
 
             if (imageElements.length > 0) {
                 return (
-                    <ul className='images'>
-                        {imageElements}
-                    </ul>
+                    <React.Fragment>
+                        <div className='auto-scroll paused' onClick={this.toggleScroll} style={{top: `${Math.max(this.props.offset, 0)}px`}}><span className='video-paused' ></span></div>
+                        <ul className='images'>
+                            {imageElements}
+                        </ul>
+                    </React.Fragment>
                 );
             }
         }
@@ -316,6 +323,26 @@ class Preview extends React.Component<PreviewProps> {
         }
 
         return null;
+    }
+
+    toggleScroll(event: ClickEvent<HTMLDivElement>) : void {
+        const target = event.target as unknown as HTMLDivElement;
+        this.autoScroll = !this.autoScroll;
+        if (this.autoScroll) {
+            target.classList.remove('paused');
+            this.updateScroll(target);
+        }
+    }
+
+    updateScroll(target: HTMLDivElement) : void {
+        if (!this.autoScroll || !window.matchMedia('(max-width: 700px)').matches) {
+            target.classList.add('paused');
+            return;
+        }
+
+        document.body.scrollBy(0, 1);
+
+        window.requestAnimationFrame(() => {this.updateScroll(target);});
     }
 
     onEditor(event: ChangeEvent<HTMLTextAreaElement>) : void {
@@ -408,7 +435,7 @@ class Preview extends React.Component<PreviewProps> {
             );
 
         return (
-            <div className='file'>
+            <div ref={this.props.innerRef} className='file'>
                 { (this.state.file.type & this.props.types.FILE) ?
                     <div className='header'>
                         {
@@ -438,4 +465,6 @@ class Preview extends React.Component<PreviewProps> {
     }
 }
 
-export default Preview;
+export default React.forwardRef<HTMLElement, PreviewProps>((props, ref) => <Preview
+    {...props}
+/>);
