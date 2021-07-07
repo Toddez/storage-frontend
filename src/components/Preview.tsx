@@ -1,4 +1,4 @@
-import React, { ChangeEvent, RefObject } from 'react';
+import React, { ChangeEvent, LegacyRef, RefObject } from 'react';
 
 import { theme } from '../models/config';
 import Storage from '../models/storage';
@@ -38,9 +38,23 @@ class Preview extends React.Component<PreviewProps> {
         this.onScroll = this.onScroll.bind(this);
         this.run = this.run.bind(this);
 
+        this.scrollRef = React.createRef();
         this.targetRef = React.createRef();
         this.dummyRef = React.createRef();
         this.dummyHighlightRef = React.createRef();
+
+        this.loadObserver = new IntersectionObserver(
+            ([entry]) => {
+                if (entry.isIntersecting)
+                    this.onLoad();
+            },
+            {
+                rootMargin: '100%'
+            }
+        );
+
+        this.viewLength = 1;
+        this.maxLength = 1;
 
         Storage.initialize();
         Storage.addReadListener(this.onStorageRead.bind(this));
@@ -48,9 +62,13 @@ class Preview extends React.Component<PreviewProps> {
 
     _isMounted = false;
 
+    scrollRef: RefObject<StorageImage | StorageVideo>;
     targetRef: RefObject<HTMLDivElement>;
     dummyRef: RefObject<HTMLTextAreaElement>;
     dummyHighlightRef: RefObject<HTMLTextAreaElement>;
+    loadObserver: IntersectionObserver;
+    viewLength: number;
+    maxLength: number;
 
     state: State = {
         file: null,
@@ -118,6 +136,20 @@ class Preview extends React.Component<PreviewProps> {
         this._isMounted = false;
     }
 
+    onLoad() : void {
+        if (!this.scrollRef.current)
+            return;
+
+        if (!this.scrollRef.current.ref.current)
+            return;
+
+        this.loadObserver.unobserve(this.scrollRef.current.ref.current);
+        if (this.viewLength < this.maxLength) {
+            this.viewLength = Math.min(this.viewLength + 5, this.maxLength);
+            this.forceUpdate();
+        }
+    }
+
     fetchFile() : void {
         const file = this.file();
         if (this.state.file === file)
@@ -135,6 +167,14 @@ class Preview extends React.Component<PreviewProps> {
     componentDidUpdate() : void {
         this.fetchFile();
         this.onScroll();
+
+        if (!this.scrollRef.current)
+            return;
+
+        if (!this.scrollRef.current.ref.current)
+            return;
+
+        this.loadObserver.observe(this.scrollRef.current.ref.current);
     }
 
     generateFileInfo(name: string, lines: number, size: number) : JSX.Element {
@@ -193,40 +233,53 @@ class Preview extends React.Component<PreviewProps> {
         };
     }
 
+
     generateFilePreview() : JSX.Element | null {
         const file = this.state.data;
         const cwd = this.state.file as TreeNode;
 
         if (cwd.type & this.props.types.CRAWLABLE) {
-            const images = cwd.children.map((node, index) => {
+            const nodes = cwd.children.map((node) => {
+                if (node.type & this.props.types.IMAGE || node.type & this.props.types.VIDEO) {
+                    return node;
+                }
+            }).filter(node => node !== undefined);
+            const randValues = this.state.previewOrder;
+            while (randValues.length < nodes.length)
+                randValues.push(Math.random());
+
+            nodes.sort((a, b) => {
+                return randValues[nodes.indexOf(a)] > randValues[nodes.indexOf(b)] ? 1 : -1;
+            });
+
+            this.maxLength = nodes.length;
+
+            const imageElements = nodes.slice(0, this.viewLength).map((node, index) => {
+                if (!node)
+                    return;
+
                 if (node.type & this.props.types.IMAGE) {
                     const path = node.path.split('/');
                     return (
-                        <StorageImage key={index} src={path.slice(1, path.length).join('/')} />
+                        <StorageImage key={index} src={path.slice(1, path.length).join('/')} ref={index === Math.min(nodes.length, this.viewLength) - 1 ? this.scrollRef as LegacyRef<StorageImage>: undefined} />
                     );
                 }
 
                 if (node.type & this.props.types.VIDEO) {
                     const path = node.path.split('/');
                     return (
-                        <StorageVideo key={index} src={path.slice(1, path.length).join('/')} />
+                        <StorageVideo key={index} src={path.slice(1, path.length).join('/')} ref={index === Math.min(nodes.length, this.viewLength) - 1 ? this.scrollRef as LegacyRef<StorageVideo>: undefined} />
                     );
                 }
             }).filter(node => node !== undefined);
-            const randValues = this.state.previewOrder;
-            while (randValues.length < images.length)
-                randValues.push(Math.random());
 
-            images.sort((a, b) => {
-                return randValues[images.indexOf(a)] > randValues[images.indexOf(b)] ? 1 : -1;
-            });
-
-            if (images.length > 0)
+            if (imageElements.length > 0) {
                 return (
                     <ul className='images'>
-                        {images}
+                        {imageElements}
                     </ul>
                 );
+            }
         }
 
         if (!file)
