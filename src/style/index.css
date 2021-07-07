@@ -40,7 +40,7 @@ html {
     --color-border0: #121212;
     --color-border1: #151515;
     --color-border2: #3d3d3d;
-    overflow-x: hidden;
+    overflow: hidden;
 }
 
 img::selection {
@@ -49,6 +49,8 @@ img::selection {
 
 body {
     margin: 0;
+    overflow-y: scroll;
+    height: 100vh;
 }
 
 * {
