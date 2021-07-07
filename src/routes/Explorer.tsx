@@ -27,7 +27,8 @@ type State = {
     createType: NodeType,
     name: string,
     editingName: TreeNode | null,
-    editingFile: boolean
+    editingFile: boolean,
+    collapsed: boolean
 }
 
 interface Props {
@@ -74,6 +75,7 @@ class Explorer extends React.Component<Props> {
         name: '',
         editingName: null,
         editingFile: false,
+        collapsed: true
     }
 
     onStorageFetch() : void {
@@ -252,8 +254,8 @@ class Explorer extends React.Component<Props> {
 
         return (
             <React.Fragment>
-                <div className='collapse-nodes collapsed' onClick={(event) => {
-                    (event.target as HTMLElement).classList.toggle('collapsed');
+                <div className={'collapse-nodes' + (this.state.collapsed ? ' collapsed' : '')} onClick={() => {
+                    this.setState({...this.state, collapsed: !this.state.collapsed});
                 }}>
                     <i className='collapse-chevron'>
                         <span className='part-l'></span>
@@ -262,7 +264,7 @@ class Explorer extends React.Component<Props> {
                 </div>
                 <div className='nodes'>
                     {node !== this.state.tree ? <div className='node go-up' onClick={this.handleTreeClick}><input type="text" className="name" value=".." readOnly={true}></input></div> : null}
-                    {Storage.sortNodes(node.children).map(this.generateNode)}
+                    {this.state.collapsed === false ? Storage.sortNodes(node.children).map(this.generateNode) : null}
                 </div>
             </React.Fragment>
         );
@@ -462,6 +464,9 @@ class Explorer extends React.Component<Props> {
 
         const target = event.target;
         const value = target.value;
+
+        if (window.matchMedia('(max-width: 1200px)').matches)
+            this.setState({...this.state, collapsed: true});
 
         if (value === '..')
             return this.navigate(this.state.position.slice(0, this.state.position.length - 1).join('/'));
