@@ -458,13 +458,14 @@ class Preview extends React.Component<PreviewProps> {
                 }
                 <div className='file-preview'>
                     {this.props.isEditing === false && this.file().extension === 'js' ? (this.state.run.file === this.file() ? <div className='run-output'>Output:<div className='run-result'>{this.state.run.res}</div><div className='run-error'>{this.state.run.err}</div></div> : null) : null}
-                    {this.props.isEditing ? this.generateCodeEditor() : this.generateFilePreview()}
+                    {this.props.isEditing ? (this.generateCodeEditor()) : this.generateFilePreview()}
+                    {this.props.isEditing && this.file().extension === 'md' ? this.generateFilePreview() : null}
                 </div>
             </div>
         );
     }
 }
 
-export default React.forwardRef<HTMLElement, PreviewProps>((props, ref) => <Preview
+export default React.forwardRef<HTMLElement, PreviewProps>((props) => <Preview
     {...props}
 />);
