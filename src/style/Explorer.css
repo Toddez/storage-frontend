@@ -434,7 +434,7 @@
 }
 
 .Explorer > .file > .file-preview > .images video::-webkit-media-controls-panel {
-    display: none;
+    display: inline-block;
 }
 
 .Explorer > .file > .file-preview > .images .video-paused {
@@ -552,8 +552,17 @@
     text-decoration: underline;
 }
 
+.Explorer > .file > .file-preview {
+    display: flex;
+}
+
+.Explorer > .file > .file-preview > .editor,
+.Explorer > .file > .file-preview > .markdown-preview {
+    flex: 1 1 50%;
+    overflow-x: auto;
+}
+
 :not(.images) > .image-container {
-    display: block !important;
     text-align: center;
     margin: 0 auto;
 }
