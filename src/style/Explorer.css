@@ -2,6 +2,61 @@
     width: 100%;
 }
 
+.Explorer > .popups {
+    position: absolute;
+    width: 500px;
+    top: 75px;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 1;
+    display: flex;
+    flex-direction: column;
+    transition: all;
+    overflow: hidden;
+    border-radius: 0.2rem;
+    pointer-events: none;
+}
+
+@keyframes slide {
+    0% {
+        transform: translateX(0%);
+    }
+    50% {
+        transform: translateX(0%);
+    }
+    75% {
+        transform: translateX(20%);
+    }
+    100% {
+        transform: translateX(100%);
+    }
+}
+
+.Explorer > .popups > .popup {
+    width: 100%;
+    color: var(--color-accent2);
+    background-color: var(--color-background1);
+    padding: 0.5rem;
+    margin-bottom: 1rem;
+    border-radius: 0.2rem;
+    transform: translateX(0%);
+}
+
+.Explorer > .popups > .popup.done {
+    transform: translateX(100%);
+    animation-name: slide;
+    animation-duration: 1.5s;
+    animation-timing-function: cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+.Explorer > .popups > .popup.done.ok {
+    color: var(--color-accent4);
+}
+
+.Explorer > .popups > .popup.done.error {
+    color: var(--color-accent6);
+}
+
 .Explorer .path-seperator::after {
     content: '/';
 }
