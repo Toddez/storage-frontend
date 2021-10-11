@@ -16,6 +16,7 @@ import DeleteIcon from '@material-ui/icons/DeleteOutlined';
 import LogoutIcon from 'mdi-material-ui/Logout';
 
 import '../style/Explorer.css';
+import PopupManager from '../models/popup';
 
 type State = {
     tree: TreeNode,
@@ -29,7 +30,8 @@ type State = {
     editingName: TreeNode | null,
     editingFile: boolean,
     collapsed: boolean,
-    previewOffset: number
+    previewOffset: number,
+    popups: Array<Popup>
 }
 
 interface Props {
@@ -80,7 +82,8 @@ class Explorer extends React.Component<Props> {
         editingName: null,
         editingFile: false,
         collapsed: true,
-        previewOffset: 0
+        previewOffset: 0,
+        popups: []
     }
 
     onStorageFetch() : void {
@@ -111,6 +114,7 @@ class Explorer extends React.Component<Props> {
 
         document.body.addEventListener('scroll', this.updateScrollPosition.bind(this));
 
+        PopupManager.addListener(this.onPopupUpdate.bind(this));
         Storage.addFetchListener(this.onStorageFetch.bind(this));
         Storage.addReadListener(this.onStorageFetch.bind(this));
         Storage.initialize();
@@ -120,6 +124,10 @@ class Explorer extends React.Component<Props> {
         this._isMounted = false;
 
         document.body.removeEventListener('scroll', this.updateScrollPosition);
+    }
+
+    onPopupUpdate() : void {
+        this.setState({popups: PopupManager.popups});
     }
 
     generatePath() : JSX.Element {
@@ -503,6 +511,15 @@ class Explorer extends React.Component<Props> {
     render() : JSX.Element {
         return (
             <div className='Explorer'>
+                <div className='popups'>
+                    {
+                        this.state.popups.map((v, i) =>
+                            <div key={i} className={`popup ${v.done ? 'done' : 'pending'} ${v.ok == null ? '' : (v.ok ? 'ok' : 'error')}`}>
+                                {v.message}
+                            </div>
+                        )
+                    }
+                </div>
                 {
                     this.generateCreateModal()
                 }
