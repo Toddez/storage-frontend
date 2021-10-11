@@ -1,5 +1,6 @@
 import Auth from '../models/auth';
 import { apiUrl } from '../models/config';
+import PopupManager from './popup';
 
 class Storage {
     static running = false;
@@ -155,102 +156,117 @@ class Storage {
         if (!Auth.authorized)
             return;
 
-        fetch(`${apiUrl}/storage/write`, {
-            method: 'POST',
-            headers: {
-                'Content-type': 'application/json',
-                'x-access-token': Auth.getToken()
-            },
-            body: JSON.stringify({
-                localPath: path,
-                type: type,
-                data: data
+        PopupManager.addPopup(
+            `Write to file: ${path}`,
+            fetch(`${apiUrl}/storage/write`, {
+                method: 'POST',
+                headers: {
+                    'Content-type': 'application/json',
+                    'x-access-token': Auth.getToken()
+                },
+                body: JSON.stringify({
+                    localPath: path,
+                    type: type,
+                    data: data
+                })
             })
-        })
-            .then((res) => res.json())
-            .then(() => {
-                this.fetch();
-            });
+                .then((res) => res.json())
+                .then(() => {
+                    this.fetch();
+                })
+        );
     }
 
     static upload(path: string, data: FormData) : void {
         if (!Auth.authorized)
             return;
 
-        fetch(`${apiUrl}/storage/upload`, {
-            method: 'POST',
-            headers: {
-                'x-access-token': Auth.getToken(),
-                'local-path': path
-            },
-            body: data
-        })
-            .then((res) => res.json())
-            .then(() => {
-                this.fetch();
-            });
+        PopupManager.addPopup(
+            `Upload file(s)`,
+            fetch(`${apiUrl}/storage/upload`, {
+                method: 'POST',
+                headers: {
+                    'x-access-token': Auth.getToken(),
+                    'local-path': path
+                },
+                body: data
+            })
+                .then((res) => res.json())
+                .then(() => {
+                    this.fetch();
+                })
+        );
     }
 
     static uploadFromURL(path: string, url: string) : void {
         if (!Auth.authorized)
             return;
 
-        fetch(`${apiUrl}/storage/uploadFromURL`, {
-            method: 'POST',
-            headers: {
-                'Content-type': 'application/json',
-                'x-access-token': Auth.getToken()
-            },
-            body: JSON.stringify({
-                localPath: path,
-                url: url
+        PopupManager.addPopup(
+            `Upload from URL: ${url.split('/').pop()}`,
+            fetch(`${apiUrl}/storage/uploadFromURL`, {
+                method: 'POST',
+                headers: {
+                    'Content-type': 'application/json',
+                    'x-access-token': Auth.getToken()
+                },
+                body: JSON.stringify({
+                    localPath: path,
+                    url: url
+                })
             })
-        })
-            .then((res) => res.json())
-            .then(() => {
-                this.fetch();
-            });
+                .then((res) => res.json())
+                .then(() => {
+                    this.fetch();
+                })
+        );
     }
 
     static delete(path: string) : void {
         if (!Auth.authorized)
             return;
 
-        fetch(`${apiUrl}/storage/delete`, {
-            method: 'POST',
-            headers: {
-                'Content-type': 'application/json',
-                'x-access-token': Auth.getToken()
-            },
-            body: JSON.stringify({
-                localPath: path
+        PopupManager.addPopup(
+            `Delete: ${path}`,
+            fetch(`${apiUrl}/storage/delete`, {
+                method: 'POST',
+                headers: {
+                    'Content-type': 'application/json',
+                    'x-access-token': Auth.getToken()
+                },
+                body: JSON.stringify({
+                    localPath: path
+                })
             })
-        })
-            .then((res) => res.json())
-            .then(() => {
-                this.fetch();
-            });
+                .then((res) => res.json())
+                .then(() => {
+                    this.fetch();
+                })
+        );
     }
 
     static rename(path: string, name: string) : void {
         if (!Auth.authorized)
             return;
 
-        fetch(`${apiUrl}/storage/rename`, {
-            method: 'POST',
-            headers: {
-                'Content-type': 'application/json',
-                'x-access-token': Auth.getToken()
-            },
-            body: JSON.stringify({
-                localPath: path,
-                name: name
+        PopupManager.addPopup(
+            `Rename: ${path} to ${name}`,
+            fetch(`${apiUrl}/storage/rename`, {
+                method: 'POST',
+                headers: {
+                    'Content-type': 'application/json',
+                    'x-access-token': Auth.getToken()
+                },
+                body: JSON.stringify({
+                    localPath: path,
+                    name: name
+                })
             })
-        })
-            .then((res) => res.json())
-            .then(() => {
-                this.fetch();
-            });
+                .then((res) => res.json())
+                .then(() => {
+                    this.fetch();
+                })
+        );
     }
 }
 
