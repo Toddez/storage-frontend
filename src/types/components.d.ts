@@ -23,6 +23,16 @@ declare type FileNode = {
 declare type FetchCallback = () => void
 declare type ReadCallback = (file: FileNode) => void
 
+declare type Popup = {
+    promise: Promise | null,
+    message: string,
+    done: boolean,
+    timeDone: Date | null,
+    ok: boolean | null
+}
+
+declare type PopupCallback = (res: number) => void;
+
 declare interface PreviewProps {
     cwd: TreeNode,
     types: Record<string, number>,
