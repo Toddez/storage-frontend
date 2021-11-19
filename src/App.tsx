@@ -7,8 +7,6 @@ import { apiUrl } from './models/config';
 import Login from './routes/Login';
 import Explorer from './routes/Explorer';
 
-import Footer from './components/Footer';
-
 import './style/App.css';
 
 type State = {
@@ -72,7 +70,7 @@ class App extends React.Component {
                                 </Switch>
                         }
                     </div>
-                    <Footer />
+                    {/* <Footer /> */}
                 </div>
             </Router>
         );
