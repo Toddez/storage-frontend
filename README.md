@@ -3,26 +3,32 @@
 ![Image of file explorer](docs/images/storage.png)
 
 ## Requirements
+
 Requires [storage-backend](https://github.com/Toddez/storage-backend) API.
 
 ## Installation
-``npm install``  
+
+`npm install`  
 Install node modules
 
 ## Running
-``npm start``  
+
+`npm start`  
 Runs development build
 
-``npm run build``  
+`npm run build`  
 Builds production build
 
 ## Configuration
-The following can be configured in an ``.env`` file:
+
+The following can be configured in an `.env` file:
+
 ```
 REACT_APP_API_URL = url-for-api
 ```
 
-## Features  
+## Features
+
 - ### Login/register using:
   - Private id - used to identify user
   - Private key - used to authenticate user and encrypt data

@@ -1,95 +1,95 @@
 @font-face {
-    font-family: 'CascadiaCode';
-    font-style: normal;
-    font-weight: 400;
-    src: url('../resources/fonts/cascadia-code/CascadiaCode.ttf');
+  font-family: "CascadiaCode";
+  font-style: normal;
+  font-weight: 400;
+  src: url("../resources/fonts/cascadia-code/CascadiaCode.ttf");
 }
 
 @font-face {
-    font-family: 'CascadiaMono';
-    font-style: normal;
-    font-weight: 400;
-    src: url('../resources/fonts/cascadia-code/CascadiaMono.ttf');
+  font-family: "CascadiaMono";
+  font-style: normal;
+  font-weight: 400;
+  src: url("../resources/fonts/cascadia-code/CascadiaMono.ttf");
 }
 
 html {
-    --color-background0: #171717;
-    --color-background1: #1a1a1a;
-    --color-background2: #212121;
-    --color-background3: #2f2f2f;
-    --color-background4: #3a3a3a;
-    --color-background5: #3f3f3f;
+  --color-background0: #171717;
+  --color-background1: #1a1a1a;
+  --color-background2: #212121;
+  --color-background3: #2f2f2f;
+  --color-background4: #3a3a3a;
+  --color-background5: #3f3f3f;
 
-    --color-foreground0: #a7a7a7;
-    --color-foreground1: #eceff1;
-    --color-foreground2: #fff;
+  --color-foreground0: #a7a7a7;
+  --color-foreground1: #eceff1;
+  --color-foreground2: #fff;
 
-    --color-accent0: var(--color-foreground1);
-    --color-accent1: #89ddff;
-    --color-accent2: #82aaff;
-    --color-accent3: #8458eb;
-    --color-accent4: #c3e88d;
-    --color-accent5: #c792ea;
-    --color-accent6: #ff5370;
-    --color-accent7: #f6e122;
-    --color-accent8: #fbc963;
+  --color-accent0: var(--color-foreground1);
+  --color-accent1: #89ddff;
+  --color-accent2: #82aaff;
+  --color-accent3: #8458eb;
+  --color-accent4: #c3e88d;
+  --color-accent5: #c792ea;
+  --color-accent6: #ff5370;
+  --color-accent7: #f6e122;
+  --color-accent8: #fbc963;
 
-    --color-danger: var(--color-accent6);
-    --color-warning: var(--color-accent7);
+  --color-danger: var(--color-accent6);
+  --color-warning: var(--color-accent7);
 
-    --color-border0: #121212;
-    --color-border1: #151515;
-    --color-border2: #3d3d3d;
-    overflow: hidden;
+  --color-border0: #121212;
+  --color-border1: #151515;
+  --color-border2: #3d3d3d;
+  overflow: hidden;
 }
 
 img::selection {
-    background: transparent;
+  background: transparent;
 }
 
 body {
-    margin: 0;
-    overflow-y: scroll;
-    height: 100vh;
+  margin: 0;
+  overflow-y: scroll;
+  height: 100vh;
 }
 
 * {
-    font-family: 'CascadiaCode';
-    -webkit-font-smoothing: antialiased;
-    -moz-osx-font-smoothing: grayscale;
+  font-family: "CascadiaCode";
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
 }
 
 a {
-    color: var(--color-foreground2);
-    text-decoration: none;
-    cursor: pointer;
+  color: var(--color-foreground2);
+  text-decoration: none;
+  cursor: pointer;
 }
 
 a:focus,
 input:focus {
-    outline: 1px dotted var(--color-accent2);
+  outline: 1px dotted var(--color-accent2);
 }
 
 code {
-    background-color: var(--color-background1);
-    padding: 0.2rem;
-    border-radius: 0.25rem;
-    width: 100%;
+  background-color: var(--color-background1);
+  padding: 0.2rem;
+  border-radius: 0.25rem;
+  width: 100%;
 }
 
 a:hover {
-    text-decoration: underline;
-    opacity: 1;
-    color: var(--color-foreground0);
+  text-decoration: underline;
+  opacity: 1;
+  color: var(--color-foreground0);
 }
 
 #root {
-    min-height: 100vh;
-    overflow: hidden;
-    background-color: var(--color-background1);
-    color: var(--color-foreground1);
+  min-height: 100vh;
+  overflow: hidden;
+  background-color: var(--color-background1);
+  color: var(--color-foreground1);
 }
 
 * {
-    box-sizing: border-box;
+  box-sizing: border-box;
 }

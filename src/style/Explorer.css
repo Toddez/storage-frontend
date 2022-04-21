@@ -1,847 +1,879 @@
 .Route > .Explorer {
-    width: 100%;
+  width: 100%;
 }
 
 .Explorer > .popups {
-    position: absolute;
-    width: 500px;
-    top: 75px;
-    left: 50%;
-    transform: translateX(-50%);
-    z-index: 1;
-    display: flex;
-    flex-direction: column;
-    transition: all;
-    overflow: hidden;
-    border-radius: 0.2rem;
-    pointer-events: none;
+  position: absolute;
+  width: 500px;
+  top: 75px;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 1;
+  display: flex;
+  flex-direction: column;
+  transition: all;
+  overflow: hidden;
+  border-radius: 0.2rem;
+  pointer-events: none;
 }
 
 @keyframes slide {
-    0% {
-        transform: translateX(0%);
-    }
-    50% {
-        transform: translateX(0%);
-    }
-    75% {
-        transform: translateX(20%);
-    }
-    100% {
-        transform: translateX(100%);
-    }
+  0% {
+    transform: translateX(0%);
+  }
+  50% {
+    transform: translateX(0%);
+  }
+  75% {
+    transform: translateX(20%);
+  }
+  100% {
+    transform: translateX(100%);
+  }
 }
 
 .Explorer > .popups > .popup {
-    width: 100%;
-    color: var(--color-accent2);
-    background-color: var(--color-background1);
-    padding: 0.5rem;
-    margin-bottom: 1rem;
-    border-radius: 0.2rem;
-    transform: translateX(0%);
+  width: 100%;
+  color: var(--color-accent2);
+  background-color: var(--color-background1);
+  padding: 0.5rem;
+  margin-bottom: 1rem;
+  border-radius: 0.2rem;
+  transform: translateX(0%);
 }
 
 .Explorer > .popups > .popup.done {
-    transform: translateX(100%);
-    animation-name: slide;
-    animation-duration: 1.5s;
-    animation-timing-function: cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  transform: translateX(100%);
+  animation-name: slide;
+  animation-duration: 1.5s;
+  animation-timing-function: cubic-bezier(0.175, 0.885, 0.32, 1.275);
 }
 
 .Explorer > .popups > .popup.done.ok {
-    color: var(--color-accent4);
+  color: var(--color-accent4);
 }
 
 .Explorer > .popups > .popup.done.error {
-    color: var(--color-accent6);
+  color: var(--color-accent6);
 }
 
 .Explorer .path-seperator::after {
-    content: '/';
+  content: "/";
 }
 
 .Explorer .inline-seperator {
-    display: block;
-    margin: 0 0.5rem;
-    border-left: 1px solid var(--color-foreground0);
-    border-right: 1px solid var(--color-foreground0);
-    border-radius: 2px;
+  display: block;
+  margin: 0 0.5rem;
+  border-left: 1px solid var(--color-foreground0);
+  border-right: 1px solid var(--color-foreground0);
+  border-radius: 2px;
 }
 
 .Explorer .item.active {
-    font-weight: bold;
+  font-weight: bold;
 }
 
 .Explorer .editor *::selection,
 .Explorer > .tree > .nodes > .node > .name:not(:read-only)::selection,
 .Explorer > .tree > .navigation > .path *::selection {
-    background: rgba(255, 255, 255, 0.1);
+  background: rgba(255, 255, 255, 0.1);
 }
 
 .Explorer .file-delete *:hover {
-    color: var(--color-danger);
-    fill: var(--color-danger);
+  color: var(--color-danger);
+  fill: var(--color-danger);
 }
 
 .Explorer .file-cancel *:hover {
-    color: var(--color-warning);
-    fill: var(--color-warning);
+  color: var(--color-warning);
+  fill: var(--color-warning);
 }
 
 .Explorer {
-    display: flex;
-    flex-direction: column;
+  display: flex;
+  flex-direction: column;
 }
 
 .Explorer > .tree {
-    display: flex;
-    flex-direction: column;
+  display: flex;
+  flex-direction: column;
 }
 
 .Explorer > .tree > .navigation {
-    display: flex;
-    flex-direction: row;
-    align-items: center;
-    justify-content: space-between;
-    padding: 1rem;
-    background-color: var(--color-background3);
-    border: 1px solid var(--color-border1);
-    border-top: 0;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+  padding: 1rem;
+  background-color: var(--color-background3);
+  border: 1px solid var(--color-border1);
+  border-top: 0;
 }
 
 .Explorer > .tree > .navigation > .path {
-    display: flex;
-    flex-direction: row;
-    background-color: var(--color-background2);
-    padding: 0.5rem;
-    border-radius: 0.25rem;
-    width: 100%;
-    height: 2rem;
+  display: flex;
+  flex-direction: row;
+  background-color: var(--color-background2);
+  padding: 0.5rem;
+  border-radius: 0.25rem;
+  width: 100%;
+  height: 2rem;
 }
 
 .Explorer > .tree > .navigation > .navigation-actions {
-    display: flex;
-    flex-direction: row;
+  display: flex;
+  flex-direction: row;
 }
 
 .Explorer > .tree .navigation > .navigation-actions > * {
-    margin-left: 0.5rem;
+  margin-left: 0.5rem;
 }
 
 .Explorer > .tree .navigation > .navigation-actions > .logout:hover svg {
-    color: var(--color-accent6);
+  color: var(--color-accent6);
 }
 
 .Explorer > .tree > .collapse-nodes {
-    position: relative;
-    display: flex;
-    padding: 1rem;
-    cursor: pointer;
-    background-color: var(--color-background3);
-    transition: border-color 0.2s ease-in-out;
-    border-left: 1px solid var(--color-border1);
-    border-right: 1px solid var(--color-border1);
+  position: relative;
+  display: flex;
+  padding: 1rem;
+  cursor: pointer;
+  background-color: var(--color-background3);
+  transition: border-color 0.2s ease-in-out;
+  border-left: 1px solid var(--color-border1);
+  border-right: 1px solid var(--color-border1);
 }
 
 .Explorer > .tree > .collapse-nodes:hover {
-    background-color: var(--color-background5);
+  background-color: var(--color-background5);
 }
 
 .Explorer > .tree > .collapse-nodes:not(.collapsed) {
-    border-bottom: 1px solid var(--color-accent4);
-    display: none;
+  border-bottom: 1px solid var(--color-accent4);
+  display: none;
 }
 
 .Explorer > .tree > .collapse-nodes.collapsed {
-    border-bottom: 1px solid var(--color-accent6);
+  border-bottom: 1px solid var(--color-accent6);
 }
 
 .Explorer > .tree > .nodes {
-    transition: max-height 0.2s ease-out;
+  transition: max-height 0.2s ease-out;
 }
 
 .Explorer > .tree > .collapse-nodes > .collapse-chevron {
-    position: absolute;
-    left: 1rem;
-    top: 0.25rem;
+  position: absolute;
+  left: 1rem;
+  top: 0.25rem;
 }
 
 .Explorer > .tree > .collapse-nodes > .collapse-chevron > .part-l,
 .Explorer > .tree > .collapse-nodes > .collapse-chevron > .part-r {
-    width: 10px;
-    height: 5px;
-    display: inline-block;
-    transition: all 0.2s ease-out;
-    background-color: var(--color-accent4);
+  width: 10px;
+  height: 5px;
+  display: inline-block;
+  transition: all 0.2s ease-out;
+  background-color: var(--color-accent4);
 }
 
-.Explorer > .tree > .collapse-nodes.collapsed > .collapse-chevron  > .part-l,
-.Explorer > .tree > .collapse-nodes.collapsed > .collapse-chevron  > .part-r {
-    background-color: var(--color-accent6);
+.Explorer > .tree > .collapse-nodes.collapsed > .collapse-chevron > .part-l,
+.Explorer > .tree > .collapse-nodes.collapsed > .collapse-chevron > .part-r {
+  background-color: var(--color-accent6);
 }
 
-.Explorer > .tree > .collapse-nodes:not(.collapsed) > .collapse-chevron  > .part-l,
-.Explorer > .tree > .collapse-nodes.collapsed > .collapse-chevron  > .part-r {
-    transform: skewY(40deg);
+.Explorer
+  > .tree
+  > .collapse-nodes:not(.collapsed)
+  > .collapse-chevron
+  > .part-l,
+.Explorer > .tree > .collapse-nodes.collapsed > .collapse-chevron > .part-r {
+  transform: skewY(40deg);
 }
 
-.Explorer > .tree > .collapse-nodes.collapsed > .collapse-chevron  > .part-l,
-.Explorer > .tree > .collapse-nodes:not(.collapsed) > .collapse-chevron  > .part-r {
-    transform: skewY(-40deg);
+.Explorer > .tree > .collapse-nodes.collapsed > .collapse-chevron > .part-l,
+.Explorer
+  > .tree
+  > .collapse-nodes:not(.collapsed)
+  > .collapse-chevron
+  > .part-r {
+  transform: skewY(-40deg);
 }
 
 .Explorer > .tree > .nodes {
-    max-height: min(50vh, 600px);
-    overflow-y: scroll;
-    border: 1px solid var(--color-border1);
-    border-top: 0;
-    border-bottom-left-radius: 0.5rem;
-    border-bottom-right-radius: 0.5rem;
-    background-color: var(--color-background3);
+  max-height: min(50vh, 600px);
+  overflow-y: scroll;
+  border: 1px solid var(--color-border1);
+  border-top: 0;
+  border-bottom-left-radius: 0.5rem;
+  border-bottom-right-radius: 0.5rem;
+  background-color: var(--color-background3);
 }
 
 .Explorer > .tree > .nodes::-webkit-scrollbar {
-    display: none;
+  display: none;
 }
 
 .Explorer > .tree > .nodes > .node {
-    position: relative;
-    padding: 0.5rem 1rem;
-    display: flex;
-    flex-direction: row;
-    border-top: 1px solid var(--color-border1);
-    align-items: center;
-    justify-content: space-between;
-    background-color: var(--color-background3);
+  position: relative;
+  padding: 0.5rem 1rem;
+  display: flex;
+  flex-direction: row;
+  border-top: 1px solid var(--color-border1);
+  align-items: center;
+  justify-content: space-between;
+  background-color: var(--color-background3);
 }
 
 .Explorer > .tree > .nodes > .node:first-child {
-    border-top: 0;
+  border-top: 0;
 }
 
 .Explorer > .tree > .nodes > .node:not(:nth-child(2n)) {
-    background-color: rgba(0, 0, 0, 0.175);
+  background-color: rgba(0, 0, 0, 0.175);
 }
 
 .Explorer > .tree > .nodes > .node:not(:nth-child(2n)) > .name {
-    background-color: transparent;
+  background-color: transparent;
 }
 
 .Explorer > .tree > .nodes > .node.node.go-up > .name:hover {
-    text-decoration: none;
+  text-decoration: none;
 }
 
 .Explorer > .tree > .nodes > .node:last-child {
-    border-bottom-left-radius: 0.5rem;
-    border-bottom-right-radius: 0.5rem;
+  border-bottom-left-radius: 0.5rem;
+  border-bottom-right-radius: 0.5rem;
 }
 
 .Explorer > .tree > .nodes > .node > .icon {
-    margin-right: 1rem;
+  margin-right: 1rem;
 }
 
 .Explorer > .tree > .nodes > .node > .name {
-    font-size: 1rem;
-    width: 100%;
-    border: 0;
-    outline: 0;
-    background-color: var(--color-background3);
-    color: var(--color-foreground1);
-    padding: 0.5rem;
+  font-size: 1rem;
+  width: 100%;
+  border: 0;
+  outline: 0;
+  background-color: var(--color-background3);
+  color: var(--color-foreground1);
+  padding: 0.5rem;
 }
 
 .Explorer > .tree > .nodes > .node > .name:not(:read-only) {
-    cursor: auto;
-    background-color: var(--color-background2);
-    border-radius: 0.25rem;
-    transition: all 0.3s ease;
+  cursor: auto;
+  background-color: var(--color-background2);
+  border-radius: 0.25rem;
+  transition: all 0.3s ease;
 }
 
 .Explorer > .tree > .nodes > .node:hover > .name:not(:read-only) {
-    background-color: var(--color-background2);
+  background-color: var(--color-background2);
 }
 
 .Explorer > .tree > .nodes > .node > .name:read-only {
-    cursor: pointer;
+  cursor: pointer;
 }
 
 .Explorer > .tree > .nodes > .node > .name:read-only:hover {
-    text-decoration: underline;
+  text-decoration: underline;
 }
 
 .Explorer > .tree > .nodes > .node > .node-border::after {
-    content: '';
-    position: absolute;
-    top: calc(100% - 2px);
-    bottom: 0;
-    left: 0;
-    width: 200%;
-    pointer-events: none;
-    transition: all 0.3s ease;
-    background: linear-gradient(90deg, var(--color-danger) 0%, var(--color-danger) 50%, var(--color-accent2) 50%, var(--color-accent2) 100%);
-    transform: translateX(-100%);
+  content: "";
+  position: absolute;
+  top: calc(100% - 2px);
+  bottom: 0;
+  left: 0;
+  width: 200%;
+  pointer-events: none;
+  transition: all 0.3s ease;
+  background: linear-gradient(
+    90deg,
+    var(--color-danger) 0%,
+    var(--color-danger) 50%,
+    var(--color-accent2) 50%,
+    var(--color-accent2) 100%
+  );
+  transform: translateX(-100%);
 }
 
 .Explorer > .tree > .nodes > .node > .name:valid + .node-border::after {
-    transform: translateX(-50%);
+  transform: translateX(-50%);
 }
 
 .Explorer > .tree > .nodes > .node > .name:invalid + .node-border::after {
-    transform: translateX(0%);
+  transform: translateX(0%);
 }
 
 .Explorer > .tree > .nodes > .node > .actions {
-    margin-left: 1rem;
-    display: flex;
-    flex-direction: row;
-    align-items: center;
-    cursor: auto;
+  margin-left: 1rem;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  cursor: auto;
 }
 
 .Explorer > .tree > .nodes > .node:not(:hover) > .actions {
-    display: none;
+  display: none;
 }
 
 .Explorer > .tree > .nodes > .node > .actions > * {
-    margin-left: 0.5rem;
-    cursor: pointer;
+  margin-left: 0.5rem;
+  cursor: pointer;
 }
 
 .Explorer > .tree > .nodes > .node:hover,
 .Explorer > .tree > .nodes > .node:hover .name {
-    background-color: var(--color-background5);
+  background-color: var(--color-background5);
 }
 
 .Explorer > .tree > .nodes > .node.go-up {
-    text-decoration: none;
+  text-decoration: none;
 }
 
 .Explorer > .file {
-    margin-top: 1rem;
-    display: flex;
-    flex-direction: column;
+  margin-top: 1rem;
+  display: flex;
+  flex-direction: column;
 }
 
 .Explorer > .file > .header {
-    background-color: var(--color-background2);
-    display: flex;
-    flex-direction: row;
-    align-items: center;
-    justify-content: space-between;
-    padding: 1rem;
-    border-top-left-radius: 0.5rem;
-    border-top-right-radius: 0.5rem;
+  background-color: var(--color-background2);
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+  padding: 1rem;
+  border-top-left-radius: 0.5rem;
+  border-top-right-radius: 0.5rem;
 }
 
 .Explorer > .file > .header > .file-info {
-    display: flex;
-    flex-direction: row;
+  display: flex;
+  flex-direction: row;
 }
 
 .Explorer > .file > .header > .file-info > .file-edit {
-    color: var(--color-accent4);
+  color: var(--color-accent4);
 }
 
 .Explorer > .file > .header > .file-actions {
-    display: flex;
-    flex-direction: row;
-    align-items: center;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
 }
 
 .Explorer > .file > .header > .file-actions > * {
-    margin-left: 0.5rem;
+  margin-left: 0.5rem;
 }
 
 .Explorer > .file > .file-preview {
-    background-color: rgba(255, 255, 255, 0.05);
+  background-color: rgba(255, 255, 255, 0.05);
 }
 
 .Explorer > .file > .file-preview:not(:empty) {
-    height: 100%;
-    overflow: hidden;
+  height: 100%;
+  overflow: hidden;
 }
 
 .Explorer > .file > .file-preview > img,
 .Explorer > .file > .file-preview > video {
-    display: block;
-    max-width: 100%;
-    margin: 0 auto;
-    padding: 0.5rem;
+  display: block;
+  max-width: 100%;
+  margin: 0 auto;
+  padding: 0.5rem;
 }
 
 .Explorer > .file > .file-preview > .run-output {
-    padding: 0.5rem;
-    margin: 0.5rem;
-    margin-bottom: 0;
-    background-color: var(--color-background1);
-    border-radius: 0.25rem;
+  padding: 0.5rem;
+  margin: 0.5rem;
+  margin-bottom: 0;
+  background-color: var(--color-background1);
+  border-radius: 0.25rem;
 }
 
 .Explorer > .file > .file-preview > .run-output > .run-result,
 .Explorer > .file > .file-preview > .run-output > .run-error {
-    padding-left: 1rem;
+  padding-left: 1rem;
 }
 
 .Explorer > .file > .file-preview > .run-output > .run-result {
-    color: var(--color-accent4);
+  color: var(--color-accent4);
 }
 
 .Explorer > .file > .file-preview > .run-output > .run-error {
-    color: var(--color-danger);
+  color: var(--color-danger);
 }
 
 .Explorer > .file > .file-preview > video:focus {
-    outline: 0;
+  outline: 0;
 }
 
 .Explorer > .file > .file-preview > .editor {
-    position: relative;
-    border-bottom-left-radius: 0.5rem !important;
-    border-bottom-right-radius: 0.5rem !important;
-    min-height: calc(85vh - 7rem);
-    padding: 0.5rem;
+  position: relative;
+  border-bottom-left-radius: 0.5rem !important;
+  border-bottom-right-radius: 0.5rem !important;
+  min-height: calc(85vh - 7rem);
+  padding: 0.5rem;
 }
 
 .Explorer > .file > .file-preview > .editor > textarea {
-    position: absolute;
-    top: 0.5rem;
-    right: 0.5rem;
-    padding: 0.5rem;
-    border-radius: 0.25rem;
-    resize: none;
-    background-color: transparent;
-    color: var(--color-foreground1);
-    -webkit-text-fill-color: transparent;
-    line-height: 1.66667rem;
-    font-size: 1rem;
-    outline: 0;
-    border: 0;
-    z-index: 2;
-    overflow-y: hidden;
-    white-space: pre;
-    line-break: anywhere;
-    word-break: break-all;
-    overflow-x: auto;
+  position: absolute;
+  top: 0.5rem;
+  right: 0.5rem;
+  padding: 0.5rem;
+  border-radius: 0.25rem;
+  resize: none;
+  background-color: transparent;
+  color: var(--color-foreground1);
+  -webkit-text-fill-color: transparent;
+  line-height: 1.66667rem;
+  font-size: 1rem;
+  outline: 0;
+  border: 0;
+  z-index: 2;
+  overflow-y: hidden;
+  white-space: pre;
+  line-break: anywhere;
+  word-break: break-all;
+  overflow-x: auto;
 }
 
-.Explorer > .file > .file-preview > .editor > .editor-extra-style::-webkit-scrollbar {
-    display: none;
+.Explorer
+  > .file
+  > .file-preview
+  > .editor
+  > .editor-extra-style::-webkit-scrollbar {
+  display: none;
 }
 
 .Explorer > .file > .file-preview > .editor > .editor-extra-style {
-    pointer-events: none;
-    color: var(--color-foreground0);
-    -webkit-text-fill-color: var(--color-foreground0);
-    opacity: 0.15;
-    font-family: 'CascadiaMono';
-    z-index: 3;
-    overflow: hidden;
+  pointer-events: none;
+  color: var(--color-foreground0);
+  -webkit-text-fill-color: var(--color-foreground0);
+  opacity: 0.15;
+  font-family: "CascadiaMono";
+  z-index: 3;
+  overflow: hidden;
 }
 
 .Explorer > .file > .file-preview > .editor > span {
-    background: transparent;
-    width: 100%;
-    pointer-events: none;
-    z-index: 1;
-    display: flex;
+  background: transparent;
+  width: 100%;
+  pointer-events: none;
+  z-index: 1;
+  display: flex;
 }
 
 .Explorer > .file > .file-preview > .editor > span > * {
-    font-size: 1rem;
-    min-width: 3rem;
+  font-size: 1rem;
+  min-width: 3rem;
 }
 
-.Explorer > .file > .file-preview > .editor > span > code:first-child > span:last-child {
-    display: none;
+.Explorer
+  > .file
+  > .file-preview
+  > .editor
+  > span
+  > code:first-child
+  > span:last-child {
+  display: none;
 }
 
 .Explorer > .file > .file-preview > .editor > span *::-webkit-scrollbar {
-    display: none;
+  display: none;
 }
 
 .Explorer > .file > .file-preview > .images {
-    display: flex;
-    flex-wrap: wrap;
-    list-style: none;
-    padding: 2rem;
-    justify-content: space-evenly;
-    position: relative;
+  display: flex;
+  flex-wrap: wrap;
+  list-style: none;
+  padding: 2rem;
+  justify-content: space-evenly;
+  position: relative;
 }
 
 .Explorer > .file > .file-preview > .images :not(span) {
-    flex-grow: 1;
-    box-sizing: border-box;
-    min-height: 20rem;
-    max-height: 40vh;
-    min-width: 20vw;
-    object-fit: contain;
-    vertical-align: bottom;
-    border-radius: 0.1rem;
-    text-align: center;
+  flex-grow: 1;
+  box-sizing: border-box;
+  min-height: 20rem;
+  max-height: 40vh;
+  min-width: 20vw;
+  object-fit: contain;
+  vertical-align: bottom;
+  border-radius: 0.1rem;
+  text-align: center;
 }
 
 .Explorer > .file > .file-preview > .images > span {
-    padding: 0;
-    margin: 0.1rem 0;
-    position: relative;
-    overflow: hidden;
+  padding: 0;
+  margin: 0.1rem 0;
+  position: relative;
+  overflow: hidden;
 }
 
-.Explorer > .file > .file-preview > .images video::-webkit-media-controls-panel {
-    display: inline-block;
+.Explorer
+  > .file
+  > .file-preview
+  > .images
+  video::-webkit-media-controls-panel {
+  display: inline-block;
 }
 
 .Explorer > .file > .file-preview > .images .video-paused {
+  position: absolute;
+  width: 74px;
+  height: 74px;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  transition: 0.1s border-width ease;
+  border-color: transparent transparent transparent var(--color-foreground1);
+  pointer-events: none;
+}
+
+@keyframes resume {
+  0% {
+    border-color: transparent transparent transparent var(--color-foreground1);
+  }
+  20% {
+    border-color: transparent transparent transparent var(--color-foreground1);
+  }
+  100% {
+    border-color: transparent transparent transparent transparent;
+  }
+}
+
+.Explorer > .file > .file-preview > .images video:not(.paused) + .video-paused {
+  border-style: solid;
+  border-width: 37px 0 37px 60px;
+  border-color: transparent transparent transparent transparent;
+  animation-name: resume;
+  animation-duration: 0.5s;
+}
+
+.Explorer > .file > .file-preview > .images video.paused + .video-paused {
+  border-style: double;
+  border-width: 0px 0 0px 60px;
+}
+
+.Explorer > .file > .file-preview > .images *.tall {
+  max-width: 50vw;
+  max-height: 50vh;
+}
+
+.Explorer > .file > .file-preview > .images *.wide {
+  max-width: 100vw;
+  max-height: 60vh;
+}
+
+.Explorer > .file > .file-preview {
+  position: relative;
+}
+
+.Explorer > .file > .file-preview > .auto-scroll {
+  display: none;
+}
+
+.Explorer > .file > .file-preview > .images .overlay-text {
+  background-color: rgba(0, 0, 0, 0.2);
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  pointer-events: none;
+  transition: transform 0.1s ease-in-out;
+}
+
+.Explorer > .file > .file-preview > .images > span:not(:hover) > .overlay-text {
+  transform: translateY(100%);
+}
+
+.Explorer > .file > .file-preview > .markdown-preview code {
+  padding-left: 0;
+}
+
+.Explorer > .file > .file-preview > .markdown-preview code * {
+  padding: 0.2rem;
+}
+
+.Explorer > .file > .file-preview > .markdown-preview {
+  background-color: transparent;
+}
+
+.Explorer > .file > .file-preview > span,
+.Explorer > .file > .file-preview > .markdown-preview {
+  border-bottom-left-radius: 0.5rem !important;
+  border-bottom-right-radius: 0.5rem !important;
+  padding: 0.5rem;
+}
+
+.Explorer > .file > .file-preview > span {
+  display: flex;
+}
+
+.Explorer > .file > .file-preview span > code:first-child {
+  border-right: 1px solid var(--color-border0);
+  margin-right: 0.25rem;
+  width: 5rem !important;
+}
+
+.Explorer > .file > .file-preview span > code:last-child {
+  overflow-x: auto;
+}
+
+.Explorer > .file > .file-preview > .markdown-preview a.local.valid {
+  color: var(--color-accent4);
+}
+
+.Explorer > .file > .file-preview > .markdown-preview a.local.invalid {
+  color: var(--color-accent6);
+  opacity: 0.5;
+}
+
+.Explorer > .file > .file-preview > .markdown-preview a.external {
+  color: var(--color-accent2);
+  text-decoration: underline;
+}
+
+.Explorer > .file > .file-preview {
+  display: flex;
+}
+
+.Explorer > .file > .file-preview > .editor,
+.Explorer > .file > .file-preview > .markdown-preview {
+  flex: 1 1 50%;
+  overflow-x: auto;
+}
+
+:not(.images) > .image-container {
+  text-align: center;
+  margin: 0 auto;
+}
+
+:not(.images) > .image-container > img,
+:not(.images) > .image-container > video {
+  max-width: 100vw;
+}
+
+:not(.images) > .image-container {
+  padding: 0 !important;
+}
+
+:not(.images) > .image-container .overlay-text {
+  display: none;
+}
+
+@media only screen and (min-width: 1200px) {
+  .Explorer > .file > .file-preview > .images *.tall {
+    min-width: 1vw;
+    max-width: 14vw;
+    min-height: 0;
+    max-height: 50vh;
+    width: auto;
+    height: auto;
+  }
+
+  .Explorer > .file > .file-preview > .images *.wide {
+    min-width: 20vw;
+    max-width: 30vw;
+    min-height: 0;
+    max-height: 100vh;
+    width: auto;
+    height: auto;
+  }
+
+  .Explorer > .file > .file-preview > .images {
+    padding: 0;
+  }
+}
+
+@media only screen and (max-width: 1200px) {
+  .Explorer > .tree > .nodes,
+  .Explorer > .tree > .nodes > .node:last-child,
+  .Explorer > .file > .header,
+  .Explorer > .file > .file-preview > span,
+  .Explorer > .file > .file-preview > .markdown-preview,
+  .Explorer > .file > .file-preview > .editor {
+    border-radius: 0 !important;
+  }
+
+  .Explorer > .tree > .navigation {
+    border-left: none;
+    border-right: none;
+  }
+
+  .Explorer > .tree > .collapse-nodes:not(.collapsed) {
+    display: flex;
+  }
+
+  .Explorer > .tree > .collapse-nodes {
+    border-left: none;
+    border-right: none;
+  }
+
+  .Explorer > .tree > .nodes {
+    border: none;
+  }
+
+  .Explorer > .file {
+    margin: 0;
+    border-top: 1px solid var(--color-border1);
+  }
+
+  .Explorer > .file > .file-preview > .images {
+    padding: 0;
+    margin: 0;
+  }
+}
+
+@media only screen and (max-width: 700px) {
+  .Explorer > .tree > .navigation {
+    flex-direction: column;
+    align-items: baseline;
+    justify-content: space-between;
+  }
+
+  .Explorer > .tree > .navigation > .path {
+    margin-bottom: 1rem;
+  }
+
+  .Explorer > .file > .header {
+    flex-direction: row;
+  }
+
+  .Explorer > .file > .header > .file-info {
+    flex-wrap: wrap;
+    width: 100%;
+  }
+
+  .Explorer > .file > .header > .file-info > .file-edit {
+    width: 100%;
+    border-bottom: none;
+  }
+
+  .Explorer > .file > .header > .file-info > * {
+    margin-bottom: 0.15rem;
+    padding-bottom: 0.15rem;
+  }
+
+  .Explorer > .file > .header > .file-info > .inline-seperator:nth-of-type(1) {
+    display: none;
+  }
+
+  .Explorer > .file > .file-preview > .images > span {
+    margin: 0;
+  }
+
+  .Explorer > .file > .file-preview > .images :not(span) {
+    margin: 0;
+    border-radius: 0;
+    max-height: 50vh;
+    min-width: 0vw;
+  }
+
+  .Explorer > .file > .file-preview > .images *.tall {
+    max-width: 100vw;
+    max-height: 50vh;
+    min-height: 0;
+    width: 50vw;
+  }
+
+  .Explorer > .file > .file-preview > .images *.wide {
+    max-width: 100vw;
+    max-height: 50vh;
+    min-height: 0;
+  }
+
+  .Explorer > .file > .file-preview > .auto-scroll {
+    display: block;
+    position: fixed;
+    top: 0;
+    right: 0.5rem;
+    width: 24px;
+    height: 30px;
+    padding: 1.4rem;
+    margin-top: 0.5rem;
+    border-radius: 50%;
+    background-color: var(--color-background5);
+    cursor: pointer;
+    z-index: 1;
+    opacity: 0.5;
+  }
+
+  .Explorer > .file > .file-preview > .auto-scroll > .video-paused {
     position: absolute;
-    width: 74px;
-    height: 74px;
+    height: 30px;
     left: 50%;
     top: 50%;
     transform: translate(-50%, -50%);
     transition: 0.1s border-width ease;
     border-color: transparent transparent transparent var(--color-foreground1);
     pointer-events: none;
-}
+  }
 
-@keyframes resume {
-    0% {
-        border-color: transparent transparent transparent var(--color-foreground1);
-    }
-    20% {
-        border-color: transparent transparent transparent var(--color-foreground1);
-    }
-    100% {
-        border-color: transparent transparent transparent transparent;
-    }
-}
-
-.Explorer > .file > .file-preview > .images video:not(.paused) + .video-paused {
+  .Explorer > .file > .file-preview > .auto-scroll.paused > .video-paused {
     border-style: solid;
-    border-width: 37px 0 37px 60px;
-    border-color: transparent transparent transparent transparent;
-    animation-name: resume;
+    border-width: 15px 0 15px 24px;
+    border-color: transparent transparent transparent var(--color-foreground1);
     animation-duration: 0.5s;
-}
+  }
 
-.Explorer > .file > .file-preview > .images video.paused + .video-paused {
+  .Explorer
+    > .file
+    > .file-preview
+    > .auto-scroll:not(.paused)
+    > .video-paused {
     border-style: double;
-    border-width: 0px 0 0px 60px;
-}
-
-.Explorer > .file > .file-preview > .images *.tall {
-    max-width: 50vw;
-    max-height: 50vh;
-}
-
-.Explorer > .file > .file-preview > .images *.wide {
-    max-width: 100vw;
-    max-height: 60vh;
-}
-
-.Explorer > .file > .file-preview {
-    position: relative;
-}
-
-.Explorer > .file > .file-preview > .auto-scroll {
-    display: none;
-}
-
-.Explorer > .file > .file-preview > .images .overlay-text {
-    background-color: rgba(0, 0, 0, 0.2);
-    position: absolute;
-    bottom: 0;
-    left: 0;
-    pointer-events: none;
-    transition: transform 0.1s ease-in-out;
-}
-
-.Explorer > .file > .file-preview > .images > span:not(:hover) > .overlay-text {
-    transform: translateY(100%);
-}
-
-.Explorer > .file > .file-preview > .markdown-preview code {
-    padding-left: 0;
-}
-
-.Explorer > .file > .file-preview > .markdown-preview code * {
-    padding: 0.2rem;
-}
-
-.Explorer > .file > .file-preview > .markdown-preview {
-    background-color: transparent;
-}
-
-.Explorer > .file > .file-preview > span,
-.Explorer > .file > .file-preview > .markdown-preview {
-    border-bottom-left-radius: 0.5rem !important;
-    border-bottom-right-radius: 0.5rem !important;
-    padding: 0.5rem;
-}
-
-.Explorer > .file > .file-preview > span {
-    display: flex;
-}
-
-.Explorer > .file > .file-preview span > code:first-child {
-    border-right: 1px solid var(--color-border0);
-    margin-right: 0.25rem;
-    width: 5rem !important;
-}
-
-.Explorer > .file > .file-preview span > code:last-child {
-    overflow-x: auto;
-}
-
-.Explorer > .file > .file-preview > .markdown-preview a.local.valid {
-    color: var(--color-accent4);
-}
-
-.Explorer > .file > .file-preview > .markdown-preview a.local.invalid {
-    color: var(--color-accent6);
-    opacity: 0.5;
-}
-
-.Explorer > .file > .file-preview > .markdown-preview a.external {
-    color: var(--color-accent2);
-    text-decoration: underline;
-}
-
-.Explorer > .file > .file-preview {
-    display: flex;
-}
-
-.Explorer > .file > .file-preview > .editor,
-.Explorer > .file > .file-preview > .markdown-preview {
-    flex: 1 1 50%;
-    overflow-x: auto;
-}
-
-:not(.images) > .image-container {
-    text-align: center;
-    margin: 0 auto;
-}
-
-:not(.images) > .image-container > img,
-:not(.images) > .image-container > video {
-    max-width: 100vw;
-}
-
-:not(.images) > .image-container {
-    padding: 0 !important;
-}
-
-:not(.images) > .image-container .overlay-text {
-    display: none;
-}
-
-@media only screen and (min-width: 1200px) {
-    .Explorer > .file > .file-preview > .images *.tall {
-        min-width: 1vw;
-        max-width: 14vw;
-        min-height: 0;
-        max-height: 50vh;
-        width: auto;
-        height: auto;
-    }
-
-    .Explorer > .file > .file-preview > .images *.wide {
-        min-width: 20vw;
-        max-width: 30vw;
-        min-height: 0;
-        max-height: 100vh;
-        width: auto;
-        height: auto;
-    }
-
-    .Explorer > .file > .file-preview > .images {
-        padding: 0;
-    }
-}
-
-@media only screen and (max-width: 1200px) {
-    .Explorer > .tree > .nodes,
-    .Explorer > .tree > .nodes > .node:last-child,
-    .Explorer > .file > .header,
-    .Explorer > .file > .file-preview > span,
-    .Explorer > .file > .file-preview > .markdown-preview,
-    .Explorer > .file > .file-preview > .editor {
-        border-radius: 0 !important;
-    }
-
-    .Explorer > .tree > .navigation {
-        border-left: none;
-        border-right: none;
-    }
-
-    .Explorer > .tree > .collapse-nodes:not(.collapsed) {
-        display: flex;
-    }
-
-    .Explorer > .tree > .collapse-nodes {
-        border-left: none;
-        border-right: none;
-    }
-
-    .Explorer > .tree > .nodes {
-        border: none;
-    }
-
-    .Explorer > .file {
-        margin: 0;
-        border-top: 1px solid var(--color-border1);
-    }
-
-    .Explorer > .file > .file-preview > .images {
-        padding: 0;
-        margin: 0;
-    }
-}
-
-@media only screen and (max-width: 700px) {
-    .Explorer > .tree > .navigation {
-        flex-direction: column;
-        align-items: baseline;
-        justify-content: space-between;
-    }
-
-    .Explorer > .tree > .navigation > .path {
-        margin-bottom: 1rem;
-    }
-
-    .Explorer > .file > .header {
-        flex-direction: row;
-    }
-
-    .Explorer > .file > .header > .file-info {
-        flex-wrap: wrap;
-        width: 100%;
-    }
-
-    .Explorer > .file > .header > .file-info > .file-edit {
-        width: 100%;
-        border-bottom: none;
-    }
-
-    .Explorer > .file > .header > .file-info > * {
-        margin-bottom: 0.15rem;
-        padding-bottom: 0.15rem;
-    }
-
-    .Explorer > .file > .header > .file-info > .inline-seperator:nth-of-type(1) {
-        display: none;
-    }
-
-    .Explorer > .file > .file-preview > .images > span {
-        margin: 0;
-    }
-
-    .Explorer > .file > .file-preview > .images :not(span) {
-        margin: 0;
-        border-radius: 0;
-        max-height: 50vh;
-        min-width: 0vw;
-    }
-
-    .Explorer > .file > .file-preview > .images *.tall {
-        max-width: 100vw;
-        max-height: 50vh;
-        min-height: 0;
-        width: 50vw;
-    }
-
-    .Explorer > .file > .file-preview > .images *.wide {
-        max-width: 100vw;
-        max-height: 50vh;
-        min-height: 0;
-    }
-
-    .Explorer > .file > .file-preview > .auto-scroll {
-        display: block;
-        position: fixed;
-        top: 0;
-        right: 0.5rem;
-        width: 24px;
-        height: 30px;
-        padding: 1.4rem;
-        margin-top: 0.5rem;
-        border-radius: 50%;
-        background-color: var(--color-background5);
-        cursor: pointer;
-        z-index: 1;
-        opacity: 0.5;
-    }
-
-    .Explorer > .file > .file-preview > .auto-scroll > .video-paused {
-        position: absolute;
-        height: 30px;
-        left: 50%;
-        top: 50%;
-        transform: translate(-50%, -50%);
-        transition: 0.1s border-width ease;
-        border-color: transparent transparent transparent var(--color-foreground1);
-        pointer-events: none;
-    }
-
-    .Explorer > .file > .file-preview > .auto-scroll.paused > .video-paused {
-        border-style: solid;
-        border-width: 15px 0 15px 24px;
-        border-color: transparent transparent transparent var(--color-foreground1);
-        animation-duration: 0.5s;
-    }
-
-    .Explorer > .file > .file-preview > .auto-scroll:not(.paused) > .video-paused {
-        border-style: double;
-        border-width: 0px 0 0px 24px;
-    }
+    border-width: 0px 0 0px 24px;
+  }
 }
 
 @media only screen and (max-width: 400px) {
-    .Explorer > .file > .header {
-        flex-direction: row;
-        align-items: center;
-    }
+  .Explorer > .file > .header {
+    flex-direction: row;
+    align-items: center;
+  }
 
-    .Explorer > .file > .header > .file-info {
-        flex-direction: column;
-    }
+  .Explorer > .file > .header > .file-info {
+    flex-direction: column;
+  }
 
-    .Explorer > .file > .header > .file-info > .inline-seperator {
-        display: none;
-    }
+  .Explorer > .file > .header > .file-info > .inline-seperator {
+    display: none;
+  }
 }
 
 @media only screen and (max-width: 300px) {
-    .Explorer > .file > .header {
-        flex-direction: column;
-        align-items: baseline;
-    }
+  .Explorer > .file > .header {
+    flex-direction: column;
+    align-items: baseline;
+  }
 
-    .Explorer > .file > .header > .file-info {
-        margin-bottom: 0.2rem;
-    }
+  .Explorer > .file > .header > .file-info {
+    margin-bottom: 0.2rem;
+  }
 
-    .Explorer > .file > .header > .file-actions {
-        margin-left: -0.5rem;
-    }
+  .Explorer > .file > .header > .file-actions {
+    margin-left: -0.5rem;
+  }
 
-    .Explorer > .file > .file-preview > .images :not(span) {
-        margin: 0;
-        border-radius: 0;
-        max-height: 50vh;
-        min-width: 0vw;
-    }
+  .Explorer > .file > .file-preview > .images :not(span) {
+    margin: 0;
+    border-radius: 0;
+    max-height: 50vh;
+    min-width: 0vw;
+  }
 
-    .Explorer > .file > .file-preview > .images *.tall {
-        max-width: 100vw;
-        max-height: 60vh;
-        min-height: 0;
-        width: 100vw;
-    }
+  .Explorer > .file > .file-preview > .images *.tall {
+    max-width: 100vw;
+    max-height: 60vh;
+    min-height: 0;
+    width: 100vw;
+  }
 
-    .Explorer > .file > .file-preview > .images *.wide {
-        max-width: 100vw;
-        max-height: 50vh;
-        min-height: 0;
-    }
+  .Explorer > .file > .file-preview > .images *.wide {
+    max-width: 100vw;
+    max-height: 50vh;
+    min-height: 0;
+  }
 }

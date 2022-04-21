@@ -1,141 +1,147 @@
 .Modal {
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    cursor: auto;
-    z-index: 1;
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  cursor: auto;
+  z-index: 1;
 }
 
 .Modal > .modal-content {
-    position: absolute;
-    top: 0;
-    left: 50%;
-    transform: translateX(-50%);
-    min-width: 400px;
-    max-width: 600px;
-    width: 50vw;
-    background-color: var(--color-background1);
-    border-bottom-left-radius: 0.5rem;
-    border-bottom-right-radius: 0.5rem;
+  position: absolute;
+  top: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  min-width: 400px;
+  max-width: 600px;
+  width: 50vw;
+  background-color: var(--color-background1);
+  border-bottom-left-radius: 0.5rem;
+  border-bottom-right-radius: 0.5rem;
 }
 
 .Modal > .modal-content {
-    display: flex;
-    flex-direction: column;
-    padding: 0.5rem;
-    position: relative;
-    overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  padding: 0.5rem;
+  position: relative;
+  overflow: hidden;
 }
 
 .Modal > .modal-content.create {
-    flex-direction: row;
+  flex-direction: row;
 }
 
 .Modal > .modal-content > .cwd {
-    background-color: var(--color-background3);
-    padding: 0.5rem;
-    padding-right: 0;
+  background-color: var(--color-background3);
+  padding: 0.5rem;
+  padding-right: 0;
 }
 
 .Modal > .modal-content > #path {
-    background-color: var(--color-background3);
-    color: var(--color-foreground1);
-    width: 100%;
-    border: none;
-    padding: 0.5rem;
-    padding-left: 0;
-    font-size: 1rem;
+  background-color: var(--color-background3);
+  color: var(--color-foreground1);
+  width: 100%;
+  border: none;
+  padding: 0.5rem;
+  padding-left: 0;
+  font-size: 1rem;
 }
 
 .Modal > .modal-content > #url {
-    background-color: var(--color-background3);
-    color: var(--color-foreground1);
-    width: 100%;
-    border: none;
-    padding: 0.5rem;
-    font-size: 1rem;
+  background-color: var(--color-background3);
+  color: var(--color-foreground1);
+  width: 100%;
+  border: none;
+  padding: 0.5rem;
+  font-size: 1rem;
 }
 
 .Modal > .modal-content > input {
-    outline: 0;
+  outline: 0;
 }
 
 .Modal > .modal-content > #file {
-    width: 0.1px;
-    height: 0.1px;
-    opacity: 0;
-    overflow: hidden;
-    position: absolute;
-    z-index: -1;
+  width: 0.1px;
+  height: 0.1px;
+  opacity: 0;
+  overflow: hidden;
+  position: absolute;
+  z-index: -1;
 }
 
 .Modal > .modal-content > #file + label {
-    background-color: var(--color-accent2);
-    color: var(--color-foreground2);
-    cursor: pointer;
-    padding: 0.5rem;
-    display: flex;
-    flex-direction: row;
-    align-items: center;
+  background-color: var(--color-accent2);
+  color: var(--color-foreground2);
+  cursor: pointer;
+  padding: 0.5rem;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
 }
 
 .Modal > .modal-content > #file + label > span {
-    margin-left: 0.5rem;
+  margin-left: 0.5rem;
 }
 
 .Modal > .modal-content > input[type="submit"] {
-    background-color: var(--color-background3);
-    color: var(--color-foreground1);
-    width: 100%;
-    border: none;
-    margin-top: 0.5rem;
-    padding: 0.5rem;
-    font-size: 1rem;
-    cursor: pointer;
+  background-color: var(--color-background3);
+  color: var(--color-foreground1);
+  width: 100%;
+  border: none;
+  margin-top: 0.5rem;
+  padding: 0.5rem;
+  font-size: 1rem;
+  cursor: pointer;
 }
 
 .Modal > .modal-content > #file + label:hover {
-    opacity: 0.9;
+  opacity: 0.9;
 }
 
 .Modal > .modal-content > input[type="submit"]:hover {
-    background-color: var(--color-background4);
+  background-color: var(--color-background4);
 }
 
 .Modal > .modal-content > #path::selection {
-    background: rgba(255, 255, 255, 0.1);
+  background: rgba(255, 255, 255, 0.1);
 }
 
 .Modal > .modal-content > #path:focus {
-    outline: none;
+  outline: none;
 }
 
 .Modal > .modal-content > .input-border::after {
-    content: '';
-    position: absolute;
-    top: calc(100% - 2px);
-    bottom: 0;
-    left: 0;
-    width: 200%;
-    pointer-events: none;
-    transition: all 0.3s ease;
-    background: linear-gradient(90deg, var(--color-danger) 0%, var(--color-danger) 50%, var(--color-accent2) 50%, var(--color-accent2) 100%);
-    transform: translateX(-100%);
+  content: "";
+  position: absolute;
+  top: calc(100% - 2px);
+  bottom: 0;
+  left: 0;
+  width: 200%;
+  pointer-events: none;
+  transition: all 0.3s ease;
+  background: linear-gradient(
+    90deg,
+    var(--color-danger) 0%,
+    var(--color-danger) 50%,
+    var(--color-accent2) 50%,
+    var(--color-accent2) 100%
+  );
+  transform: translateX(-100%);
 }
 
 .Modal > .modal-content > input:valid + .input-border::after {
-    transform: translateX(-50%);
+  transform: translateX(-50%);
 }
 
 .Modal > .modal-content > input:invalid + .input-border::after {
-    transform: translateX(0%);
+  transform: translateX(0%);
 }
 
 @media only screen and (max-width: 400px) {
-    .Modal > .modal-content{
-        min-width: 100%;
-        border-radius: 0;
-    }
+  .Modal > .modal-content {
+    min-width: 100%;
+    border-radius: 0;
+  }
 }
