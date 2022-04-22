@@ -16,6 +16,7 @@ type State = {
   data: Record<string, unknown | string | number | boolean>;
   step: number;
   config: string | null;
+  error: boolean;
 };
 
 class Login extends Form<Props> {
@@ -34,7 +35,10 @@ class Login extends Form<Props> {
       })
         .then((res) => res.json())
         .then((res) => {
-          if (res.errors) return;
+          if (res.errors) {
+            this.setState({ ...this.state, error: true });
+            return;
+          }
 
           Auth.setToken(res.data.token);
           this.setState({ step: 1 });
@@ -52,7 +56,7 @@ class Login extends Form<Props> {
               return urlCreator.createObjectURL(res);
             })
             .then((res) => {
-              this.setState({ config: res });
+              this.setState({ config: res, error: false });
             });
         });
     } else {
@@ -69,11 +73,13 @@ class Login extends Form<Props> {
       })
         .then((res) => res.json())
         .then((res) => {
-          // TODO: display errors
-          if (res.errors) return;
+          if (res.errors) {
+            this.setState({ ...this.state, error: true });
+            return;
+          }
 
           Auth.setToken(res.data.token);
-          this.setState({ step: 0 });
+          this.setState({ step: 0, error: false });
           this.props.onLogin();
         });
     }
@@ -83,6 +89,7 @@ class Login extends Form<Props> {
     data: {},
     step: 0,
     config: null,
+    error: false,
   };
 
   _isMounted = false;
@@ -203,6 +210,10 @@ class Login extends Form<Props> {
                 </div>
               </div>
             ) : null}
+
+            {this.state.error && (
+              <div className="login-error">Invalid login credentials</div>
+            )}
 
             <div className="input-section">
               <input

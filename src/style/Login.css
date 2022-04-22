@@ -123,6 +123,11 @@
   text-align: center;
 }
 
+.login-error {
+  color: var(--color-danger);
+  margin-bottom: 0.5rem;
+}
+
 .Login .authKey:invalid {
   opacity: 0.5;
 }
