@@ -314,8 +314,6 @@ class Preview extends React.Component<PreviewProps> {
         />
       );
 
-    console.log("render", file);
-
     if (file.type & this.props.types.IMAGE)
       return <StorageImage key={file.path} src={file.path} />;
 
