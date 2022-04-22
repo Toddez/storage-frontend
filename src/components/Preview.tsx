@@ -286,9 +286,8 @@ class Preview extends React.Component<PreviewProps> {
         })
         .filter((node) => node !== undefined);
 
-      if (imageElements.length > 0) {
+      if (imageElements.length > 0)
         return <ul className="images">{imageElements}</ul>;
-      }
     }
 
     if (!file) return null;
@@ -327,9 +326,8 @@ class Preview extends React.Component<PreviewProps> {
     if (file.type & this.props.types.IMAGE)
       return <StorageImage key={file.path} src={file.path} />;
 
-    if (file.type & this.props.types.VIDEO) {
+    if (file.type & this.props.types.VIDEO)
       return <StorageVideo key={file.path} src={file.path} />;
-    }
 
     return null;
   }
