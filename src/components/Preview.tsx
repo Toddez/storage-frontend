@@ -21,7 +21,6 @@ import RunIcon from "mdi-material-ui/PlayOutline";
 type State = {
   file: TreeNode | null;
   data: FileNode;
-  previewOrder: Array<number>;
   run: {
     res: string;
     err: string;
@@ -37,8 +36,6 @@ class Preview extends React.Component<PreviewProps> {
     this.onEditor = this.onEditor.bind(this);
     this.onScroll = this.onScroll.bind(this);
     this.run = this.run.bind(this);
-    this.toggleScroll = this.toggleScroll.bind(this);
-    this.updateScroll = this.updateScroll.bind(this);
 
     this.scrollRef = React.createRef();
     this.targetRef = React.createRef();
@@ -54,10 +51,6 @@ class Preview extends React.Component<PreviewProps> {
       }
     );
 
-    this.viewLength = 1;
-    this.maxLength = 1;
-    this.autoScroll = false;
-
     Storage.initialize();
     Storage.addReadListener(this.onStorageRead.bind(this));
   }
@@ -69,9 +62,6 @@ class Preview extends React.Component<PreviewProps> {
   dummyRef: RefObject<HTMLTextAreaElement>;
   dummyHighlightRef: RefObject<HTMLTextAreaElement>;
   loadObserver: IntersectionObserver;
-  viewLength: number;
-  maxLength: number;
-  autoScroll: boolean;
 
   state: State = {
     file: null,
@@ -85,7 +75,6 @@ class Preview extends React.Component<PreviewProps> {
       initial: "",
       path: "",
     },
-    previewOrder: new Array<number>(),
     run: {
       res: "",
       err: "",
@@ -140,10 +129,7 @@ class Preview extends React.Component<PreviewProps> {
     if (!this.scrollRef.current.ref.current) return;
 
     this.loadObserver.unobserve(this.scrollRef.current.ref.current);
-    if (this.viewLength < this.maxLength) {
-      this.viewLength = Math.min(this.viewLength + 5, this.maxLength);
-      this.forceUpdate();
-    }
+    this.forceUpdate();
   }
 
   fetchFile(): void {
@@ -253,19 +239,8 @@ class Preview extends React.Component<PreviewProps> {
           }
         })
         .filter((node) => node !== undefined);
-      const randValues = this.state.previewOrder;
-      while (randValues.length < nodes.length) randValues.push(Math.random());
-
-      nodes.sort((a, b) => {
-        return randValues[nodes.indexOf(a)] > randValues[nodes.indexOf(b)]
-          ? 1
-          : -1;
-      });
-
-      this.maxLength = nodes.length;
 
       const imageElements = nodes
-        .slice(0, this.viewLength)
         .map((node, index) => {
           if (!node) return;
 
@@ -273,10 +248,10 @@ class Preview extends React.Component<PreviewProps> {
             const path = node.path.split("/");
             return (
               <StorageImage
-                key={index}
+                key={node.path}
                 src={path.slice(1, path.length).join("/")}
                 ref={
-                  index === Math.min(nodes.length, this.viewLength) - 1
+                  index === nodes.length - 1
                     ? (this.scrollRef as LegacyRef<StorageImage>)
                     : undefined
                 }
@@ -288,10 +263,10 @@ class Preview extends React.Component<PreviewProps> {
             const path = node.path.split("/");
             return (
               <StorageVideo
-                key={index}
+                key={node.path}
                 src={path.slice(1, path.length).join("/")}
                 ref={
-                  index === Math.min(nodes.length, this.viewLength) - 1
+                  index === nodes.length - 1
                     ? (this.scrollRef as LegacyRef<StorageVideo>)
                     : undefined
                 }
@@ -302,18 +277,7 @@ class Preview extends React.Component<PreviewProps> {
         .filter((node) => node !== undefined);
 
       if (imageElements.length > 0) {
-        return (
-          <React.Fragment>
-            <div
-              className="auto-scroll paused"
-              onClick={this.toggleScroll}
-              style={{ top: `${Math.max(this.props.offset, 0)}px` }}
-            >
-              <span className="video-paused"></span>
-            </div>
-            <ul className="images">{imageElements}</ul>
-          </React.Fragment>
-        );
+        return <ul className="images">{imageElements}</ul>;
       }
     }
 
@@ -350,36 +314,16 @@ class Preview extends React.Component<PreviewProps> {
         />
       );
 
+    console.log("render", file);
+
     if (file.type & this.props.types.IMAGE)
-      return <StorageImage src={file.path} />;
+      return <StorageImage key={file.path} src={file.path} />;
 
     if (file.type & this.props.types.VIDEO) {
-      return <StorageVideo src={file.path} />;
+      return <StorageVideo key={file.path} src={file.path} />;
     }
 
     return null;
-  }
-
-  toggleScroll(event: ClickEvent<HTMLDivElement>): void {
-    const target = event.target as unknown as HTMLDivElement;
-    this.autoScroll = !this.autoScroll;
-    if (this.autoScroll) {
-      target.classList.remove("paused");
-      this.updateScroll(target);
-    }
-  }
-
-  updateScroll(target: HTMLDivElement): void {
-    if (!this.autoScroll || !window.matchMedia("(max-width: 700px)").matches) {
-      target.classList.add("paused");
-      return;
-    }
-
-    document.body.scrollBy(0, 1);
-
-    window.requestAnimationFrame(() => {
-      this.updateScroll(target);
-    });
   }
 
   onEditor(event: ChangeEvent<HTMLTextAreaElement>): void {
