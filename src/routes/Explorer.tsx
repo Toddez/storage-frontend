@@ -81,7 +81,7 @@ class Explorer extends React.Component<Props> {
     name: "",
     editingName: null,
     editingFile: false,
-    collapsed: true,
+    collapsed: false,
     previewOffset: 0,
     popups: [],
   };
