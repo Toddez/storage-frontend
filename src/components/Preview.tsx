@@ -179,10 +179,16 @@ class Preview extends React.Component<PreviewProps> {
     );
   }
 
-  // eslint-disable-next-line
-  markdownRenderers(): Record<string, (data: any) => JSX.Element> {
+  markdownRenderers(): Record<
+    string,
+    (
+      props: CodeRendererProps | ImageRendererProps | LinkRendererProps
+    ) => JSX.Element
+  > {
     return {
-      code: ({ language, value }: CodeRendererProps) => {
+      code: (props) => {
+        const { language, value } = props as unknown as CodeRendererProps;
+
         return (
           <SyntaxHighlighter
             style={dark}
@@ -191,10 +197,14 @@ class Preview extends React.Component<PreviewProps> {
           />
         );
       },
-      image: ({ src }: ImageRendererProps) => {
+      image: (props) => {
+        const { src } = props as unknown as ImageRendererProps;
+
         return <StorageImage src={src} />;
       },
-      link: ({ href, children }: LinkRendererProps) => {
+      link: (props) => {
+        const { href, children } = props as unknown as LinkRendererProps;
+
         let isLocal = true;
         let isValid = true;
 
