@@ -419,6 +419,8 @@ class Preview extends React.Component<PreviewProps> {
   run(): void {
     if (!this._isMounted) return;
 
+    // Can easily be escaped by malicious users,
+    // is ok in this use case as code will only run on user trigger
     let script = `
             (function () {
             'use strict';
