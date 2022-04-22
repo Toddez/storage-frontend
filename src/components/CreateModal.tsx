@@ -12,8 +12,11 @@ interface CreateModalProps extends ModalProps {
   };
 }
 
-const filePlaceholder = "filename";
-const dirPlaceholder = "directory/";
+const FILE_PLACEHOLDER = "filename";
+const FILE_PATTERN = "([.]{0,1}[A-Za-z0-9]+)+([A-Za-z0-9]|([./][A-Za-z0-9]))*";
+
+const DIR_PLACEHOLDER = "directory/";
+const DIR_PATTERN = "[A-Za-z0-9]+([A-Za-z0-9]|([/][A-Za-z0-9])|([/]$))*";
 
 class CreateModal extends Modal<CreateModalProps> {
   constructor(props: CreateModalProps) {
@@ -43,10 +46,10 @@ class CreateModal extends Modal<CreateModalProps> {
     if (this.pathRef.current) {
       let target = "";
       if (this.props.data.type & this.props.data.types.FILE)
-        target = filePlaceholder;
+        target = FILE_PLACEHOLDER;
 
       if (this.props.data.type & this.props.data.types.DIR)
-        target = dirPlaceholder;
+        target = DIR_PLACEHOLDER;
 
       const current = this.pathRef.current.value;
 
@@ -68,22 +71,13 @@ class CreateModal extends Modal<CreateModalProps> {
     str += spl.length > 1 ? "/" : "";
     str +=
       this.props.data.type & this.props.data.types.FILE
-        ? filePlaceholder
-        : dirPlaceholder;
+        ? FILE_PLACEHOLDER
+        : DIR_PLACEHOLDER;
 
     return str;
   }
 
   render(): JSX.Element {
-    const filePattern =
-      "([.]{0,1}[A-Za-z0-9]+)+([A-Za-z0-9]|([./][A-Za-z0-9]))*";
-    const dirPattern = "[A-Za-z0-9]+([A-Za-z0-9]|([/][A-Za-z0-9])|([/]$))*";
-
-    const pattern =
-      this.props.data.type & this.props.data.types.FILE
-        ? filePattern
-        : dirPattern;
-
     return (
       <div className="Modal" onClick={this.handleClick}>
         <form
@@ -104,7 +98,11 @@ class CreateModal extends Modal<CreateModalProps> {
             autoFocus
             spellCheck={false}
             required
-            pattern={pattern}
+            pattern={
+              this.props.data.type & this.props.data.types.FILE
+                ? FILE_PATTERN
+                : DIR_PATTERN
+            }
           />
           <div className="input-border"></div>
           <input hidden type="submit" value="Create" />
