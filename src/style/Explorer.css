@@ -588,6 +588,9 @@
 
 .Explorer > .file > .file-preview > .markdown-preview code {
   padding-left: 0;
+}
+
+.Explorer > .file > .file-preview > .markdown-preview > pre code {
   background-color: transparent;
 }
 
