@@ -150,7 +150,7 @@ class Storage {
           type: type,
           data: data,
         }),
-      }).then((res) => res.json()),
+      }),
       () => {
         this.fetch();
       }
