@@ -89,7 +89,7 @@ class StorageImage extends React.Component<StorageImageProps> {
         className="image-container"
         style={{
           maxWidth: `${this.ref.current?.offsetWidth}px`,
-          // maxHeight: `${this.ref.current?.offsetHeight}px`,
+          maxHeight: `${this.ref.current?.offsetHeight}px`,
         }}
       >
         <img
